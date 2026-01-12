@@ -1,0 +1,5 @@
+{
+  "version": "1.5.0",
+  "downloadUrl": "https://github.com/BIMism/BIM-ism-AI/releases/latest/download/RevitAIAgent.zip",
+  "releaseNotes": "v1.5.0: Clean installation structure (Assets folder), improved UI, CreateWindow support, and all previous AI fixes included."
+}
