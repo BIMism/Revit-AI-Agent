@@ -122,7 +122,6 @@ E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\refint\RevitAIAgent.dll
 E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\RevitAIAgent.pdb
 E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\ref\RevitAIAgent.dll
 E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\BIMism.addin
-E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\about_v2.png
-E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\about_robot.png
-E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\model_check_robot.png
-E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\missing_tag_robot.png
+E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\model_check_v4.png
+E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\about_v4.png
+E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\missing_tag_v4.png

@@ -60,15 +60,18 @@ namespace RevitAIAgent
                     // PANEL 4: BIMism (New Panel)
                     RibbonPanel panelBIMism = application.CreateRibbonPanel(tabName, "BIMism");
 
-                    PushButtonData btnModelCheckData = new PushButtonData("ModelCheck_Button", "Model\nCheck", assemblyPath, "RevitAIAgent.CmdModelCheck");
-                    PushButton btnModelCheck = panelBIMism.AddItem(btnModelCheckData) as PushButton;
-                    btnModelCheck.ToolTip = "Verify model against standards";
-                    SetButtonIcon(btnModelCheck, "model_check_robot.png");
-
                     PushButtonData btnAboutData = new PushButtonData("About_Button", "About", assemblyPath, "RevitAIAgent.CmdAbout");
                     PushButton btnAbout = panelBIMism.AddItem(btnAboutData) as PushButton;
                     btnAbout.ToolTip = "Check version and updates";
-                    SetButtonIcon(btnAbout, "about_robot.png");
+                    SetButtonIcon(btnAbout, "about_v4.png");
+
+                    // PANEL 5: Check (New Panel)
+                    RibbonPanel panelCheck = application.CreateRibbonPanel(tabName, "Check");
+
+                    PushButtonData btnModelCheckData = new PushButtonData("ModelCheck_Button", "Model\nCheck", assemblyPath, "RevitAIAgent.CmdModelCheck");
+                    PushButton btnModelCheck = panelCheck.AddItem(btnModelCheckData) as PushButton;
+                    btnModelCheck.ToolTip = "Verify model against standards";
+                    SetButtonIcon(btnModelCheck, "model_check_v4.png");
 
                     // PANEL 2: STRUCTURAL (REBAR)
                     RibbonPanel panelStruct = application.CreateRibbonPanel(tabName, "Structural");
@@ -84,7 +87,7 @@ namespace RevitAIAgent
                     // PANEL 3: ANNOTATION
                     RibbonPanel panelAnnotation = application.CreateRibbonPanel(tabName, "Annotation");
                     CreateButton(panelAnnotation, "BtnElemDim", "Element\nDimension", assemblyPath, "RevitAIAgent.CmdElementDimension", "dimension.png");
-                    CreateButton(panelAnnotation, "BtnMissingTag", "Missing\nTag", assemblyPath, "RevitAIAgent.CmdMissingTag", "missing_tag_robot.png"); 
+                    CreateButton(panelAnnotation, "BtnMissingTag", "Missing\nTag", assemblyPath, "RevitAIAgent.CmdMissingTag", "missing_tag_v4.png"); 
                 }
                 catch (Exception ex)
                 {

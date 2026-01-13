@@ -1,5 +1,5 @@
 {
-  "version": "1.8.9",
+  "version": "1.9.0",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v1.8.9: New stylized Robot Icons for all tools! Optimization fix for Revit ribbons."
+  "releaseNotes": "v1.9.0: Ribbon Reorganization! Moved Model Check to new 'Check' panel. Distinct professional 3D icons for all tools."
 }
