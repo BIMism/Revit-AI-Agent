@@ -1,5 +1,5 @@
 {
-  "version": "1.9.6",
+  "version": "2.0.0",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v1.9.6: Added 'Coordinate' button to Structural panel. Test with cleanup script!"
+  "releaseNotes": "v2.0.0: MAJOR UPDATE - Complete rebrand fix! Run COMPLETE_CLEANUP.bat first, then install fresh!"
 }
