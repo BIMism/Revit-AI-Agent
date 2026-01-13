@@ -118,8 +118,8 @@ namespace RevitAIAgent
                     TaskDialog.Show("UI Error", "Failed to create one or more ribbon panels: " + ex.Message);
                 }
 
-                // Check for updates (non-blocking)
-                CheckForUpdatesAsync();
+                // Startup update check removed per user request (v2.0.6)
+                // CheckForUpdatesAsync();
 
                 return Result.Succeeded;
             }
