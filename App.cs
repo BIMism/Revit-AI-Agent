@@ -99,6 +99,14 @@ namespace RevitAIAgent
                     RibbonPanel panelAnnotation = application.CreateRibbonPanel(tabName, "Annotation");
                     CreateButton(panelAnnotation, "BtnElemDim", "Element\nDimension", assemblyPath, "RevitAIAgent.CmdElementDimension", "dimension.png");
                     CreateButton(panelAnnotation, "BtnMissingTag", "Missing\nTag", assemblyPath, "RevitAIAgent.CmdMissingTag", "missing_tag_v4.png"); 
+
+                    // PANEL 6: PM (Project Management)
+                    RibbonPanel panelPM = application.CreateRibbonPanel(tabName, "PM");
+
+                    PushButtonData btnProjectPlanData = new PushButtonData("ProjectPlan_Button", "Project\nPlan", assemblyPath, "RevitAIAgent.CmdProjectPlan");
+                    PushButton btnProjectPlan = panelPM.AddItem(btnProjectPlanData) as PushButton;
+                    btnProjectPlan.ToolTip = "View and manage project plan";
+                    SetButtonIcon(btnProjectPlan, "project_plan.png");
                 }
                 catch (Exception ex)
                 {
