@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "RevitAIAgent/1.8.8": {
+      "RevitAIAgent/1.8.9": {
         "dependencies": {
           "Microsoft.CodeAnalysis.CSharp": "4.4.0",
           "Newtonsoft.Json": "13.0.3"
@@ -127,7 +127,7 @@
     }
   },
   "libraries": {
-    "RevitAIAgent/1.8.8": {
+    "RevitAIAgent/1.8.9": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -63,12 +63,12 @@ namespace RevitAIAgent
                     PushButtonData btnModelCheckData = new PushButtonData("ModelCheck_Button", "Model\nCheck", assemblyPath, "RevitAIAgent.CmdModelCheck");
                     PushButton btnModelCheck = panelBIMism.AddItem(btnModelCheckData) as PushButton;
                     btnModelCheck.ToolTip = "Verify model against standards";
-                    SetButtonIcon(btnModelCheck, "model_check.png");
+                    SetButtonIcon(btnModelCheck, "model_check_robot.png");
 
                     PushButtonData btnAboutData = new PushButtonData("About_Button", "About", assemblyPath, "RevitAIAgent.CmdAbout");
                     PushButton btnAbout = panelBIMism.AddItem(btnAboutData) as PushButton;
                     btnAbout.ToolTip = "Check version and updates";
-                    SetButtonIcon(btnAbout, "about_v2.png");
+                    SetButtonIcon(btnAbout, "about_robot.png");
 
                     // PANEL 2: STRUCTURAL (REBAR)
                     RibbonPanel panelStruct = application.CreateRibbonPanel(tabName, "Structural");
@@ -84,7 +84,7 @@ namespace RevitAIAgent
                     // PANEL 3: ANNOTATION
                     RibbonPanel panelAnnotation = application.CreateRibbonPanel(tabName, "Annotation");
                     CreateButton(panelAnnotation, "BtnElemDim", "Element\nDimension", assemblyPath, "RevitAIAgent.CmdElementDimension", "dimension.png");
-                    CreateButton(panelAnnotation, "BtnMissingTag", "Missing\nTag", assemblyPath, "RevitAIAgent.CmdMissingTag", "missing_tag.png"); 
+                    CreateButton(panelAnnotation, "BtnMissingTag", "Missing\nTag", assemblyPath, "RevitAIAgent.CmdMissingTag", "missing_tag_robot.png"); 
                 }
                 catch (Exception ex)
                 {
