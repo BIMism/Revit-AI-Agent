@@ -1,5 +1,5 @@
 {
-  "version": "1.9.5",
+  "version": "1.9.6",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v1.9.5: IMPORTANT - Run CleanupOldVersion.ps1 first to remove cached 'PyRevitLoader' metadata!"
+  "releaseNotes": "v1.9.6: Added 'Coordinate' button to Structural panel. Test with cleanup script!"
 }

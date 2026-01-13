@@ -93,6 +93,7 @@ namespace RevitAIAgent
                     panelStruct.AddSeparator();
                     CreateButton(panelStruct, "BtnVis3D", "Show\n3D Solid", assemblyPath, "RevitAIAgent.CmdVisibility3D", "visibility.png");
                     CreateButton(panelStruct, "BtnWeight", "Rebar\nWeight", assemblyPath, "RevitAIAgent.CmdRebarWeight", "weight.png");
+                    CreateButton(panelStruct, "BtnCoordinate", "Coordinate", assemblyPath, "RevitAIAgent.CmdCoordinate", "coordinate.png");
 
                     // PANEL 3: ANNOTATION
                     RibbonPanel panelAnnotation = application.CreateRibbonPanel(tabName, "Annotation");
