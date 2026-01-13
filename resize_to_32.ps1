@@ -14,4 +14,4 @@ function Resize-Image {
         return $true
     } catch { return $false }
 }
-Resize-Image -RelativePath 'Assets\costing.png' -Width 32 -Height 32
+Resize-Image -RelativePath 'Assets\resources.png' -Width 32 -Height 32

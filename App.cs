@@ -112,6 +112,11 @@ namespace RevitAIAgent
                     PushButton btnCosting = panelPM.AddItem(btnCostingData) as PushButton;
                     btnCosting.ToolTip = "Estimate project costs";
                     SetButtonIcon(btnCosting, "costing.png");
+
+                    PushButtonData btnResourcesData = new PushButtonData("Resources_Button", "Resources", assemblyPath, "RevitAIAgent.CmdResources");
+                    PushButton btnResources = panelPM.AddItem(btnResourcesData) as PushButton;
+                    btnResources.ToolTip = "Manage project resources";
+                    SetButtonIcon(btnResources, "resources.png");
                 }
                 catch (Exception ex)
                 {

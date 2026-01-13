@@ -1,5 +1,5 @@
 {
-  "version": "2.0.6",
+  "version": "2.0.7",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.0.6: SILENT STARTUP - Auto-update popup removed! Use 'About' button to update."
+  "releaseNotes": "v2.0.7: Added 'Resources' button to PM panel. Verify branding fix on update!"
 }
