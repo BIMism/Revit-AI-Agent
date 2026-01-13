@@ -1,5 +1,5 @@
 {
-  "version": "1.9.4",
+  "version": "1.9.5",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v1.9.4: Added 'Clash Check' button to Check panel. Test branding fix!"
+  "releaseNotes": "v1.9.5: IMPORTANT - Run CleanupOldVersion.ps1 first to remove cached 'PyRevitLoader' metadata!"
 }
