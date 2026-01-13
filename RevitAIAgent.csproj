@@ -6,7 +6,7 @@
     <Configurations>Debug;Release</Configurations>
     <Platforms>x64</Platforms>
     <AssemblyName>RevitAIAgent</AssemblyName>
-    <Version>1.8.6</Version>
+    <Version>1.8.7</Version>
     <PublishSelfContained>false</PublishSelfContained>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>

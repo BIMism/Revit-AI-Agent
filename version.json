@@ -1,5 +1,5 @@
 {
-  "version": "1.8.6",
+  "version": "1.8.7",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v1.8.6: New Unique Icons for all tools! Fixed Title Issue."
+  "releaseNotes": "v1.8.7: Fixed missing icons (Optimization)."
 }
