@@ -78,6 +78,11 @@ namespace RevitAIAgent
                     btnDrawingCheck.ToolTip = "Verify drawings and annotations";
                     SetButtonIcon(btnDrawingCheck, "drawing_check.png");
 
+                    PushButtonData btnClashCheckData = new PushButtonData("ClashCheck_Button", "Clash\nCheck", assemblyPath, "RevitAIAgent.CmdClashCheck");
+                    PushButton btnClashCheck = panelCheck.AddItem(btnClashCheckData) as PushButton;
+                    btnClashCheck.ToolTip = "Detect clashes between elements";
+                    SetButtonIcon(btnClashCheck, "clash_check.png");
+
                     // PANEL 2: STRUCTURAL (REBAR)
                     RibbonPanel panelStruct = application.CreateRibbonPanel(tabName, "Structural");
                     CreateButton(panelStruct, "BtnFooting", "Footing\nRebar", assemblyPath, "RevitAIAgent.CmdFooting", "footing.png");

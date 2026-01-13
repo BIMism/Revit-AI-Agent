@@ -1,5 +1,5 @@
 {
-  "version": "1.9.3",
+  "version": "1.9.4",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v1.9.3: DEEP FIX - Manual AssemblyInfo to eliminate 'PyRevitLoader' completely."
+  "releaseNotes": "v1.9.4: Added 'Clash Check' button to Check panel. Test branding fix!"
 }

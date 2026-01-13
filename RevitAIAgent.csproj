@@ -6,7 +6,7 @@
     <Configurations>Debug;Release</Configurations>
     <Platforms>x64</Platforms>
     <AssemblyName>RevitAIAgent</AssemblyName>
-    <Version>1.9.3</Version>
+    <Version>1.9.4</Version>
     <AssemblyTitle>BIMism AI Agent</AssemblyTitle>
     <Product>BIMism AI Agent</Product>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -74,6 +74,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\drawing_check.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\clash_check.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
