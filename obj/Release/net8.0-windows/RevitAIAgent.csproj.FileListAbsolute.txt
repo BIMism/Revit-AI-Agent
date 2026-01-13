@@ -127,3 +127,4 @@ E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\drawing_check.png
 E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\clash_check.png
 E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\coordinate.png
 E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\project_plan.png
+E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\costing.png
