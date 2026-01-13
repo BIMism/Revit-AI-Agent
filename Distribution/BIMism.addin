@@ -4,7 +4,7 @@
     <Name>Revit AI Agent</Name>
     <Assembly>BIMism\RevitAIAgent.dll</Assembly>
     <FullClassName>RevitAIAgent.App</FullClassName>
-    <ClientId>B1B1B1B1-B1B1-B1B1-B1B1-B1B1B1B1B1B1</ClientId>
+    <ClientId>dd1b181e-2b10-4d61-b5ad-58895d288168</ClientId>
     <VendorId>BIMism</VendorId>
     <VendorDescription>Asanka Dharamarathna</VendorDescription>
   </AddIn>

@@ -113,7 +113,8 @@ namespace RevitAIAgent
                     // Show update notification
                     TaskDialog td = new TaskDialog("Update Available");
                     td.MainInstruction = $"New version {updateInfo.Version} is available!";
-                    td.MainContent = $"Current version: 1.0.0\n\n{updateInfo.ReleaseNotes}\n\nWould you like to update now?";
+                    string currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                    td.MainContent = $"Current version: {currentVersion}\n\n{updateInfo.ReleaseNotes}\n\nWould you like to update now?";
                     td.CommonButtons = TaskDialogCommonButtons.Yes | TaskDialogCommonButtons.No;
                     td.DefaultButton = TaskDialogResult.Yes;
 
