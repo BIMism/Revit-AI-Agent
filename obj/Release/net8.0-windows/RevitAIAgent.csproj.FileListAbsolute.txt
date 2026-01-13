@@ -112,8 +112,6 @@ E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\ChatView.g.cs
 E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\RevitAIAgent_MarkupCompile.cache
 E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\RevitAIAgent.g.resources
 E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\RevitAIAgent.GeneratedMSBuildEditorConfig.editorconfig
-E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\RevitAIAgent.AssemblyInfoInputs.cache
-E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\RevitAIAgent.AssemblyInfo.cs
 E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\RevitAIAgent.csproj.CoreCompileInputs.cache
 E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\RevitAIAgent.sourcelink.json
 E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\RevitAIA.541E7EC9.Up2Date

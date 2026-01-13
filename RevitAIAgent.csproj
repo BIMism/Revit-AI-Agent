@@ -6,9 +6,10 @@
     <Configurations>Debug;Release</Configurations>
     <Platforms>x64</Platforms>
     <AssemblyName>RevitAIAgent</AssemblyName>
-    <Version>1.9.2</Version>
+    <Version>1.9.3</Version>
     <AssemblyTitle>BIMism AI Agent</AssemblyTitle>
     <Product>BIMism AI Agent</Product>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <PublishSelfContained>false</PublishSelfContained>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>

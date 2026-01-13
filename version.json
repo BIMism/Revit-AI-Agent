@@ -1,5 +1,5 @@
 {
-  "version": "1.9.2",
+  "version": "1.9.3",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v1.9.2: Added 'Drawing Check' button to the Check panel."
+  "releaseNotes": "v1.9.3: DEEP FIX - Manual AssemblyInfo to eliminate 'PyRevitLoader' completely."
 }
