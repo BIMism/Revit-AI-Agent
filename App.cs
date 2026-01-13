@@ -159,9 +159,13 @@ namespace RevitAIAgent
                         
                         if (success)
                         {
-                            TaskDialog.Show("BIMism AI Agent", 
-                                "Update installed successfully!\n\nPlease restart Revit to use the new version.",
-                                TaskDialogCommonButtons.Ok);
+                            TaskDialog successTd = new TaskDialog("Success");
+                            successTd.TitleAutoPrefix = false;
+                            successTd.Title = "BIMism AI Agent";
+                            successTd.MainInstruction = "Update installed successfully!";
+                            successTd.MainContent = "Please restart Revit to use the new version.";
+                            successTd.CommonButtons = TaskDialogCommonButtons.Ok;
+                            successTd.Show();
                         }
                     }
                 }

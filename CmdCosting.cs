@@ -9,7 +9,11 @@ namespace RevitAIAgent
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            TaskDialog.Show("Costing", "Costing feature is coming soon!");
+            TaskDialog td = new TaskDialog("Costing");
+            td.TitleAutoPrefix = false;
+            td.Title = "BIMism AI Agent";
+            td.MainInstruction = "Costing feature is coming soon!";
+            td.Show();
             return Result.Succeeded;
         }
     }

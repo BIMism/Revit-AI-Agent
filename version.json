@@ -1,5 +1,5 @@
 {
-  "version": "2.0.4",
+  "version": "2.0.5",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.0.4: CONFIRMATION UPDATE - Added 'Costing' button. Title fix forced!"
+  "releaseNotes": "v2.0.5: FINAL FIX - Fixed branding on success dialog and all placeholders!"
 }
