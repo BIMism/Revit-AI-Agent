@@ -1,5 +1,5 @@
 {
-  "version": "1.9.0",
+  "version": "1.9.1",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v1.9.0: Ribbon Reorganization! Moved Model Check to new 'Check' panel. Distinct professional 3D icons for all tools."
+  "releaseNotes": "v1.9.1: FINAL FIX for 'PyRevitLoader' branding issue. Added assembly metadata."
 }
