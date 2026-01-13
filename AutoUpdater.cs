@@ -11,10 +11,12 @@ namespace RevitAIAgent
     {
         public static async Task<bool> DownloadAndInstallAsync(string downloadUrl)
         {
+            string tempExtract = null;
             try
             {
-                string tempZip = Path.Combine(Path.GetTempPath(), "RevitAIAgent_Update.zip");
-                string tempExtract = Path.Combine(Path.GetTempPath(), "RevitAIAgent_Extract");
+                string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                string tempZip = Path.Combine(Path.GetTempPath(), $"RevitAIAgent_Update_{timestamp}.zip");
+                tempExtract = Path.Combine(Path.GetTempPath(), $"RevitAIAgent_Extract_{timestamp}");
                 string addinsFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), 
                     "Autodesk", "Revit", "Addins", "2025");
 
@@ -29,14 +31,14 @@ namespace RevitAIAgent
                 // Extract
                 if (Directory.Exists(tempExtract))
                     Directory.Delete(tempExtract, true);
+                
                 ZipFile.ExtractToDirectory(tempZip, tempExtract);
 
                 // Copy files to Addins folder with Locked File handling
                 CopyFilesRecursively(tempExtract, addinsFolder);
 
-                // Cleanup
-                File.Delete(tempZip);
-                Directory.Delete(tempExtract, true);
+                // Cleanup ZIP
+                if (File.Exists(tempZip)) File.Delete(tempZip);
 
                 return true;
             }
@@ -44,6 +46,15 @@ namespace RevitAIAgent
             {
                 TaskDialog.Show("Update Error", $"Failed to install update:\n{ex.Message}\n\nTry closing Revit and using the manual installer.");
                 return false;
+            }
+            finally
+            {
+                try
+                {
+                    if (tempExtract != null && Directory.Exists(tempExtract))
+                        Directory.Delete(tempExtract, true);
+                }
+                catch { /* Ignore cleanup errors */ }
             }
         }
 
@@ -68,9 +79,9 @@ namespace RevitAIAgent
                 {
                     try 
                     {
-                        string oldFile = destFile + ".old";
-                        if (File.Exists(oldFile)) File.Delete(oldFile);
-                        File.Move(destFile, oldFile); // Rename existing to .old
+                        // Use a unique name for the old file to avoid "Already Exists" collisions
+                        string oldFile = destFile + "." + DateTime.Now.Ticks + ".old";
+                        File.Move(destFile, oldFile); // Rename existing to unique .old
                         File.Copy(newPath, destFile, true); // Copy new one
                     }
                     catch

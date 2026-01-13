@@ -8,7 +8,7 @@ namespace RevitAIAgent
     public class UpdateChecker
     {
         private const string VERSION_URL = "https://raw.githubusercontent.com/BIMism/Revit-AI-Agent/main/version.json";
-        private const string CURRENT_VERSION = "1.8.0";
+        private const string CURRENT_VERSION = "1.8.1";
 
         public class VersionInfo
         {

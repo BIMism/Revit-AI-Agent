@@ -1,5 +1,5 @@
 {
-  "version": "1.8.0",
+  "version": "1.8.1",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v1.8.0: Fixed About button icon display (optimized icon size)."
+  "releaseNotes": "v1.8.1: Fixed 'File already exists' error during extraction. Ultimate robustness update!"
 }
