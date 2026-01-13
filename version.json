@@ -1,5 +1,5 @@
 {
-  "version": "2.0.1",
+  "version": "2.0.2",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.0.1: Added new 'PM' panel with 'Project Plan' button!"
+  "releaseNotes": "v2.0.2: TEST VERSION - Verify 'BIMism AI Agent' branding in update dialogs!"
 }
