@@ -1,0 +1,70 @@
+<Window x:Class="RevitAIAgent.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="About BIM'ism AI Agent" 
+        Height="350" Width="450"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#F5F5F5">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Grid.Row="0" Text="BIM'ism AI Agent" FontSize="24" FontWeight="Bold" 
+                   Foreground="#2196F3" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+        <!-- Version Info -->
+        <StackPanel Grid.Row="1" Margin="0,10">
+            <TextBlock Text="Current Version:" FontWeight="SemiBold" FontSize="14"/>
+            <TextBlock x:Name="CurrentVersionText" Text="1.5.0" FontSize="16" 
+                       Foreground="#4CAF50" Margin="0,5,0,0"/>
+        </StackPanel>
+
+        <!-- Update Status -->
+        <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="15" Margin="0,15"
+                BorderBrush="#E0E0E0" BorderThickness="1">
+            <StackPanel>
+                <TextBlock x:Name="UpdateStatusText" Text="Checking for updates..." 
+                           FontSize="13" TextWrapping="Wrap"/>
+                <TextBlock x:Name="UpdateDetailsText" Text="" FontSize="12" 
+                           Foreground="#666" Margin="0,5,0,0" TextWrapping="Wrap" 
+                           Visibility="Collapsed"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+            <Button x:Name="CheckUpdateBtn" Content="Check for Updates" 
+                    Width="140" Height="35" Margin="5"
+                    Background="#2196F3" Foreground="White" 
+                    BorderThickness="0" FontWeight="SemiBold"
+                    Click="CheckUpdateBtn_Click"/>
+            <Button x:Name="UpdateNowBtn" Content="Update Now" 
+                    Width="140" Height="35" Margin="5"
+                    Background="#4CAF50" Foreground="White" 
+                    BorderThickness="0" FontWeight="SemiBold"
+                    Visibility="Collapsed"
+                    Click="UpdateNowBtn_Click"/>
+        </StackPanel>
+
+        <!-- Footer -->
+        <StackPanel Grid.Row="5" Margin="0,10,0,0">
+            <TextBlock Text="© 2026 BIMism - Revit AI Automation" 
+                       FontSize="11" Foreground="#999" HorizontalAlignment="Center"/>
+            <TextBlock HorizontalAlignment="Center" Margin="0,5,0,0">
+                <Hyperlink NavigateUri="https://github.com/BIMism/Revit-AI-Agent" 
+                           RequestNavigate="Hyperlink_RequestNavigate"
+                           Foreground="#2196F3">
+                    View on GitHub
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>

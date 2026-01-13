@@ -1,5 +1,5 @@
 {
-  "version": "1.7.0",
+  "version": "1.8.0",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v1.7.0: Added custom icon for About button and verified update system functionality."
+  "releaseNotes": "v1.8.0: Fixed About button icon display (optimized icon size)."
 }
