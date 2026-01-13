@@ -84,7 +84,7 @@ namespace RevitAIAgent
                     // PANEL 3: ANNOTATION
                     RibbonPanel panelAnnotation = application.CreateRibbonPanel(tabName, "Annotation");
                     CreateButton(panelAnnotation, "BtnElemDim", "Element\nDimension", assemblyPath, "RevitAIAgent.CmdElementDimension", "dimension.png");
-                    CreateButton(panelAnnotation, "BtnMissingTag", "Missing\nTag", assemblyPath, "RevitAIAgent.CmdMissingTag", "ai_agent.png"); // Using AI icon as placeholder if specific tag icon missing
+                    CreateButton(panelAnnotation, "BtnMissingTag", "Missing\nTag", assemblyPath, "RevitAIAgent.CmdMissingTag", "missing_tag.png"); 
                 }
                 catch (Exception ex)
                 {

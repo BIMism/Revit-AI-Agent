@@ -1,5 +1,5 @@
 {
-  "version": "1.8.5",
+  "version": "1.8.6",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v1.8.5: Fixed 'PyRevitLoader' naming issue and version display."
+  "releaseNotes": "v1.8.6: New Unique Icons for all tools! Fixed Title Issue."
 }
