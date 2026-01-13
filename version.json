@@ -1,5 +1,5 @@
 {
-  "version": "2.0.2",
+  "version": "2.0.3",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.0.2: TEST VERSION - Verify 'BIMism AI Agent' branding in update dialogs!"
+  "releaseNotes": "v2.0.3: FINAL BRANDING FIX - Forced TitleAutoPrefix=false on update dialog!"
 }

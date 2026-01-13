@@ -134,7 +134,8 @@ namespace RevitAIAgent
                 {
                     // Show update notification
                     TaskDialog td = new TaskDialog("BIMism AI Agent");
-                    td.Title = "Update Available";
+                    td.TitleAutoPrefix = false;
+                    td.Title = "BIMism AI Agent - Update Available";
                     td.MainInstruction = $"New version {updateInfo.Version} is available!";
                     string currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                     td.MainContent = $"Current version: {currentVersion}\n\n{updateInfo.ReleaseNotes}\n\nWould you like to update now?";
