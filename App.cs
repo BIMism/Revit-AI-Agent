@@ -111,7 +111,8 @@ namespace RevitAIAgent
                 if (updateInfo != null)
                 {
                     // Show update notification
-                    TaskDialog td = new TaskDialog("Update Available");
+                    TaskDialog td = new TaskDialog("BIMism AI Agent");
+                    td.Title = "Update Available";
                     td.MainInstruction = $"New version {updateInfo.Version} is available!";
                     string currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
                     td.MainContent = $"Current version: {currentVersion}\n\n{updateInfo.ReleaseNotes}\n\nWould you like to update now?";
@@ -121,7 +122,8 @@ namespace RevitAIAgent
                     if (td.Show() == TaskDialogResult.Yes)
                     {
                         // Show downloading message
-                        TaskDialog downloading = new TaskDialog("Downloading Update");
+                        TaskDialog downloading = new TaskDialog("BIMism AI Agent");
+                        downloading.Title = "Downloading Update";
                         downloading.MainInstruction = "Downloading update...";
                         downloading.MainContent = "Please wait while the update is downloaded and installed.";
                         
@@ -129,7 +131,7 @@ namespace RevitAIAgent
                         
                         if (success)
                         {
-                            TaskDialog.Show("Update Complete", 
+                            TaskDialog.Show("BIMism AI Agent", 
                                 "Update installed successfully!\n\nPlease restart Revit to use the new version.",
                                 TaskDialogCommonButtons.Ok);
                         }

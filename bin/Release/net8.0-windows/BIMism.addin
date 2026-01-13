@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RevitAddIns>
   <AddIn Type="Application">
-    <Name>Revit AI Agent</Name>
+    <Name>BIMism AI Agent</Name>
     <Assembly>BIMism\RevitAIAgent.dll</Assembly>
     <FullClassName>RevitAIAgent.App</FullClassName>
     <ClientId>dd1b181e-2b10-4d61-b5ad-58895d288168</ClientId>
