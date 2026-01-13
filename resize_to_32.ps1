@@ -14,6 +14,4 @@ function Resize-Image {
         return $true
     } catch { return $false }
 }
-Resize-Image -RelativePath 'Assets\model_check_v4.png' -Width 32 -Height 32
-Resize-Image -RelativePath 'Assets\about_v4.png' -Width 32 -Height 32
-Resize-Image -RelativePath 'Assets\missing_tag_v4.png' -Width 32 -Height 32
+Resize-Image -RelativePath 'Assets\drawing_check.png' -Width 32 -Height 32

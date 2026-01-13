@@ -73,6 +73,11 @@ namespace RevitAIAgent
                     btnModelCheck.ToolTip = "Verify model against standards";
                     SetButtonIcon(btnModelCheck, "model_check_v4.png");
 
+                    PushButtonData btnDrawingCheckData = new PushButtonData("DrawingCheck_Button", "Drawing\nCheck", assemblyPath, "RevitAIAgent.CmdDrawingCheck");
+                    PushButton btnDrawingCheck = panelCheck.AddItem(btnDrawingCheckData) as PushButton;
+                    btnDrawingCheck.ToolTip = "Verify drawings and annotations";
+                    SetButtonIcon(btnDrawingCheck, "drawing_check.png");
+
                     // PANEL 2: STRUCTURAL (REBAR)
                     RibbonPanel panelStruct = application.CreateRibbonPanel(tabName, "Structural");
                     CreateButton(panelStruct, "BtnFooting", "Footing\nRebar", assemblyPath, "RevitAIAgent.CmdFooting", "footing.png");

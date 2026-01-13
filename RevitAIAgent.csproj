@@ -6,7 +6,7 @@
     <Configurations>Debug;Release</Configurations>
     <Platforms>x64</Platforms>
     <AssemblyName>RevitAIAgent</AssemblyName>
-    <Version>1.9.1</Version>
+    <Version>1.9.2</Version>
     <AssemblyTitle>BIMism AI Agent</AssemblyTitle>
     <Product>BIMism AI Agent</Product>
     <PublishSelfContained>false</PublishSelfContained>
@@ -70,6 +70,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\missing_tag_v4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\drawing_check.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
