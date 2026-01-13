@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>Revit AI Agent</Name>
+    <Assembly>BIMism\RevitAIAgent.dll</Assembly>
+    <FullClassName>RevitAIAgent.App</FullClassName>
+    <ClientId>B1B1B1B1-B1B1-B1B1-B1B1-B1B1B1B1B1B1</ClientId>
+    <VendorId>BIMism</VendorId>
+    <VendorDescription>Asanka Dharamarathna</VendorDescription>
+  </AddIn>
+</RevitAddIns>

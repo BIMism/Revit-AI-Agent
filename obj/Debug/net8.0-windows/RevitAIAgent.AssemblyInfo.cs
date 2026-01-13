@@ -12,11 +12,11 @@ using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("RevitAIAgent")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.6.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.6.0+548a5ec77d4dc6d68864b1ff7dac3547e82dd92e")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.8.1.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.8.1+ee34281aeedabb2d00c5033b62f9da12c1fdcf9c")]
 [assembly: System.Reflection.AssemblyProductAttribute("RevitAIAgent")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RevitAIAgent")]
-[assembly: System.Reflection.AssemblyVersionAttribute("1.6.0.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.8.1.0")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]
 

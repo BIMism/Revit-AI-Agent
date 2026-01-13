@@ -13,3 +13,18 @@ C:\Users\User\.gemini\antigravity\playground\cobalt-oort\BIMismInstaller\obj\Rel
 C:\Users\User\.gemini\antigravity\playground\cobalt-oort\BIMismInstaller\obj\Release\net8.0-windows\win-x64\BIMismInstaller.genruntimeconfig.cache
 C:\Users\User\.gemini\antigravity\playground\cobalt-oort\BIMismInstaller\obj\Release\net8.0-windows\win-x64\ref\BIMism_AI_Agent_Installer.dll
 C:\Users\User\.gemini\antigravity\playground\cobalt-oort\BIMismInstaller\obj\Release\net8.0-windows\win-x64\BIMismInstaller.sourcelink.json
+E:\My\BIM'ism\Revit Pluging\BIMismInstaller\bin\Release\net8.0-windows\win-x64\BIMism_AI_Agent_Installer.exe
+E:\My\BIM'ism\Revit Pluging\BIMismInstaller\bin\Release\net8.0-windows\win-x64\BIMism_AI_Agent_Installer.deps.json
+E:\My\BIM'ism\Revit Pluging\BIMismInstaller\bin\Release\net8.0-windows\win-x64\BIMism_AI_Agent_Installer.runtimeconfig.json
+E:\My\BIM'ism\Revit Pluging\BIMismInstaller\bin\Release\net8.0-windows\win-x64\BIMism_AI_Agent_Installer.dll
+E:\My\BIM'ism\Revit Pluging\BIMismInstaller\bin\Release\net8.0-windows\win-x64\BIMism_AI_Agent_Installer.pdb
+E:\My\BIM'ism\Revit Pluging\BIMismInstaller\obj\Release\net8.0-windows\win-x64\BIMismInstaller.GeneratedMSBuildEditorConfig.editorconfig
+E:\My\BIM'ism\Revit Pluging\BIMismInstaller\obj\Release\net8.0-windows\win-x64\BIMismInstaller.AssemblyInfoInputs.cache
+E:\My\BIM'ism\Revit Pluging\BIMismInstaller\obj\Release\net8.0-windows\win-x64\BIMismInstaller.AssemblyInfo.cs
+E:\My\BIM'ism\Revit Pluging\BIMismInstaller\obj\Release\net8.0-windows\win-x64\BIMismInstaller.csproj.CoreCompileInputs.cache
+E:\My\BIM'ism\Revit Pluging\BIMismInstaller\obj\Release\net8.0-windows\win-x64\BIMismInstaller.sourcelink.json
+E:\My\BIM'ism\Revit Pluging\BIMismInstaller\obj\Release\net8.0-windows\win-x64\BIMism_AI_Agent_Installer.dll
+E:\My\BIM'ism\Revit Pluging\BIMismInstaller\obj\Release\net8.0-windows\win-x64\refint\BIMism_AI_Agent_Installer.dll
+E:\My\BIM'ism\Revit Pluging\BIMismInstaller\obj\Release\net8.0-windows\win-x64\BIMism_AI_Agent_Installer.pdb
+E:\My\BIM'ism\Revit Pluging\BIMismInstaller\obj\Release\net8.0-windows\win-x64\BIMismInstaller.genruntimeconfig.cache
+E:\My\BIM'ism\Revit Pluging\BIMismInstaller\obj\Release\net8.0-windows\win-x64\ref\BIMism_AI_Agent_Installer.dll

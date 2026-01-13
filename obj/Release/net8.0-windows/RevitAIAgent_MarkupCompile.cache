@@ -4,7 +4,7 @@
 library
 C#
 .cs
-C:\Users\User\.gemini\antigravity\playground\cobalt-oort\obj\Release\net8.0-windows\
+E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\
 RevitAIAgent
 none
 false
@@ -12,7 +12,7 @@ TRACE;RELEASE;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_
 
 3-340291955
 10-2021089879
-14407498470
+15-1890859944
 2121008890107
 AboutWindow.xaml;BeamRebarWindow.xaml;ChatView.xaml;
 

@@ -57,8 +57,11 @@ namespace RevitAIAgent
                     btnAI.ToolTip = "Launch the BIM'ism AI Agent";
                     SetButtonIcon(btnAI, "ai_agent.png");
 
+                    // PANEL 4: BIMism (New Panel)
+                    RibbonPanel panelBIMism = application.CreateRibbonPanel(tabName, "BIMism");
+
                     PushButtonData btnAboutData = new PushButtonData("About_Button", "About", assemblyPath, "RevitAIAgent.CmdAbout");
-                    PushButton btnAbout = panelAI.AddItem(btnAboutData) as PushButton;
+                    PushButton btnAbout = panelBIMism.AddItem(btnAboutData) as PushButton;
                     btnAbout.ToolTip = "Check version and updates";
                     SetButtonIcon(btnAbout, "about.png");
 
@@ -76,6 +79,7 @@ namespace RevitAIAgent
                     // PANEL 3: ANNOTATION
                     RibbonPanel panelAnnotation = application.CreateRibbonPanel(tabName, "Annotation");
                     CreateButton(panelAnnotation, "BtnElemDim", "Element\nDimension", assemblyPath, "RevitAIAgent.CmdElementDimension", "dimension.png");
+                    CreateButton(panelAnnotation, "BtnMissingTag", "Missing\nTag", assemblyPath, "RevitAIAgent.CmdMissingTag", "ai_agent.png"); // Using AI icon as placeholder if specific tag icon missing
                 }
                 catch (Exception ex)
                 {
@@ -144,6 +148,7 @@ namespace RevitAIAgent
             try
             {
                 string assemblyDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                // When deployed in BIMism subfolder, Assets are parallel to valid dll
                 string iconPath = Path.Combine(assemblyDir, "Assets", iconFileName);
                 
                 if (File.Exists(iconPath))

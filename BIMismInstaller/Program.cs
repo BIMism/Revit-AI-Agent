@@ -45,7 +45,16 @@ namespace BIMismInstaller
                     {
                         foreach (ZipArchiveEntry entry in archive.Entries)
                         {
-                            string destinationPath = Path.Combine(addinsFolder, entry.FullName);
+                            // Determine target folder based on file type
+                            string targetBaseFolder = addinsFolder;
+                            
+                            // If it's NOT a .addin file, put it in the "BIMism" subfolder
+                            if (!entry.Name.EndsWith(".addin", StringComparison.OrdinalIgnoreCase))
+                            {
+                                targetBaseFolder = Path.Combine(addinsFolder, "BIMism");
+                            }
+
+                            string destinationPath = Path.Combine(targetBaseFolder, entry.FullName);
                             string? directoryPath = Path.GetDirectoryName(destinationPath);
 
                             if (directoryPath != null && !Directory.Exists(directoryPath))
@@ -55,6 +64,7 @@ namespace BIMismInstaller
                             
                             if (!string.IsNullOrEmpty(entry.Name))
                             {
+                                // Overwrite existing files
                                 entry.ExtractToFile(destinationPath, true);
                             }
                         }

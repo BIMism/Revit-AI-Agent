@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "92mrlmA7+Yg=",
+  "dgSpecHash": "Vi0mjHy7A24=",
   "success": true,
-  "projectFilePath": "C:\\Users\\User\\.gemini\\antigravity\\playground\\cobalt-oort\\BIMismInstaller\\BIMismInstaller.csproj",
+  "projectFilePath": "E:\\My\\BIM'ism\\Revit Pluging\\BIMismInstaller\\BIMismInstaller.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\microsoft.net.illink.tasks\\8.0.22\\microsoft.net.illink.tasks.8.0.22.nupkg.sha512"
   ],

@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -8,8 +9,7 @@ namespace RevitAIAgent
     public class UpdateChecker
     {
         private const string VERSION_URL = "https://raw.githubusercontent.com/BIMism/Revit-AI-Agent/main/version.json";
-        private const string CURRENT_VERSION = "1.8.1";
-
+        
         public class VersionInfo
         {
             [JsonProperty("version")]
@@ -26,6 +26,9 @@ namespace RevitAIAgent
         {
             try
             {
+                // Get current version dynamically from the assembly
+                string currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                
                 using (HttpClient client = new HttpClient())
                 {
                     client.Timeout = TimeSpan.FromSeconds(5);
@@ -33,7 +36,7 @@ namespace RevitAIAgent
                     VersionInfo latestVersion = JsonConvert.DeserializeObject<VersionInfo>(json);
 
                     // Compare versions
-                    if (IsNewerVersion(latestVersion.Version, CURRENT_VERSION))
+                    if (IsNewerVersion(latestVersion.Version, currentVersion))
                     {
                         return latestVersion;
                     }

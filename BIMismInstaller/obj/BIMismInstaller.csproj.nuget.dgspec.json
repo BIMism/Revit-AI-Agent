@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\.gemini\\antigravity\\playground\\cobalt-oort\\BIMismInstaller\\BIMismInstaller.csproj": {}
+    "E:\\My\\BIM'ism\\Revit Pluging\\BIMismInstaller\\BIMismInstaller.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\.gemini\\antigravity\\playground\\cobalt-oort\\BIMismInstaller\\BIMismInstaller.csproj": {
+    "E:\\My\\BIM'ism\\Revit Pluging\\BIMismInstaller\\BIMismInstaller.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\.gemini\\antigravity\\playground\\cobalt-oort\\BIMismInstaller\\BIMismInstaller.csproj",
+        "projectUniqueName": "E:\\My\\BIM'ism\\Revit Pluging\\BIMismInstaller\\BIMismInstaller.csproj",
         "projectName": "BIMism_AI_Agent_Installer",
-        "projectPath": "C:\\Users\\User\\.gemini\\antigravity\\playground\\cobalt-oort\\BIMismInstaller\\BIMismInstaller.csproj",
+        "projectPath": "E:\\My\\BIM'ism\\Revit Pluging\\BIMismInstaller\\BIMismInstaller.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\.gemini\\antigravity\\playground\\cobalt-oort\\BIMismInstaller\\obj\\",
+        "outputPath": "E:\\My\\BIM'ism\\Revit Pluging\\BIMismInstaller\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

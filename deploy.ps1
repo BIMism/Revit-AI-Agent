@@ -9,14 +9,28 @@ if ($LASTEXITCODE -eq 0) {
     
     $outputDir = "bin\Debug\net8.0-windows"
     $revitAddinsDir = "$env:AppData\Autodesk\Revit\Addins\2025"
+    $bimismDir = "$revitAddinsDir\BIMism"
+
+    # Create BIMism subfolder
+    if (-not (Test-Path $bimismDir)) {
+        New-Item -ItemType Directory -Force -Path $bimismDir | Out-Null
+    }
     
-    # Copy DLL
-    Copy-Item "$outputDir\RevitAIAgent.dll" "$revitAddinsDir\RevitAIAgent.dll" -Force
-    Write-Host "  ✓ Copied DLL" -ForegroundColor Green
+    # Copy Manifest to Root
+    Copy-Item "BIMism.addin" "$revitAddinsDir\BIMism.addin" -Force
+    Write-Host "  ✓ Copied Manifest to Root" -ForegroundColor Green
+
+    # Copy DLL to Subfolder
+    Copy-Item "$outputDir\RevitAIAgent.dll" "$bimismDir\RevitAIAgent.dll" -Force
+    Write-Host "  ✓ Copied DLL to BIMism" -ForegroundColor Green
     
-    # Copy all PNG icons
-    Copy-Item "$outputDir\*.png" "$revitAddinsDir\" -Force
-    Write-Host "  ✓ Copied icons" -ForegroundColor Green
+    # Copy all PNG icons and Assets to Subfolder (Assets folder logic)
+    $assetsDir = "$bimismDir\Assets"
+    if (-not (Test-Path $assetsDir)) {
+        New-Item -ItemType Directory -Force -Path $assetsDir | Out-Null
+    }
+    Copy-Item "$outputDir\Assets\*.png" "$assetsDir\" -Force
+    Write-Host "  ✓ Copied Assets to BIMism\Assets" -ForegroundColor Green
     
     Write-Host "`nDeployment complete! Restart Revit to see changes." -ForegroundColor Yellow
 } else {
