@@ -1,5 +1,5 @@
 {
-  "version": "2.4.3",
+  "version": "2.4.4",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.4.3: Fixed 3D Preview Geometry visibility and added dynamic updates for UI changes."
+  "releaseNotes": "v2.4.4: 3D Preview now renders Rebar Hooks and matches design aesthetics (Red bars)."
 }

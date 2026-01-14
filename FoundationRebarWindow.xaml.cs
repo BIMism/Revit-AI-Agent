@@ -171,7 +171,6 @@ namespace RevitAIAgent
             var toRemove = new List<Visual3D>();
             foreach (var child in PreviewViewport.Children)
             {
-                // Simple heuristic: keep lights, remove GeometryModel3D wrapper
                 if (!(child is ModelVisual3D mv && mv.Content is Light))
                 {
                     toRemove.Add(child as Visual3D);
@@ -180,7 +179,6 @@ namespace RevitAIAgent
             foreach (var r in toRemove) PreviewViewport.Children.Remove(r);
 
             // Create Footing Box (Transparent Grey)
-            // Hardcoded preview size for now, ideally binding to geometry inputs
             double w = 2.0; double l = 2.0; double h = 1.0;
             
             Model3DGroup group = new Model3DGroup();
@@ -189,43 +187,36 @@ namespace RevitAIAgent
             GeometryModel3D concrete = new GeometryModel3D();
             MeshGeometry3D mesh = new MeshGeometry3D();
             
-            // Vertices 
             Point3D[] corners = new Point3D[] {
                 new Point3D(0,0,0), new Point3D(w,0,0), new Point3D(w,l,0), new Point3D(0,l,0),
                 new Point3D(0,0,h), new Point3D(w,0,h), new Point3D(w,l,h), new Point3D(0,l,h)
             };
             foreach(var p in corners) mesh.Positions.Add(p);
             
-            // Indices (Triangles)
             int[] indices = new int[] { 
-                0,1,2, 0,2,3, // Bottom
-                4,6,5, 4,7,6, // Top
-                0,4,1, 1,4,5, // Front
-                2,6,3, 3,6,7, // Back
-                1,5,2, 2,5,6, // Right
-                0,3,4, 3,7,4  // Left
+                0,1,2, 0,2,3, 4,6,5, 4,7,6, 0,4,1, 1,4,5, 2,6,3, 3,6,7, 1,5,2, 2,5,6, 0,3,4, 3,7,4
             };
             foreach(var i in indices) mesh.TriangleIndices.Add(i);
             
             concrete.Geometry = mesh;
-            // Transparent Gray
             concrete.Material = new DiffuseMaterial(new SolidColorBrush(System.Windows.Media.Color.FromArgb(100, 200, 200, 200))); 
-            // Also add back material for inside
             concrete.BackMaterial = new DiffuseMaterial(new SolidColorBrush(System.Windows.Media.Color.FromArgb(100, 150, 150, 150)));
             group.Children.Add(concrete);
 
-            // Rebar (Approximated as thin boxes/lines)
-            // B1 (X dir, bottom)
-            AddRebarSet(group, w, l, h, true, true, 8, System.Windows.Media.Color.FromRgb(255,0,0));
-            // B2 (Y dir, bottom)
-            AddRebarSet(group, w, l, h, false, true, 8, System.Windows.Media.Color.FromRgb(0,255,0));
+            // Rebar Color (Red for all to match request)
+            var rebarColor = System.Windows.Media.Color.FromRgb(255, 50, 50);
+
+            // B1 (X dir, bottom) - Hooks Up
+            AddRebarSet(group, w, l, h, true, true, 8, rebarColor, true);
+            // B2 (Y dir, bottom) - Hooks Up
+            AddRebarSet(group, w, l, h, false, true, 8, rebarColor, true);
             
             if (CheckAddTopBars.IsChecked == true)
             {
-                 // T1 (X dir, top)
-                AddRebarSet(group, w, l, h, true, false, 8, System.Windows.Media.Color.FromRgb(255,50,50));
-                // T2 (Y dir, top)
-                AddRebarSet(group, w, l, h, false, false, 8, System.Windows.Media.Color.FromRgb(50,255,50));
+                 // T1 (X dir, top) - Hooks Down
+                AddRebarSet(group, w, l, h, true, false, 8, rebarColor, true);
+                // T2 (Y dir, top) - Hooks Down
+                AddRebarSet(group, w, l, h, false, false, 8, rebarColor, true);
             }
 
             ModelVisual3D modelVis = new ModelVisual3D();
@@ -233,58 +224,63 @@ namespace RevitAIAgent
             PreviewViewport.Children.Add(modelVis);
         }
 
-        private void AddRebarSet(Model3DGroup group, double w, double l, double h, bool isX, bool isBottom, int count, System.Windows.Media.Color c)
+        private void AddRebarSet(Model3DGroup group, double w, double l, double h, bool isX, bool isBottom, int count, System.Windows.Media.Color c, bool hasHooks)
         {
             double cover = 0.1;
             double z = isBottom ? cover : h - cover;
             double spacing = isX ? (l - 2*cover) / (count-1) : (w - 2*cover) / (count-1);
-            double t = 0.05; // Bar thickness
+            double t = 0.03; // Bar thickness
+            double hookLen = 0.6; // Visual hook length
 
             for(int i=0; i<count; i++)
             {
-                GeometryModel3D bar = new GeometryModel3D();
-                MeshGeometry3D mesh = new MeshGeometry3D();
+                // Main Bar
+                Point3D pStart = isX ? new Point3D(cover, cover + i*spacing, z) : new Point3D(cover + i*spacing, cover, z);
+                Point3D pEnd = isX ? new Point3D(w - cover, cover + i*spacing, z) : new Point3D(cover + i*spacing, l - cover, z);
                 
-                // Calculate center line start/end
-                Point3D pStart = isX 
-                    ? new Point3D(cover, cover + i*spacing, z)
-                    : new Point3D(cover + i*spacing, cover, z);
-                
-                Point3D pEnd = isX
-                    ? new Point3D(w - cover, cover + i*spacing, z)
-                    : new Point3D(cover + i*spacing, l - cover, z);
+                AddBox(group, pStart, pEnd, t, c);
 
-                // Create a thin box around this line
-                // For simplicity, axis aligned box
-                double x1 = Math.Min(pStart.X, pEnd.X) - t/2;
-                double x2 = Math.Max(pStart.X, pEnd.X) + t/2;
-                double y1 = Math.Min(pStart.Y, pEnd.Y) - t/2;
-                double y2 = Math.Max(pStart.Y, pEnd.Y) + t/2;
-                double z1 = z - t/2;
-                double z2 = z + t/2;
-
-                Point3D[] pts = new Point3D[]
+                // Hooks
+                if (hasHooks)
                 {
-                    new Point3D(x1, y1, z1), new Point3D(x2, y1, z1), new Point3D(x2, y2, z1), new Point3D(x1, y2, z1), // Bottom
-                    new Point3D(x1, y1, z2), new Point3D(x2, y1, z2), new Point3D(x2, y2, z2), new Point3D(x1, y2, z2)  // Top
-                };
-                foreach (Point3D p in pts) mesh.Positions.Add(p);
-
-                int[] idx = new int[] 
-                { 
-                    0,1,2, 0,2,3, // Bottom
-                    4,6,5, 4,7,6, // Top
-                    0,4,1, 1,4,5, // Side 1
-                    1,5,2, 2,5,6, // Side 2
-                    2,6,3, 3,6,7, // Side 3
-                    3,7,0, 0,7,4  // Side 4
-                };
-                foreach (int id in idx) mesh.TriangleIndices.Add(id);
-
-                bar.Geometry = mesh;
-                bar.Material = new DiffuseMaterial(new SolidColorBrush(c));
-                group.Children.Add(bar);
+                    double hookDirZ = isBottom ? 1.0 : -1.0;
+                    Point3D h1Tip = new Point3D(pStart.X, pStart.Y, pStart.Z + hookLen * hookDirZ);
+                    Point3D h2Tip = new Point3D(pEnd.X, pEnd.Y, pEnd.Z + hookLen * hookDirZ);
+                    
+                    AddBox(group, pStart, h1Tip, t, c);
+                    AddBox(group, pEnd, h2Tip, t, c);
+                }
             }
+        }
+
+        private void AddBox(Model3DGroup group, Point3D p1, Point3D p2, double thickness, System.Windows.Media.Color c)
+        {
+            GeometryModel3D bar = new GeometryModel3D();
+            MeshGeometry3D mesh = new MeshGeometry3D();
+            
+            double x1 = Math.Min(p1.X, p2.X) - thickness/2;
+            double x2 = Math.Max(p1.X, p2.X) + thickness/2;
+            double y1 = Math.Min(p1.Y, p2.Y) - thickness/2;
+            double y2 = Math.Max(p1.Y, p2.Y) + thickness/2;
+            double z1 = Math.Min(p1.Z, p2.Z) - thickness/2;
+            double z2 = Math.Max(p1.Z, p2.Z) + thickness/2;
+
+            Point3D[] pts = new Point3D[]
+            {
+                new Point3D(x1, y1, z1), new Point3D(x2, y1, z1), new Point3D(x2, y2, z1), new Point3D(x1, y2, z1), 
+                new Point3D(x1, y1, z2), new Point3D(x2, y1, z2), new Point3D(x2, y2, z2), new Point3D(x1, y2, z2) 
+            };
+            foreach (Point3D p in pts) mesh.Positions.Add(p);
+
+            int[] idx = new int[] 
+            { 
+                0,1,2, 0,2,3, 4,6,5, 4,7,6, 0,4,1, 1,4,5, 1,5,2, 2,5,6, 2,6,3, 3,6,7, 3,7,0, 0,7,4 
+            };
+            foreach (int id in idx) mesh.TriangleIndices.Add(id);
+
+            bar.Geometry = mesh;
+            bar.Material = new DiffuseMaterial(new SolidColorBrush(c));
+            group.Children.Add(bar);
         }
 
         private void HookUpEvents()
