@@ -1,5 +1,5 @@
 {
-  "version": "2.11.3",
+  "version": "2.12.0",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.11.3: CRITICAL FIX. Corrected Rebar Hook Orientations (Top/Bottom mapping). Fixed UI overlap in all panels. Increased cover distance to 50mm."
+  "releaseNotes": "v2.12.0: MAJOR UPDATE. Added support for Strip Footings (Walls) and Piles. Simplified UI to 3 main types (Isolated, Strip, Pile). Improved foundation type handling."
 }

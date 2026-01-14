@@ -97,6 +97,9 @@ namespace RevitAIAgent
 
         private void GenerateForSingle(Document doc, Element foundation, IsolatedRebarConfig config)
         {
+            // Improved bounding box handling for irregular shapes (e.g. Triangular Pile Caps)
+            // We still use the Axis-Aligned Bounding Box (AABB) for the Main Grid.
+            // Future improvement: Use faces to orient the grid.
             BoundingBoxXYZ bbox = foundation.get_BoundingBox(null);
             if (bbox == null) return;
             

@@ -19,6 +19,14 @@ namespace RevitAIAgent
         private double _footingW = 2000; // in mm
         private double _footingL = 2000; 
         private double _footingH = 600;
+        private FoundationType _currentType = FoundationType.Isolated;
+
+        public enum FoundationType
+        {
+            Isolated,
+            Strip,
+            Pile
+        }
 
         public FoundationRebarWindow(UIDocument uiDoc)
         {
@@ -166,14 +174,50 @@ namespace RevitAIAgent
 
         private void BtnIsolated_Click(object sender, RoutedEventArgs e)
         {
-            TypeSelectionGrid.Visibility = System.Windows.Visibility.Collapsed;
-            DetailGrid.Visibility = System.Windows.Visibility.Visible;
-            TitleText.Text = "Isolated Footing Reinforcement";
+            _currentType = FoundationType.Isolated;
+            SetupUIForType();
         }
 
-        private void BtnComingSoon_Click(object sender, RoutedEventArgs e)
+        private void BtnStrip_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("This foundation type is coming soon!", "BIMism AI Agent", MessageBoxButton.OK, MessageBoxImage.Information);
+            _currentType = FoundationType.Strip;
+            SetupUIForType();
+        }
+
+        private void BtnPile_Click(object sender, RoutedEventArgs e)
+        {
+            _currentType = FoundationType.Pile;
+            SetupUIForType();
+        }
+
+        private void SetupUIForType()
+        {
+            TypeSelectionGrid.Visibility = System.Windows.Visibility.Collapsed;
+            DetailGrid.Visibility = System.Windows.Visibility.Visible;
+
+            SidebarList.Items.Clear();
+            SidebarList.Items.Add(new ListBoxItem { Content = "Geometry", Padding = new Thickness(10), IsSelected = true });
+
+            switch (_currentType)
+            {
+                case FoundationType.Isolated:
+                    TitleText.Text = "Isolated Footing Reinforcement";
+                    SidebarList.Items.Add(new ListBoxItem { Content = "Bottom Major (B1)", Padding = new Thickness(10) });
+                    SidebarList.Items.Add(new ListBoxItem { Content = "Bottom Minor (B2)", Padding = new Thickness(10) });
+                    SidebarList.Items.Add(new ListBoxItem { Content = "Top Major (T1)", Padding = new Thickness(10) });
+                    SidebarList.Items.Add(new ListBoxItem { Content = "Top Minor (T2)", Padding = new Thickness(10) });
+                    break;
+                case FoundationType.Strip:
+                    TitleText.Text = "Strip/Wall Footing Reinforcement";
+                    SidebarList.Items.Add(new ListBoxItem { Content = "Longitudinal Bars", Padding = new Thickness(10) });
+                    SidebarList.Items.Add(new ListBoxItem { Content = "Stirrups", Padding = new Thickness(10) });
+                    break;
+                case FoundationType.Pile:
+                    TitleText.Text = "Pile Reinforcement";
+                    SidebarList.Items.Add(new ListBoxItem { Content = "Vertical Bars", Padding = new Thickness(10) });
+                    SidebarList.Items.Add(new ListBoxItem { Content = "Ties / Spirals", Padding = new Thickness(10) });
+                    break;
+            }
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
@@ -196,16 +240,38 @@ namespace RevitAIAgent
             PanelStirrups.Visibility = System.Windows.Visibility.Collapsed;
 
             // Show selected
+            // Show selected
             int index = SidebarList.SelectedIndex;
-            switch (index)
+            
+            if (_currentType == FoundationType.Isolated)
             {
-                case 0: PanelGeometry.Visibility = System.Windows.Visibility.Visible; break;
-                case 1: PanelB1.Visibility = System.Windows.Visibility.Visible; break;
-                case 2: PanelB2.Visibility = System.Windows.Visibility.Visible; break;
-                case 3: PanelT1.Visibility = System.Windows.Visibility.Visible; break;
-                case 4: PanelT2.Visibility = System.Windows.Visibility.Visible; break;
-                case 5: PanelDowels.Visibility = System.Windows.Visibility.Visible; break;
-                case 6: PanelStirrups.Visibility = System.Windows.Visibility.Visible; break;
+                switch (index)
+                {
+                    case 0: PanelGeometry.Visibility = System.Windows.Visibility.Visible; break;
+                    case 1: PanelB1.Visibility = System.Windows.Visibility.Visible; break;
+                    case 2: PanelB2.Visibility = System.Windows.Visibility.Visible; break;
+                    case 3: PanelT1.Visibility = System.Windows.Visibility.Visible; break;
+                    case 4: PanelT2.Visibility = System.Windows.Visibility.Visible; break;
+                    // Dowels/Stirrups hidden for pure Isolated for now, can be added back if requested
+                }
+            }
+            else if (_currentType == FoundationType.Strip)
+            {
+                 switch (index)
+                {
+                    case 0: PanelGeometry.Visibility = System.Windows.Visibility.Visible; break;
+                    case 1: PanelB1.Visibility = System.Windows.Visibility.Visible; break; // Reuse B1 for Longitudinal
+                    case 2: PanelStirrups.Visibility = System.Windows.Visibility.Visible; break; 
+                }
+            }
+            else if (_currentType == FoundationType.Pile)
+            {
+                 switch (index)
+                {
+                    case 0: PanelGeometry.Visibility = System.Windows.Visibility.Visible; break;
+                    case 1: PanelB1.Visibility = System.Windows.Visibility.Visible; break; // Reuse B1 for Vertical
+                    case 2: PanelStirrups.Visibility = System.Windows.Visibility.Visible; break; // Reuse Stirrups for Ties
+                }
             }
             
             // Trigger update
@@ -470,8 +536,21 @@ namespace RevitAIAgent
                     return;
                 }
 
-                IsolatedRebarGenerator generator = new IsolatedRebarGenerator();
-                generator.Generate(_doc, foundations, config);
+                if (_currentType == FoundationType.Isolated)
+                {
+                    IsolatedRebarGenerator generator = new IsolatedRebarGenerator();
+                    generator.Generate(_doc, foundations, config);
+                }
+                else if (_currentType == FoundationType.Strip)
+                {
+                    StripRebarGenerator generator = new StripRebarGenerator();
+                    generator.Generate(_doc, foundations, config);
+                }
+                else if (_currentType == FoundationType.Pile)
+                {
+                    PileRebarGenerator generator = new PileRebarGenerator();
+                    generator.Generate(_doc, foundations, config);
+                }
 
                 TaskDialog.Show("Revit AI Agent", $"Generated rebar for {foundations.Count} footing(s)!");
                 this.Close();

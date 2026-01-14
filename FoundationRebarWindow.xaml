@@ -31,47 +31,23 @@
         <Grid x:Name="TypeSelectionGrid" Background="White" Visibility="Visible">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="Select Foundation Type" FontSize="24" FontWeight="Bold" Margin="0,0,0,30" HorizontalAlignment="Center"/>
-                <WrapPanel HorizontalAlignment="Center" Width="700">
-                    <Button x:Name="BtnIsolated" Width="150" Height="120" Margin="10" Click="BtnIsolated_Click">
+                <WrapPanel HorizontalAlignment="Center" Width="600" HorizontalContentAlignment="Center">
+                    <Button x:Name="BtnIsolated" Width="150" Height="120" Margin="15" Click="BtnIsolated_Click">
                         <StackPanel>
                             <Image x:Name="ImgIsolated" Width="48" Height="48" Margin="0,0,0,10"/>
                             <TextBlock Text="Isolated" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="BtnCombined" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
+                    <Button x:Name="BtnStrip" Width="150" Height="120" Margin="15" Click="BtnStrip_Click">
                         <StackPanel>
-                            <Image x:Name="ImgCombined" Width="48" Height="48" Margin="0,0,0,10"/>
-                            <TextBlock Text="Combined" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                            <Image x:Name="ImgStrip" Width="48" Height="48" Margin="0,0,0,10"/>
+                            <TextBlock Text="Strip (Wall)" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="BtnStrap" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
-                        <StackPanel>
-                            <Image x:Name="ImgStrap" Width="48" Height="48" Margin="0,0,0,10"/>
-                            <TextBlock Text="Strap" FontWeight="SemiBold" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="BtnRaftMat" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
-                        <StackPanel>
-                            <Image x:Name="ImgRaft" Width="48" Height="48" Margin="0,0,0,10"/>
-                            <TextBlock Text="Raft/Mat" FontWeight="SemiBold" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="BtnPile" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
+                    <Button x:Name="BtnPile" Width="150" Height="120" Margin="15" Click="BtnPile_Click">
                         <StackPanel>
                             <Image x:Name="ImgPile" Width="48" Height="48" Margin="0,0,0,10"/>
                             <TextBlock Text="Pile" FontWeight="SemiBold" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="BtnPileCap" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
-                        <StackPanel>
-                            <Image x:Name="ImgPileCap" Width="48" Height="48" Margin="0,0,0,10"/>
-                            <TextBlock Text="Pile Cap" FontWeight="SemiBold" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                    <Button x:Name="BtnStrip" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
-                        <StackPanel>
-                            <Image x:Name="ImgStrip" Width="48" Height="48" Margin="0,0,0,10"/>
-                            <TextBlock Text="Strip" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                 </WrapPanel>
