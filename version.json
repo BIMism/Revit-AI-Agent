@@ -1,5 +1,5 @@
 {
-  "version": "2.1.0",
+  "version": "2.1.1",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.1.0: NEW FEATURE - Foundation Rebar! Complex UI for Pad Footings added."
+  "releaseNotes": "v2.1.1: UPDATED UI - Added 7 Foundation Types for selection (Isolated, Combined, Raft, etc.)."
 }

@@ -85,11 +85,11 @@ namespace RevitAIAgent
             }
         }
 
-        private void BtnPadFooting_Click(object sender, RoutedEventArgs e)
+        private void BtnIsolated_Click(object sender, RoutedEventArgs e)
         {
             TypeSelectionGrid.Visibility = System.Windows.Visibility.Collapsed;
             DetailGrid.Visibility = System.Windows.Visibility.Visible;
-            TitleText.Text = "Pad Footing Reinforcement";
+            TitleText.Text = "Isolated Footing Reinforcement";
         }
 
         private void BtnComingSoon_Click(object sender, RoutedEventArgs e)

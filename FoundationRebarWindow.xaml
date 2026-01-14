@@ -30,24 +30,47 @@
         <Grid x:Name="TypeSelectionGrid" Background="White" Visibility="Visible">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="Select Foundation Type" FontSize="24" FontWeight="Bold" Margin="0,0,0,30" HorizontalAlignment="Center"/>
-                <WrapPanel HorizontalAlignment="Center" Width="600">
-                    <Button x:Name="BtnPadFooting" Width="180" Height="140" Margin="10" Click="BtnPadFooting_Click">
+                <WrapPanel HorizontalAlignment="Center" Width="700">
+                    <Button x:Name="BtnIsolated" Width="150" Height="120" Margin="10" Click="BtnIsolated_Click">
                         <StackPanel>
-                            <Image Source="pack://application:,,,/RevitAIAgent;component/Assets/footing.png" Width="64" Height="64" Margin="0,0,0,10"/>
-                            <TextBlock Text="Pad Footing" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                            <Image Source="pack://application:,,,/RevitAIAgent;component/Assets/footing.png" Width="48" Height="48" Margin="0,0,0,10"/>
+                            <TextBlock Text="Isolated" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="BtnStripFooting" Width="180" Height="140" Margin="10" Click="BtnComingSoon_Click">
+                    <Button x:Name="BtnCombined" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
                         <StackPanel>
-                             <!-- Placeholder Icon -->
-                            <TextBlock Text="?" FontSize="48" HorizontalAlignment="Center" Foreground="Gray"/>
-                            <TextBlock Text="Strip Footing" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="?" FontSize="32" HorizontalAlignment="Center" Foreground="Gray"/>
+                            <TextBlock Text="Combined" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="BtnPileCap" Width="180" Height="140" Margin="10" Click="BtnComingSoon_Click">
+                    <Button x:Name="BtnStrap" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
                         <StackPanel>
-                            <TextBlock Text="?" FontSize="48" HorizontalAlignment="Center" Foreground="Gray"/>
+                            <TextBlock Text="?" FontSize="32" HorizontalAlignment="Center" Foreground="Gray"/>
+                            <TextBlock Text="Strap" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="BtnRaftMat" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
+                        <StackPanel>
+                            <Image Source="pack://application:,,,/RevitAIAgent;component/Assets/slab.png" Width="48" Height="48" Margin="0,0,0,10"/>
+                            <TextBlock Text="Raft/Mat" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="BtnPile" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
+                        <StackPanel>
+                            <TextBlock Text="?" FontSize="32" HorizontalAlignment="Center" Foreground="Gray"/>
+                            <TextBlock Text="Pile" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="BtnPileCap" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
+                        <StackPanel>
+                            <TextBlock Text="?" FontSize="32" HorizontalAlignment="Center" Foreground="Gray"/>
                             <TextBlock Text="Pile Cap" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="BtnStrip" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
+                        <StackPanel>
+                            <TextBlock Text="?" FontSize="32" HorizontalAlignment="Center" Foreground="Gray"/>
+                            <TextBlock Text="Strip" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                 </WrapPanel>
