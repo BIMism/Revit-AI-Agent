@@ -353,32 +353,25 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         
-                        <Border Grid.Row="0" Background="#F0F0F0" BorderBrush="#CCC" BorderThickness="1" Margin="0,0,0,10">
-                            <Viewport3D x:Name="PreviewViewport">
-                                <Viewport3D.Camera>
-                                    <PerspectiveCamera x:Name="PreviewCamera" Position="4,5,4" LookDirection="-1,-1,-1" UpDirection="0,0,1" FieldOfView="60"/>
-                                </Viewport3D.Camera>
-                                <Viewport3D.Children>
-                                    <ModelVisual3D>
-                                        <ModelVisual3D.Content>
-                                            <DirectionalLight Color="White" Direction="-0.5,-0.5,-1" />
-                                        </ModelVisual3D.Content>
-                                    </ModelVisual3D>
-                                     <ModelVisual3D>
-                                        <ModelVisual3D.Content>
-                                            <AmbientLight Color="#666666" />
-                                        </ModelVisual3D.Content>
-                                    </ModelVisual3D>
-                                </Viewport3D.Children>
-                            </Viewport3D>
-                        </Border>
-                        
-                        <StackPanel Grid.Row="1">
-                             <TextBlock Text="Dynamic Section" FontWeight="Bold" Margin="0,0,0,10"/>
-                              <Border Height="180" Background="White" BorderBrush="#CCC" BorderThickness="1">
-                                  <Canvas x:Name="SectionCanvas" Width="280" Height="170"/>
-                              </Border>
-                        </StackPanel>
+                        <!-- Dual Sections -->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="1*"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="1*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="Section X-X (Major Direction)" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <Border Grid.Row="1" Background="White" BorderBrush="#CCC" BorderThickness="1" CornerRadius="4" Margin="0,0,0,10">
+                                <Canvas x:Name="CanvasSectionMajor" Width="280" Height="170"/>
+                            </Border>
+
+                            <TextBlock Grid.Row="2" Text="Section Y-Y (Minor Direction)" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <Border Grid.Row="3" Background="White" BorderBrush="#CCC" BorderThickness="1" CornerRadius="4">
+                                <Canvas x:Name="CanvasSectionMinor" Width="280" Height="170"/>
+                            </Border>
+                        </Grid>
                     </Grid>
                 </Border>
             </Grid>
@@ -386,9 +379,9 @@
             <!-- Footer -->
             <Border Grid.Row="3" Background="#F8F8F8" BorderBrush="#DDD" BorderThickness="0,1,0,0" Padding="15">
                 <Grid>
-                    <TextBlock Text="v2.6.0 Hotfix" VerticalAlignment="Center" Foreground="Gray" FontSize="10"/>
+                    <TextBlock Text="v2.7.0 Stable" VerticalAlignment="Center" Foreground="Gray" FontSize="10"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <CheckBox x:Name="CheckDynamicUpdate" Content="Dynamic Model Update" VerticalAlignment="Center" Margin="0,0,20,0" IsChecked="True"/>
+                        <CheckBox x:Name="CheckDynamicUpdate" Content="Dynamic Preview Update" VerticalAlignment="Center" Margin="0,0,20,0" IsChecked="True"/>
                         <Button x:Name="BtnCancel" Content="Cancel" Width="100" Height="30" Click="BtnCancel_Click"/>
                         <Button x:Name="BtnOk" Content="Generate Rebar" Width="120" Height="30" Margin="10,0" Click="BtnOk_Click" Background="#007ACC" Foreground="White" FontWeight="Bold"/>
                     </StackPanel>
