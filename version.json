@@ -1,5 +1,5 @@
 {
-  "version": "2.9.0",
+  "version": "2.9.1",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.9.0: Parametric 2D Preview (scaled to footing size), Real-time bar count calculation, Dimension labels, and Improved Dowel/Hook visualization."
+  "releaseNotes": "v2.9.1: UI Polish - Rounded dimensions, removed duplicate labels, improved hook visualization with better proportions."
 }

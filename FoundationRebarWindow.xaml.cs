@@ -269,69 +269,70 @@ namespace RevitAIAgent
             if (hasAddDots) int.TryParse(isMajor ? InputAddB2Count?.Text : InputAddB1Count?.Text, out addDots);
             int totalDots = mainDots + addDots;
 
-            // Main Line with Hook Logic
-            double hookSize = 25 * (drawH / 80.0); // scaled hook
-            if (hookSize < 10) hookSize = 10;
-            
-            double offset = (isMajor ? 6 : 12) * scale * 10; // offset based on layer
-            if (offset < 4) offset = 4;
+            // Main Line with Hook Logic (improved visualization)
+            double hookSize = Math.Max(20, drawH * 0.3); // Hook proportional to height
+            double offset = 10 + (isMajor ? 0 : 6); // Layer separation
 
             PointCollection bPts = new PointCollection();
             if (hookName != null && hookName.Contains("None")) {
-                bPts.Add(new System.Windows.Point(x0+5, y0+drawH-offset));
-                bPts.Add(new System.Windows.Point(x0+drawW-5, y0+drawH-offset));
+                // Straight bar, no hooks
+                bPts.Add(new System.Windows.Point(x0+10, y0+drawH-offset));
+                bPts.Add(new System.Windows.Point(x0+drawW-10, y0+drawH-offset));
             } else if (hookName != null && hookName.Contains("180")) {
-                bPts.Add(new System.Windows.Point(x0+15, y0+drawH-offset-10));
-                bPts.Add(new System.Windows.Point(x0+5, y0+drawH-offset));
-                bPts.Add(new System.Windows.Point(x0+drawW-5, y0+drawH-offset));
-                bPts.Add(new System.Windows.Point(x0+drawW-15, y0+drawH-offset-10));
-            } else { // 90 deg default
-                bPts.Add(new System.Windows.Point(x0+8, y0+drawH-offset-hookSize));
-                bPts.Add(new System.Windows.Point(x0+8, y0+drawH-offset));
-                bPts.Add(new System.Windows.Point(x0+drawW-8, y0+drawH-offset));
-                bPts.Add(new System.Windows.Point(x0+drawW-8, y0+drawH-offset-hookSize));
+                // 180 degree hook (closed loop)
+                double loopW = 12;
+                bPts.Add(new System.Windows.Point(x0+10+loopW, y0+drawH-offset-8));
+                bPts.Add(new System.Windows.Point(x0+10, y0+drawH-offset-8));
+                bPts.Add(new System.Windows.Point(x0+10, y0+drawH-offset));
+                bPts.Add(new System.Windows.Point(x0+drawW-10, y0+drawH-offset));
+                bPts.Add(new System.Windows.Point(x0+drawW-10, y0+drawH-offset-8));
+                bPts.Add(new System.Windows.Point(x0+drawW-10-loopW, y0+drawH-offset-8));
+            } else { // 90 deg or Standard hook
+                // L-shaped hook (most common)
+                bPts.Add(new System.Windows.Point(x0+10, y0+drawH-offset-hookSize));
+                bPts.Add(new System.Windows.Point(x0+10, y0+drawH-offset));
+                bPts.Add(new System.Windows.Point(x0+drawW-10, y0+drawH-offset));
+                bPts.Add(new System.Windows.Point(x0+drawW-10, y0+drawH-offset-hookSize));
             }
-            canvas.Children.Add(new System.Windows.Shapes.Polyline { Stroke = redBrush, StrokeThickness = 2, Points = bPts });
+            canvas.Children.Add(new System.Windows.Shapes.Polyline { Stroke = redBrush, StrokeThickness = 2.5, Points = bPts });
 
             // Dots (Cross bars)
-            double dotZ = y0 + drawH - (isMajor ? offset + 5 : offset - 5);
+            double dotZ = y0 + drawH - offset - 4;
             for(int i=0; i < totalDots; i++) {
-                System.Windows.Shapes.Ellipse dot = new System.Windows.Shapes.Ellipse { Width=4, Height=4, Fill=redBrush };
-                Canvas.SetLeft(dot, x0 + 15 + i * (drawW-30)/(totalDots-1) - 2);
-                Canvas.SetTop(dot, dotZ - 2);
+                System.Windows.Shapes.Ellipse dot = new System.Windows.Shapes.Ellipse { Width=5, Height=5, Fill=redBrush };
+                Canvas.SetLeft(dot, x0 + 15 + i * (drawW-30)/(totalDots-1) - 2.5);
+                Canvas.SetTop(dot, dotZ - 2.5);
                 canvas.Children.Add(dot);
             }
 
             // --- TOP BARS ---
             if (CheckAddTopBars?.IsChecked == true) {
-                double topOffset = (isMajor ? 6 : 12) * scale * 10;
-                if (topOffset < 4) topOffset = 4;
+                double topOffset = 10 + (isMajor ? 0 : 6);
                 
                 PointCollection tPts = new PointCollection();
-                tPts.Add(new System.Windows.Point(x0+8, y0+topOffset+hookSize));
-                tPts.Add(new System.Windows.Point(x0+8, y0+topOffset));
-                tPts.Add(new System.Windows.Point(x0+drawW-8, y0+topOffset));
-                tPts.Add(new System.Windows.Point(x0+drawW-8, y0+topOffset+hookSize));
-                canvas.Children.Add(new System.Windows.Shapes.Polyline { Stroke = redBrush, StrokeThickness = 2, Points = tPts });
+                tPts.Add(new System.Windows.Point(x0+10, y0+topOffset+hookSize));
+                tPts.Add(new System.Windows.Point(x0+10, y0+topOffset));
+                tPts.Add(new System.Windows.Point(x0+drawW-10, y0+topOffset));
+                tPts.Add(new System.Windows.Point(x0+drawW-10, y0+topOffset+hookSize));
+                canvas.Children.Add(new System.Windows.Shapes.Polyline { Stroke = redBrush, StrokeThickness = 2.5, Points = tPts });
 
-                double tDotZ = y0 + (isMajor ? topOffset + 5 : topOffset - 5);
+                double tDotZ = y0 + topOffset + 4;
                 for(int i=0; i<8; i++) {
-                    System.Windows.Shapes.Ellipse dot = new System.Windows.Shapes.Ellipse { Width=4, Height=4, Fill=redBrush };
-                    Canvas.SetLeft(dot, x0 + 15 + i * (drawW-30)/7 - 2);
-                    Canvas.SetTop(dot, tDotZ - 2);
+                    System.Windows.Shapes.Ellipse dot = new System.Windows.Shapes.Ellipse { Width=5, Height=5, Fill=redBrush };
+                    Canvas.SetLeft(dot, x0 + 15 + i * (drawW-30)/7 - 2.5);
+                    Canvas.SetTop(dot, tDotZ - 2.5);
                     canvas.Children.Add(dot);
                 }
             }
 
             // --- DOWELS & STIRRUPS ---
             if (CheckAddDowels?.IsChecked == true) {
-                int dowelCount = 2; // Default for section
+                int dowelCount = 2;
                 for(int i=0; i<dowelCount; i++) {
                     double dx = x0 + (drawW * 0.3) + i * (drawW * 0.4);
-                    // Dowel with L-hook at bottom
                     PointCollection dPts = new PointCollection {
-                        new System.Windows.Point(dx + 15, y0 + drawH - offset - 5),
-                        new System.Windows.Point(dx, y0 + drawH - offset - 5),
+                        new System.Windows.Point(dx + 15, y0 + drawH - 12),
+                        new System.Windows.Point(dx, y0 + drawH - 12),
                         new System.Windows.Point(dx, y0 - 40)
                     };
                     canvas.Children.Add(new System.Windows.Shapes.Polyline { Stroke=greyBrush, StrokeThickness=4, Points=dPts });
@@ -348,22 +349,27 @@ namespace RevitAIAgent
                 }
             }
 
-            // Labels for dimensions
-            TextBlock wLabel = new TextBlock { Text = $"{realW} mm", FontSize=9, Foreground=System.Windows.Media.Brushes.Gray };
-            Canvas.SetLeft(wLabel, x0 + drawW/2 - 20); Canvas.SetTop(wLabel, y0 + drawH + 2);
+            // Labels for dimensions (rounded to whole numbers)
+            int roundedW = (int)Math.Round(realW);
+            int roundedH = (int)Math.Round(realH);
+            
+            TextBlock wLabel = new TextBlock { 
+                Text = $"{roundedW} mm", 
+                FontSize=9, 
+                Foreground=System.Windows.Media.Brushes.Gray 
+            };
+            Canvas.SetLeft(wLabel, x0 + drawW/2 - 20); 
+            Canvas.SetTop(wLabel, y0 + drawH + 2);
             canvas.Children.Add(wLabel);
 
-            TextBlock hLabel = new TextBlock { Text = $"{realH} mm", FontSize=9, Foreground=System.Windows.Media.Brushes.Gray };
-            Canvas.SetLeft(hLabel, x0 + drawW + 5); Canvas.SetTop(hLabel, y0 + drawH/2 - 5);
-            canvas.Children.Add(hLabel);
-
-            // Title
-            TextBlock label = new TextBlock { 
-                Text = isMajor ? "SECTION X-X (MAJOR)" : "SECTION Y-Y (MINOR)", 
-                FontWeight=FontWeights.Bold, FontSize=10, Foreground=System.Windows.Media.Brushes.DimGray 
+            TextBlock hLabel = new TextBlock { 
+                Text = $"{roundedH} mm", 
+                FontSize=9, 
+                Foreground=System.Windows.Media.Brushes.Gray 
             };
-            Canvas.SetLeft(label, x0); Canvas.SetTop(label, y0 - 25);
-            canvas.Children.Add(label);
+            Canvas.SetLeft(hLabel, x0 + drawW + 5); 
+            Canvas.SetTop(hLabel, y0 + drawH/2 - 5);
+            canvas.Children.Add(hLabel);
         }
 
         private void HookUpEvents()
