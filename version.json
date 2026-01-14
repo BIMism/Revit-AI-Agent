@@ -1,5 +1,5 @@
 {
-  "version": "2.5.0",
+  "version": "2.6.0",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.5.0: MAJOR 3D Preview Update - Much thicker visible bars, dowel rendering, and improved visibility."
+  "releaseNotes": "v2.6.0: Added Dynamic Section Preview (2D Canvas) and significantly improved 3D bars visibility with Emissive materials."
 }

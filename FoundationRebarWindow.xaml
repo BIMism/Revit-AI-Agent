@@ -374,10 +374,10 @@
                         </Border>
                         
                         <StackPanel Grid.Row="1">
-                             <TextBlock Text="Schematic" FontWeight="Bold" Margin="0,0,0,10"/>
-                              <Border Height="150" Background="White" BorderBrush="#CCC" BorderThickness="1">
-                                  <Image Source="pack://application:,,,/RevitAIAgent;component/Assets/preview_section.png" Stretch="Uniform"/>
-                             </Border>
+                             <TextBlock Text="Dynamic Section" FontWeight="Bold" Margin="0,0,0,10"/>
+                              <Border Height="180" Background="White" BorderBrush="#CCC" BorderThickness="1">
+                                  <Canvas x:Name="SectionCanvas" Width="280" Height="170"/>
+                              </Border>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -385,11 +385,14 @@
 
             <!-- Footer -->
             <Border Grid.Row="3" Background="#F8F8F8" BorderBrush="#DDD" BorderThickness="0,1,0,0" Padding="15">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <CheckBox Content="Dynamic Model Update" VerticalAlignment="Center" Margin="0,0,20,0" IsChecked="True"/>
-                    <Button x:Name="BtnCancel" Content="Cancel" Width="100" Height="30" Click="BtnCancel_Click"/>
-                    <Button x:Name="BtnOk" Content="Generate Rebar" Width="120" Height="30" Margin="10,0" Click="BtnOk_Click" Background="#007ACC" Foreground="White" FontWeight="Bold"/>
-                </StackPanel>
+                <Grid>
+                    <TextBlock Text="v2.6.0 Hotfix" VerticalAlignment="Center" Foreground="Gray" FontSize="10"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <CheckBox x:Name="CheckDynamicUpdate" Content="Dynamic Model Update" VerticalAlignment="Center" Margin="0,0,20,0" IsChecked="True"/>
+                        <Button x:Name="BtnCancel" Content="Cancel" Width="100" Height="30" Click="BtnCancel_Click"/>
+                        <Button x:Name="BtnOk" Content="Generate Rebar" Width="120" Height="30" Margin="10,0" Click="BtnOk_Click" Background="#007ACC" Foreground="White" FontWeight="Bold"/>
+                    </StackPanel>
+                </Grid>
             </Border>
         </Grid>
     </Grid>
