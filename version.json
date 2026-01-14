@@ -1,5 +1,5 @@
 {
-  "version": "2.7.0",
+  "version": "2.8.0",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.7.0: Replaced 3D View with Dual Dynamic Sections (X-X and Y-Y) for better reliability and faster updates."
+  "releaseNotes": "v2.8.0: Fixed Hook type preview, implemented Additional Rebar visualization, and added Stirrup rectangles in Section views."
 }
