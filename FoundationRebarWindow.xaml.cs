@@ -208,7 +208,8 @@ namespace RevitAIAgent
                 config.HookBottomY = ComboHookY.SelectedItem as RebarHookType;
 
                 // Top Bars
-                config.TopBarsEnabled = (PanelTopBars.Visibility == Visibility.Visible); // Simplified logic - enabled if tab selected? Actually logic is missing in UI checking. 
+                config.TopBarsEnabled = (PanelTopBars.Visibility == System.Windows.Visibility.Visible); 
+               
                 // For now, check if inputs valid
                 config.TopBarX = ComboTopBarTypeX.SelectedItem as RebarBarType;
                 config.TopBarY = ComboTopBarTypeY.SelectedItem as RebarBarType;
@@ -245,9 +246,6 @@ namespace RevitAIAgent
                 if (foundations.Count == 0)
                 {
                     TaskDialog.Show("Revit AI Agent", "Please select at least one Isolated Footing.");
-                    // In a modeless window we could PickObjects here, but this is window is likely Modal?
-                    // If Modal, we must close to pick? Or hide?
-                    // Assuming Modal for MVP simplicity.
                     return;
                 }
 
@@ -262,6 +260,11 @@ namespace RevitAIAgent
             {
                 TaskDialog.Show("Error", "Failed to generate rebar: " + ex.Message);
             }
+        }
+        
+        private void BtnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

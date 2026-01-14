@@ -84,7 +84,9 @@ namespace RevitAIAgent
             // BOTTOM BARS Y (Transversal)
             if (config.BottomBarX != null)
             {
-                double barDiamX = config.BottomBarX.BarDiameter;
+                // In Revit 2022+, it is BarModelDiameter. In older versions BarDiameter. 
+                // Using BarModelDiameter as it is more standard now.
+                double barDiamX = config.BottomBarX.BarModelDiameter;
                 double bottomZY = bottomZ + barDiamX; 
                 
                 XYZ startY = new XYZ(min.X + coverDist, min.Y + coverDist, bottomZY);
@@ -108,7 +110,7 @@ namespace RevitAIAgent
                 // Top Y (Under Top X)
                 if (config.TopBarX != null)
                 {
-                    double barDiamTopX = config.TopBarX.BarDiameter;
+                    double barDiamTopX = config.TopBarX.BarModelDiameter;
                     double topZY = topZ - barDiamTopX;
                     XYZ startTopY = new XYZ(min.X + coverDist, min.Y + coverDist, topZY);
                     XYZ endTopY = new XYZ(min.X + coverDist, max.Y - coverDist, topZY);
