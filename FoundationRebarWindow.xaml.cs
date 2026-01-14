@@ -116,8 +116,8 @@ namespace RevitAIAgent
 
         private void BtnIsolated_Click(object sender, RoutedEventArgs e)
         {
-            TypeSelectionGrid.Visibility = Visibility.Collapsed;
-            DetailGrid.Visibility = Visibility.Visible;
+            TypeSelectionGrid.Visibility = System.Windows.Visibility.Collapsed;
+            DetailGrid.Visibility = System.Windows.Visibility.Visible;
             TitleText.Text = "Isolated Footing Reinforcement";
         }
 
@@ -128,8 +128,8 @@ namespace RevitAIAgent
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
-            DetailGrid.Visibility = Visibility.Collapsed;
-            TypeSelectionGrid.Visibility = Visibility.Visible;
+            DetailGrid.Visibility = System.Windows.Visibility.Collapsed;
+            TypeSelectionGrid.Visibility = System.Windows.Visibility.Visible;
         }
 
         private void SidebarList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -137,25 +137,25 @@ namespace RevitAIAgent
             if (PanelGeometry == null) return; // Prevent init crash
 
             // Hide all
-            PanelGeometry.Visibility = Visibility.Collapsed;
-            PanelB1.Visibility = Visibility.Collapsed;
-            PanelB2.Visibility = Visibility.Collapsed;
-            PanelT1.Visibility = Visibility.Collapsed;
-            PanelT2.Visibility = Visibility.Collapsed;
-            PanelDowels.Visibility = Visibility.Collapsed;
-            PanelStirrups.Visibility = Visibility.Collapsed;
+            PanelGeometry.Visibility = System.Windows.Visibility.Collapsed;
+            PanelB1.Visibility = System.Windows.Visibility.Collapsed;
+            PanelB2.Visibility = System.Windows.Visibility.Collapsed;
+            PanelT1.Visibility = System.Windows.Visibility.Collapsed;
+            PanelT2.Visibility = System.Windows.Visibility.Collapsed;
+            PanelDowels.Visibility = System.Windows.Visibility.Collapsed;
+            PanelStirrups.Visibility = System.Windows.Visibility.Collapsed;
 
             // Show selected
             int index = SidebarList.SelectedIndex;
             switch (index)
             {
-                case 0: PanelGeometry.Visibility = Visibility.Visible; break;
-                case 1: PanelB1.Visibility = Visibility.Visible; break;
-                case 2: PanelB2.Visibility = Visibility.Visible; break;
-                case 3: PanelT1.Visibility = Visibility.Visible; break;
-                case 4: PanelT2.Visibility = Visibility.Visible; break;
-                case 5: PanelDowels.Visibility = Visibility.Visible; break;
-                case 6: PanelStirrups.Visibility = Visibility.Visible; break;
+                case 0: PanelGeometry.Visibility = System.Windows.Visibility.Visible; break;
+                case 1: PanelB1.Visibility = System.Windows.Visibility.Visible; break;
+                case 2: PanelB2.Visibility = System.Windows.Visibility.Visible; break;
+                case 3: PanelT1.Visibility = System.Windows.Visibility.Visible; break;
+                case 4: PanelT2.Visibility = System.Windows.Visibility.Visible; break;
+                case 5: PanelDowels.Visibility = System.Windows.Visibility.Visible; break;
+                case 6: PanelStirrups.Visibility = System.Windows.Visibility.Visible; break;
             }
             
             // Trigger 3D update
