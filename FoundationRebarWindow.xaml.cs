@@ -87,8 +87,8 @@ namespace RevitAIAgent
 
         private void BtnPadFooting_Click(object sender, RoutedEventArgs e)
         {
-            TypeSelectionGrid.Visibility = Visibility.Collapsed;
-            DetailGrid.Visibility = Visibility.Visible;
+            TypeSelectionGrid.Visibility = System.Windows.Visibility.Collapsed;
+            DetailGrid.Visibility = System.Windows.Visibility.Visible;
             TitleText.Text = "Pad Footing Reinforcement";
         }
 
@@ -99,8 +99,8 @@ namespace RevitAIAgent
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
-            DetailGrid.Visibility = Visibility.Collapsed;
-            TypeSelectionGrid.Visibility = Visibility.Visible;
+            DetailGrid.Visibility = System.Windows.Visibility.Collapsed;
+            TypeSelectionGrid.Visibility = System.Windows.Visibility.Visible;
         }
 
         private void SidebarList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -108,11 +108,11 @@ namespace RevitAIAgent
             if (PanelGeometry == null) return; // Prevent init crash
 
             // Hide all
-            PanelGeometry.Visibility = Visibility.Collapsed;
-            PanelBottomBars.Visibility = Visibility.Collapsed;
-            PanelTopBars.Visibility = Visibility.Collapsed;
-            PanelDowels.Visibility = Visibility.Collapsed;
-            PanelStirrups.Visibility = Visibility.Collapsed;
+            PanelGeometry.Visibility = System.Windows.Visibility.Collapsed;
+            PanelBottomBars.Visibility = System.Windows.Visibility.Collapsed;
+            PanelTopBars.Visibility = System.Windows.Visibility.Collapsed;
+            PanelDowels.Visibility = System.Windows.Visibility.Collapsed;
+            PanelStirrups.Visibility = System.Windows.Visibility.Collapsed;
 
             // Show selected
             ListBoxItem selectedItem = SidebarList.SelectedItem as ListBoxItem;
@@ -121,11 +121,11 @@ namespace RevitAIAgent
             string content = selectedItem.Content.ToString();
             switch (content)
             {
-                case "Geometry": PanelGeometry.Visibility = Visibility.Visible; break;
-                case "Bottom bars": PanelBottomBars.Visibility = Visibility.Visible; break;
-                case "Top bars": PanelTopBars.Visibility = Visibility.Visible; break;
-                case "Dowels": PanelDowels.Visibility = Visibility.Visible; break;
-                case "Stirrups": PanelStirrups.Visibility = Visibility.Visible; break;
+                case "Geometry": PanelGeometry.Visibility = System.Windows.Visibility.Visible; break;
+                case "Bottom bars": PanelBottomBars.Visibility = System.Windows.Visibility.Visible; break;
+                case "Top bars": PanelTopBars.Visibility = System.Windows.Visibility.Visible; break;
+                case "Dowels": PanelDowels.Visibility = System.Windows.Visibility.Visible; break;
+                case "Stirrups": PanelStirrups.Visibility = System.Windows.Visibility.Visible; break;
             }
         }
 
