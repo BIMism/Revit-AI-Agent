@@ -25,9 +25,9 @@ namespace RevitAIAgent
             LoadRevitData();
             LoadIcons();
             
-            // Init 3D
+            // Init Previews
             HookUpEvents();
-            Update3DPreview();
+            UpdatePreviews();
         }
 
         private void LoadIcons()
@@ -303,32 +303,30 @@ namespace RevitAIAgent
             group.Children.Add(model);
         }
 
+        private void AddCylinder(Model3DGroup group, Point3D p1, Point3D p2, double rad, System.Windows.Media.Color c) { }
+
         private void HookUpEvents()
         {
-            // All toggle events
-            CheckAddTopBars.Checked += (s, e) => Update3DPreview();
-            CheckAddTopBars.Unchecked += (s, e) => Update3DPreview();
-            CheckAddDowels.Checked += (s, e) => Update3DPreview();
-            CheckAddDowels.Unchecked += (s, e) => Update3DPreview();
-            CheckAdditionalB1.Checked += (s, e) => Update3DPreview();
-            CheckAdditionalB1.Unchecked += (s, e) => Update3DPreview();
-            CheckAdditionalB2.Checked += (s, e) => Update3DPreview();
-            CheckAdditionalB2.Unchecked += (s, e) => Update3DPreview();
-            CheckAdditionalT1.Checked += (s, e) => Update3DPreview();
-            CheckAdditionalT1.Unchecked += (s, e) => Update3DPreview();
-            CheckAdditionalT2.Checked += (s, e) => Update3DPreview();
-            CheckAdditionalT2.Unchecked += (s, e) => Update3DPreview();
+            CheckAddTopBars.Checked += (s, e) => UpdatePreviews();
+            CheckAddTopBars.Unchecked += (s, e) => UpdatePreviews();
+            CheckAddDowels.Checked += (s, e) => UpdatePreviews();
+            CheckAddDowels.Unchecked += (s, e) => UpdatePreviews();
+            CheckAdditionalB1.Checked += (s, e) => UpdatePreviews();
+            CheckAdditionalB1.Unchecked += (s, e) => UpdatePreviews();
+            CheckAdditionalB2.Checked += (s, e) => UpdatePreviews();
+            CheckAdditionalB2.Unchecked += (s, e) => UpdatePreviews();
+            CheckAdditionalT1.Checked += (s, e) => UpdatePreviews();
+            CheckAdditionalT1.Unchecked += (s, e) => UpdatePreviews();
+            CheckAdditionalT2.Checked += (s, e) => UpdatePreviews();
+            CheckAdditionalT2.Unchecked += (s, e) => UpdatePreviews();
 
-            // All input change events
-            InputAddB1Count.TextChanged += (s, e) => Update3DPreview();
-            InputAddB2Count.TextChanged += (s, e) => Update3DPreview();
-            InputDowelCount.TextChanged += (s, e) => Update3DPreview();
-            InputSpacingX.TextChanged += (s, e) => Update3DPreview();
-            InputSpacingY.TextChanged += (s, e) => Update3DPreview();
+            InputAddB1Count.TextChanged += (s, e) => UpdatePreviews();
+            InputAddB2Count.TextChanged += (s, e) => UpdatePreviews();
+            InputDowelCount.TextChanged += (s, e) => UpdatePreviews();
+            InputSpacingX.TextChanged += (s, e) => UpdatePreviews();
+            InputSpacingY.TextChanged += (s, e) => UpdatePreviews();
             
-            // Selection events
-            SidebarList.SelectionChanged += (s, e) => Update3DPreview();
-            ComboBarTypeX.SelectionChanged += (s, e) => Update3DPreview();
+            SidebarList.SelectionChanged += (s, e) => UpdatePreviews();
         }
 
         private void BtnOk_Click(object sender, RoutedEventArgs e)
