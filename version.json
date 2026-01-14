@@ -1,5 +1,5 @@
 {
-  "version": "2.11.1",
+  "version": "2.11.2",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.11.1: Default Hook Orientation is now 'Right-Right' for all layers. Renamed UI label to 'Orientation' for clarity."
+  "releaseNotes": "v2.11.2: Fixed UI overlap in B1 panel. Updated Orientation labels to Top/Bottom. Improved layout spacing and default logic."
 }

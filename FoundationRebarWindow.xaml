@@ -147,7 +147,13 @@
                                 <StackPanel>
                                     <Grid>
                                         <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition/></Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
                                         
                                         <TextBlock Grid.Row="0" Text="Bar Type:" Margin="0,5"/>
                                         <ComboBox Grid.Row="0" Grid.Column="1" x:Name="ComboBarTypeX" Margin="10,5,0,5"/>
@@ -186,7 +192,13 @@
                                 <StackPanel>
                                     <Grid>
                                         <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition/></Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
                                         
                                         <TextBlock Grid.Row="0" Text="Bar Type:" Margin="0,5"/>
                                         <ComboBox Grid.Row="0" Grid.Column="1" x:Name="ComboBarTypeY" Margin="10,5,0,5"/>
@@ -227,7 +239,13 @@
                                     <StackPanel>
                                         <Grid>
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition/></Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
                                             
                                             <TextBlock Grid.Row="0" Text="Bar Type:" Margin="0,5"/>
                                             <ComboBox Grid.Row="0" Grid.Column="1" x:Name="ComboTopBarTypeX" Margin="10,5,0,5"/>
@@ -269,7 +287,13 @@
                                     <StackPanel>
                                         <Grid>
                                             <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition/></Grid.ColumnDefinitions>
-                                            <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
                                             
                                             <TextBlock Grid.Row="0" Text="Bar Type:" Margin="0,5"/>
                                             <ComboBox Grid.Row="0" Grid.Column="1" x:Name="ComboTopBarTypeY" Margin="10,5,0,5"/>

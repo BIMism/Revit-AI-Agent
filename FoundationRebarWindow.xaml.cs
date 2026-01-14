@@ -118,11 +118,11 @@ namespace RevitAIAgent
             }
 
             // Hook Orientations
-            var hookOrients = new List<string> { "Left - Left", "Right - Right", "Left - Right", "Right - Left" };
+            var hookOrients = new List<string> { "Top - Top", "Bottom - Bottom", "Top - Bottom", "Bottom - Top" };
             
-            ComboHookOrientX.ItemsSource = hookOrients; ComboHookOrientX.SelectedIndex = 1; // Right-Right default
-            ComboHookOrientY.ItemsSource = hookOrients; ComboHookOrientY.SelectedIndex = 1; 
-            ComboTopHookXOrient.ItemsSource = hookOrients; ComboTopHookXOrient.SelectedIndex = 1; // Right-Right default (inverted)
+            ComboHookOrientX.ItemsSource = hookOrients; ComboHookOrientX.SelectedIndex = 0; // Top-Top default for Bottom
+            ComboHookOrientY.ItemsSource = hookOrients; ComboHookOrientY.SelectedIndex = 0; 
+            ComboTopHookXOrient.ItemsSource = hookOrients; ComboTopHookXOrient.SelectedIndex = 1; // Bottom-Bottom default for Top
             ComboTopHookYOrient.ItemsSource = hookOrients; ComboTopHookYOrient.SelectedIndex = 1;
 
             // --- Parametric Dimension Initialization ---
@@ -494,10 +494,10 @@ namespace RevitAIAgent
             
             if (selectedItem is string s)
             {
-                 if (s == "Left - Left") { start = RebarHookOrientation.Left; end = RebarHookOrientation.Left; }
-                 else if (s == "Right - Right") { start = RebarHookOrientation.Right; end = RebarHookOrientation.Right; }
-                 else if (s == "Left - Right") { start = RebarHookOrientation.Left; end = RebarHookOrientation.Right; }
-                 else if (s == "Right - Left") { start = RebarHookOrientation.Right; end = RebarHookOrientation.Left; }
+                 if (s == "Top - Top") { start = RebarHookOrientation.Left; end = RebarHookOrientation.Left; }
+                 else if (s == "Bottom - Bottom") { start = RebarHookOrientation.Right; end = RebarHookOrientation.Right; }
+                 else if (s == "Top - Bottom") { start = RebarHookOrientation.Left; end = RebarHookOrientation.Right; }
+                 else if (s == "Bottom - Top") { start = RebarHookOrientation.Right; end = RebarHookOrientation.Left; }
             }
         }
     }
