@@ -9,11 +9,13 @@ namespace RevitAIAgent
     // NO AI LINK HERE. Pure Native Tools.
 
     [Transaction(TransactionMode.Manual)]
-    public class CmdFooting : IExternalCommand
+    public class CmdFoundationRebar : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            TaskDialog.Show("Structure", "Footing Rebar Generator\n\n(Coming Soon: Native UI like Beam Generator)");
+            // Launch the new Foundation Rebar Window
+            FoundationRebarWindow win = new FoundationRebarWindow(commandData.Application.ActiveUIDocument);
+            win.ShowDialog();
             return Result.Succeeded;
         }
     }

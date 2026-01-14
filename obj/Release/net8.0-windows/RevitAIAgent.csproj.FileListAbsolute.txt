@@ -129,3 +129,5 @@ E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\coordinate.png
 E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\project_plan.png
 E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\costing.png
 E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\resources.png
+E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\FoundationRebarWindow.baml
+E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\FoundationRebarWindow.g.cs

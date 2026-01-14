@@ -85,7 +85,7 @@ namespace RevitAIAgent
 
                     // PANEL 2: STRUCTURAL (REBAR)
                     RibbonPanel panelStruct = application.CreateRibbonPanel(tabName, "Structural");
-                    CreateButton(panelStruct, "BtnFooting", "Footing\nRebar", assemblyPath, "RevitAIAgent.CmdFooting", "footing.png");
+                    CreateButton(panelStruct, "BtnFoundationRebar", "Foundation\nRebar", assemblyPath, "RevitAIAgent.CmdFoundationRebar", "footing.png");
                     CreateButton(panelStruct, "BtnColumn", "Column\nRebar", assemblyPath, "RevitAIAgent.CmdColumn", "column.png");
                     CreateButton(panelStruct, "BtnBeam", "Beam\nRebar", assemblyPath, "RevitAIAgent.CmdBeam", "beam.png");
                     CreateButton(panelStruct, "BtnSlab", "Slab\nRebar", assemblyPath, "RevitAIAgent.CmdSlab", "slab.png");

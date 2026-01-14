@@ -1,5 +1,5 @@
 {
-  "version": "2.0.7",
+  "version": "2.1.0",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.0.7: Added 'Resources' button to PM panel. Verify branding fix on update!"
+  "releaseNotes": "v2.1.0: NEW FEATURE - Foundation Rebar! Complex UI for Pad Footings added."
 }

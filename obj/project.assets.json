@@ -789,7 +789,7 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "2.0.7",
+    "version": "2.1.0",
     "restore": {
       "projectUniqueName": "E:\\My\\BIM'ism\\Revit Pluging\\RevitAIAgent.csproj",
       "projectName": "RevitAIAgent",
