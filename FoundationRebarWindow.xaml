@@ -281,8 +281,8 @@
             <Border Grid.Row="3" Background="#F8F8F8" BorderBrush="#DDD" BorderThickness="0,1,0,0" Padding="15">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <CheckBox Content="Dynamic Model Update" VerticalAlignment="Center" Margin="0,0,20,0" IsChecked="True"/>
-                    <Button Content="Cancel" Width="80" Height="30" Margin="0,0,10,0" IsCancel="True"/>
-                    <Button Content="OK" Width="80" Height="30" Click="BtnOK_Click" FontWeight="Bold"/>
+                    <Button x:Name="BtnCancel" Content="Cancel" Width="100" Height="30" Click="BtnCancel_Click"/>
+                    <Button x:Name="BtnOk" Content="Generate Rebar" Width="120" Height="30" Margin="10,0" Click="BtnOk_Click" Background="#007ACC" Foreground="White" FontWeight="Bold"/>
                 </StackPanel>
             </Border>
         </Grid>

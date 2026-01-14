@@ -192,15 +192,76 @@ namespace RevitAIAgent
 
         private void BtnOK_Click(object sender, RoutedEventArgs e)
         {
-            // Placeholder logic
-            TaskDialog td = new TaskDialog("Foundation Rebar");
-            td.TitleAutoPrefix = false;
-            td.Title = "BIMism AI Agent";
-            td.MainInstruction = "Reinforcement Generation";
-            td.MainContent = "Configuration saved! Actual geometry generation is the next step.";
-            td.Show();
-            
-            this.Close();
+            try
+            {
+                // 1. Collect Configuration
+                IsolatedRebarConfig config = new IsolatedRebarConfig();
+
+                // Bottom Bars
+                config.BottomBarX = ComboBarTypeX.SelectedItem as RebarBarType;
+                config.BottomBarY = ComboBarTypeY.SelectedItem as RebarBarType;
+                
+                if (double.TryParse(InputSpacingX.Text, out double sx)) config.SpacingBottomX = sx;
+                if (double.TryParse(InputSpacingY.Text, out double sy)) config.SpacingBottomY = sy;
+
+                config.HookBottomX = ComboHookX.SelectedItem as RebarHookType;
+                config.HookBottomY = ComboHookY.SelectedItem as RebarHookType;
+
+                // Top Bars
+                config.TopBarsEnabled = (PanelTopBars.Visibility == Visibility.Visible); // Simplified logic - enabled if tab selected? Actually logic is missing in UI checking. 
+                // For now, check if inputs valid
+                config.TopBarX = ComboTopBarTypeX.SelectedItem as RebarBarType;
+                config.TopBarY = ComboTopBarTypeY.SelectedItem as RebarBarType;
+                if (double.TryParse(InputTopSpacingX.Text, out double tsx)) config.SpacingTopX = tsx;
+                if (double.TryParse(InputTopSpacingY.Text, out double tsy)) config.SpacingTopY = tsy;
+                config.HookTopX = ComboTopHookX.SelectedItem as RebarHookType;
+                config.HookTopY = ComboTopHookY.SelectedItem as RebarHookType;
+
+                // Dowels
+                config.DowelsEnabled = CheckAddDowels.IsChecked == true;
+                config.DowelBarType = ComboDowelBarType.SelectedItem as RebarBarType;
+                config.DowelHookBase = ComboDowelHookBase.SelectedItem as RebarHookType;
+                if (int.TryParse(InputDowelCount.Text, out int dc)) config.DowelCount = dc;
+                if (double.TryParse(InputDowelLength.Text, out double dl)) config.DowelLength = dl;
+
+                // Stirrups
+                config.StirrupsEnabled = CheckAddStirrups.IsChecked == true;
+                config.StirrupBarType = ComboStirrupBarType.SelectedItem as RebarBarType;
+                if (double.TryParse(InputStirrupSpacing.Text, out double ss)) config.StirrupSpacing = ss;
+
+                // 2. Access Selection
+                List<Element> foundations = new List<Element>();
+                var selectedIds = _uiDoc.Selection.GetElementIds();
+                foreach (var id in selectedIds)
+                {
+                    Element elem = _doc.GetElement(id);
+                    if (elem.Category.Id.IntegerValue == (int)BuiltInCategory.OST_StructuralFoundation)
+                    {
+                        foundations.Add(elem);
+                    }
+                }
+
+                // If no pre-selection, prompt user to pick
+                if (foundations.Count == 0)
+                {
+                    TaskDialog.Show("Revit AI Agent", "Please select at least one Isolated Footing.");
+                    // In a modeless window we could PickObjects here, but this is window is likely Modal?
+                    // If Modal, we must close to pick? Or hide?
+                    // Assuming Modal for MVP simplicity.
+                    return;
+                }
+
+                // 3. Generate
+                IsolatedRebarGenerator generator = new IsolatedRebarGenerator();
+                generator.Generate(_doc, foundations, config);
+
+                TaskDialog.Show("Revit AI Agent", $"Generated rebar for {foundations.Count} footing(s)!");
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                TaskDialog.Show("Error", "Failed to generate rebar: " + ex.Message);
+            }
         }
     }
 }

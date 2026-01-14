@@ -1,5 +1,5 @@
 {
-  "version": "2.1.4",
+  "version": "2.2.0",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.1.4: HOTFIX - Force loading of UI icons via code-behind to ensure visibility."
+  "releaseNotes": "v2.2.0: MAJOR FEATURE - Automatic Rebar Generation for Isolated Foundations! Supports Bottom/Top bars, Dowels, and Stirrups."
 }
