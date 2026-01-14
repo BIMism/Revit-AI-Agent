@@ -6,7 +6,7 @@
     <Configurations>Debug;Release</Configurations>
     <Platforms>x64</Platforms>
     <AssemblyName>RevitAIAgent</AssemblyName>
-    <Version>2.1.2</Version>
+    <Version>2.1.3</Version>
     <AssemblyTitle>BIMism AI Agent</AssemblyTitle>
     <Product>BIMism AI Agent</Product>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -55,60 +55,31 @@
     <Content Include="Assets\visibility.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\weight.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\dimension.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\about.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\model_check_v4.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\about_v4.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\missing_tag_v4.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\drawing_check.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\clash_check.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\coordinate.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\project_plan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\costing.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\resources.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\combined.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\strap.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\raft.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\pile.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\pile_cap.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\strip.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Assets\ai_agent.png" />
+    <Resource Include="Assets\beam.png" />
+    <Resource Include="Assets\column.png" />
+    <Resource Include="Assets\footing.png" />
+    <Resource Include="Assets\slab.png" />
+    <Resource Include="Assets\wall.png" />
+    <Resource Include="Assets\visibility.png" />
+    <Resource Include="Assets\weight.png" />
+    <Resource Include="Assets\dimension.png" />
+    <Resource Include="Assets\about.png" />
+    <Resource Include="Assets\model_check_v4.png" />
+    <Resource Include="Assets\about_v4.png" />
+    <Resource Include="Assets\missing_tag_v4.png" />
+    <Resource Include="Assets\drawing_check.png" />
+    <Resource Include="Assets\clash_check.png" />
+    <Resource Include="Assets\coordinate.png" />
+    <Resource Include="Assets\project_plan.png" />
+    <Resource Include="Assets\costing.png" />
+    <Resource Include="Assets\resources.png" />
+    <Resource Include="Assets\combined.png" />
+    <Resource Include="Assets\strap.png" />
+    <Resource Include="Assets\raft.png" />
+    <Resource Include="Assets\pile.png" />
+    <Resource Include="Assets\pile_cap.png" />
+    <Resource Include="Assets\strip.png" />
   </ItemGroup>
 
   <ItemGroup>

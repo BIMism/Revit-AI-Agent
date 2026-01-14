@@ -1,5 +1,5 @@
 {
-  "version": "2.1.2",
+  "version": "2.1.3",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.1.2: VISUAL OVERHAUL - Added 3D icons for all foundations. Completed detailed UI tabs (Top Bars, Dowels)."
+  "releaseNotes": "v2.1.3: FIX - Resolved issue with missing icons in the interface. Performance improvements."
 }

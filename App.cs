@@ -192,16 +192,12 @@ namespace RevitAIAgent
         {
             try
             {
-                string assemblyDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                // When deployed in BIMism subfolder, Assets are parallel to valid dll
-                string iconPath = Path.Combine(assemblyDir, "Assets", iconFileName);
-                
-                if (File.Exists(iconPath))
-                {
-                    BitmapImage bmp = new BitmapImage(new Uri(iconPath));
-                    button.LargeImage = bmp;
-                    button.Image = bmp; // Also set small icon for compatibility
-                }
+                // Use Pack URI to load from Embedded Resource
+                // Format: pack://application:,,,/RevitAIAgent;component/Assets/iconFileName
+                Uri uri = new Uri($"pack://application:,,,/RevitAIAgent;component/Assets/{iconFileName}");
+                BitmapImage bmp = new BitmapImage(uri);
+                button.LargeImage = bmp;
+                button.Image = bmp;
             }
             catch (Exception ex)
             {
