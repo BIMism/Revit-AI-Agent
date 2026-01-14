@@ -15,6 +15,8 @@ namespace RevitAIAgent
         public double SpacingBottomY { get; set; } // mm
         public RebarHookType HookBottomX { get; set; }
         public RebarHookType HookBottomY { get; set; }
+        public double? OverrideHookLenBottomX { get; set; } // Null if no override
+        public double? OverrideHookLenBottomY { get; set; }
 
         // Top Bars
         public bool TopBarsEnabled { get; set; }
@@ -24,6 +26,8 @@ namespace RevitAIAgent
         public double SpacingTopY { get; set; } // mm
         public RebarHookType HookTopX { get; set; }
         public RebarHookType HookTopY { get; set; }
+        public double? OverrideHookLenTopX { get; set; }
+        public double? OverrideHookLenTopY { get; set; }
 
         // Dowels
         public bool DowelsEnabled { get; set; }
@@ -79,7 +83,7 @@ namespace RevitAIAgent
             XYZ endX = new XYZ(max.X - coverDist, min.Y + coverDist, bottomZ);
             
             CreateRebarSet(doc, foundation, config.BottomBarX, config.HookBottomX, startX, endX, 
-                XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.SpacingBottomX * mmToFeet);
+                XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.SpacingBottomX * mmToFeet, config.OverrideHookLenBottomX * mmToFeet);
 
             // BOTTOM BARS Y (Transversal)
             if (config.BottomBarX != null)
@@ -93,7 +97,7 @@ namespace RevitAIAgent
                 XYZ endY = new XYZ(min.X + coverDist, max.Y - coverDist, bottomZY);
 
                 CreateRebarSet(doc, foundation, config.BottomBarY, config.HookBottomY, startY, endY,
-                    XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingBottomY * mmToFeet);
+                    XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingBottomY * mmToFeet, config.OverrideHookLenBottomY * mmToFeet);
             }
 
             // TOP BARS
@@ -105,7 +109,7 @@ namespace RevitAIAgent
                 XYZ startTopX = new XYZ(min.X + coverDist, min.Y + coverDist, topZ);
                 XYZ endTopX = new XYZ(max.X - coverDist, min.Y + coverDist, topZ);
                 CreateRebarSet(doc, foundation, config.TopBarX, config.HookTopX, startTopX, endTopX,
-                    XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.SpacingTopX * mmToFeet);
+                    XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.SpacingTopX * mmToFeet, config.OverrideHookLenTopX * mmToFeet);
 
                 // Top Y (Under Top X)
                 if (config.TopBarX != null)
@@ -115,7 +119,7 @@ namespace RevitAIAgent
                     XYZ startTopY = new XYZ(min.X + coverDist, min.Y + coverDist, topZY);
                     XYZ endTopY = new XYZ(min.X + coverDist, max.Y - coverDist, topZY);
                     CreateRebarSet(doc, foundation, config.TopBarY, config.HookTopY, startTopY, endTopY,
-                        XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingTopY * mmToFeet);
+                        XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingTopY * mmToFeet, config.OverrideHookLenTopY * mmToFeet);
                 }
             }
 
@@ -151,7 +155,7 @@ namespace RevitAIAgent
         }
 
         private void CreateRebarSet(Document doc, Element host, RebarBarType barType, RebarHookType hookType, 
-            XYZ start, XYZ end, XYZ distributionDir, double distributionLength, double spacing)
+            XYZ start, XYZ end, XYZ distributionDir, double distributionLength, double spacing, double? overrideHookLen = null)
         {
             if (barType == null) return;
             
@@ -163,9 +167,23 @@ namespace RevitAIAgent
                 Rebar rebar = Rebar.CreateFromCurves(doc, RebarStyle.Standard, barType, hookType, hookType, 
                     host, distributionDir, curves, RebarHookOrientation.Right, RebarHookOrientation.Right, true, true);
 
-                if (rebar != null && spacing > 0)
+                if (rebar != null)
                 {
-                    rebar.GetShapeDrivenAccessor().SetLayoutAsMaximumSpacing(spacing, distributionLength, true, true, true);
+                    if (spacing > 0)
+                        rebar.GetShapeDrivenAccessor().SetLayoutAsMaximumSpacing(spacing, distributionLength, true, true, true);
+                    
+                    if (overrideHookLen.HasValue && hookType != null)
+                    {
+                        // Override hook length
+                        // Note: To override hook length, we need to ensure the RebarShape allows it or we modify parameters.
+                        // Actually Revit API allows modifying "Override Hook Length" parameter if the shape supports it.
+                        // Ideally we use:
+                        Parameter pStart = rebar.GetParameter(BuiltInParameter.REBAR_HOOK_START_OVERRIDE);
+                        Parameter pEnd = rebar.GetParameter(BuiltInParameter.REBAR_HOOK_END_OVERRIDE);
+                        
+                        if (pStart != null && !pStart.IsReadOnly) pStart.Set(overrideHookLen.Value);
+                        if (pEnd != null && !pEnd.IsReadOnly) pEnd.Set(overrideHookLen.Value);
+                    }
                 }
             }
             catch { }

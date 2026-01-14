@@ -6,7 +6,7 @@
     <Configurations>Debug;Release</Configurations>
     <Platforms>x64</Platforms>
     <AssemblyName>RevitAIAgent</AssemblyName>
-    <Version>2.2.0</Version>
+    <Version>2.3.0</Version>
     <AssemblyTitle>BIMism AI Agent</AssemblyTitle>
     <Product>BIMism AI Agent</Product>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -80,6 +80,8 @@
     <Resource Include="Assets\pile.png" />
     <Resource Include="Assets\pile_cap.png" />
     <Resource Include="Assets\strip.png" />
+    <Resource Include="Assets\preview_3d.png" />
+    <Resource Include="Assets\preview_section.png" />
   </ItemGroup>
 
   <ItemGroup>

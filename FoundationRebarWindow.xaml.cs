@@ -207,8 +207,11 @@ namespace RevitAIAgent
                 config.HookBottomX = ComboHookX.SelectedItem as RebarHookType;
                 config.HookBottomY = ComboHookY.SelectedItem as RebarHookType;
 
+                if (CheckOverrideHookX.IsChecked == true && double.TryParse(InputHookLenX.Text, out double hx)) config.OverrideHookLenBottomX = hx;
+                if (CheckOverrideHookY.IsChecked == true && double.TryParse(InputHookLenY.Text, out double hy)) config.OverrideHookLenBottomY = hy;
+
                 // Top Bars
-                config.TopBarsEnabled = (PanelTopBars.Visibility == System.Windows.Visibility.Visible); 
+                config.TopBarsEnabled = CheckAddTopBars.IsChecked == true;
                
                 // For now, check if inputs valid
                 config.TopBarX = ComboTopBarTypeX.SelectedItem as RebarBarType;
@@ -217,6 +220,9 @@ namespace RevitAIAgent
                 if (double.TryParse(InputTopSpacingY.Text, out double tsy)) config.SpacingTopY = tsy;
                 config.HookTopX = ComboTopHookX.SelectedItem as RebarHookType;
                 config.HookTopY = ComboTopHookY.SelectedItem as RebarHookType;
+
+                if (CheckOverrideTopHookX.IsChecked == true && double.TryParse(InputTopHookLenX.Text, out double thx)) config.OverrideHookLenTopX = thx;
+                if (CheckOverrideTopHookY.IsChecked == true && double.TryParse(InputTopHookLenY.Text, out double thy)) config.OverrideHookLenTopY = thy;
 
                 // Dowels
                 config.DowelsEnabled = CheckAddDowels.IsChecked == true;

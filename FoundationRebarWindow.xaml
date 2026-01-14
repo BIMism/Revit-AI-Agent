@@ -155,6 +155,12 @@
                                     
                                     <TextBlock Grid.Row="2" Text="Spacing (mm):" Margin="0,5"/>
                                     <TextBox Grid.Row="2" Grid.Column="1" x:Name="InputSpacingX" Text="200" Margin="10,5,0,5"/>
+
+                                    <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,5">
+                                        <CheckBox x:Name="CheckOverrideHookX" Content="Override Hook Len:" VerticalAlignment="Center"/>
+                                        <TextBox x:Name="InputHookLenX" Text="300" Width="50" Margin="5,0,0,0" IsEnabled="{Binding IsChecked, ElementName=CheckOverrideHookX}"/>
+                                        <TextBlock Text="mm" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                    </StackPanel>
                                 </Grid>
                             </GroupBox>
                             
@@ -171,12 +177,19 @@
                                     
                                     <TextBlock Grid.Row="2" Text="Spacing (mm):" Margin="0,5"/>
                                     <TextBox Grid.Row="2" Grid.Column="1" x:Name="InputSpacingY" Text="200" Margin="10,5,0,5"/>
+                                    
+                                    <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,5">
+                                        <CheckBox x:Name="CheckOverrideHookY" Content="Override Hook Len:" VerticalAlignment="Center"/>
+                                        <TextBox x:Name="InputHookLenY" Text="300" Width="50" Margin="5,0,0,0" IsEnabled="{Binding IsChecked, ElementName=CheckOverrideHookY}"/>
+                                        <TextBlock Text="mm" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                    </StackPanel>
                                 </Grid>
                             </GroupBox>
                         </Grid>
                         
                         <!-- TOP BARS PANEL -->
                         <Grid x:Name="PanelTopBars" Visibility="Collapsed">
+                             <CheckBox x:Name="CheckAddTopBars" Content="Enable Top Bars" IsChecked="False" Margin="0,0,0,10"/>
                              <GroupBox Header="Longitudinal Bars (Direction X)">
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition/></Grid.ColumnDefinitions>
@@ -190,6 +203,12 @@
                                     
                                     <TextBlock Grid.Row="2" Text="Spacing (mm):" Margin="0,5"/>
                                     <TextBox Grid.Row="2" Grid.Column="1" x:Name="InputTopSpacingX" Text="200" Margin="10,5,0,5"/>
+
+                                    <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,5">
+                                        <CheckBox x:Name="CheckOverrideTopHookX" Content="Override Hook Len:" VerticalAlignment="Center"/>
+                                        <TextBox x:Name="InputTopHookLenX" Text="300" Width="50" Margin="5,0,0,0" IsEnabled="{Binding IsChecked, ElementName=CheckOverrideTopHookX}"/>
+                                        <TextBlock Text="mm" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                    </StackPanel>
                                 </Grid>
                             </GroupBox>
                             <GroupBox Header="Transversal Bars (Direction Y)">
@@ -205,6 +224,12 @@
                                     
                                     <TextBlock Grid.Row="2" Text="Spacing (mm):" Margin="0,5"/>
                                     <TextBox Grid.Row="2" Grid.Column="1" x:Name="InputTopSpacingY" Text="200" Margin="10,5,0,5"/>
+
+                                    <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,5">
+                                        <CheckBox x:Name="CheckOverrideTopHookY" Content="Override Hook Len:" VerticalAlignment="Center"/>
+                                        <TextBox x:Name="InputTopHookLenY" Text="300" Width="50" Margin="5,0,0,0" IsEnabled="{Binding IsChecked, ElementName=CheckOverrideTopHookY}"/>
+                                        <TextBlock Text="mm" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                    </StackPanel>
                                 </Grid>
                             </GroupBox>
                         </Grid>
