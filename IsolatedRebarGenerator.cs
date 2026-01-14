@@ -123,12 +123,14 @@ namespace RevitAIAgent
                 XYZ endY = new XYZ(min.X + coverDist, max.Y - coverDist, bottomZY);
 
                 CreateRebarSet(doc, foundation, config.BottomBarY, config.HookBottomY, startY, endY,
-                    XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingBottomY * mmToFeet, config.OverrideHookLenBottomY * mmToFeet);  // Same as B1
+                    XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingBottomY * mmToFeet, config.OverrideHookLenBottomY * mmToFeet,
+                    RebarHookOrientation.Right, RebarHookOrientation.Left);  // SWAPPED for Y-direction
                     
                 if (config.AddB2Enabled && config.AddB2Count > 0)
                 {
                    CreateFixedRebarSet(doc, foundation, config.AddB2Type, config.HookBottomY, startY, endY,
-                    XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddB2Count);
+                    XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddB2Count,
+                    RebarHookOrientation.Right, RebarHookOrientation.Left);  // SWAPPED
                 }
             }
 
@@ -159,45 +161,23 @@ namespace RevitAIAgent
                     XYZ startTopY = new XYZ(min.X + coverDist, min.Y + coverDist, topZY);
                     XYZ endTopY = new XYZ(min.X + coverDist, max.Y - coverDist, topZY);
                     CreateRebarSet(doc, foundation, config.TopBarY, config.HookTopY, startTopY, endTopY,
-                        XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingTopY * mmToFeet, config.OverrideHookLenTopY * mmToFeet);  // Same as T1
+                        XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingTopY * mmToFeet, config.OverrideHookLenTopY * mmToFeet,
+                        RebarHookOrientation.Left, RebarHookOrientation.Right);  // SWAPPED for Y-direction
 
                     if (config.AddT2Enabled && config.AddT2Count > 0)
                     {
                         CreateFixedRebarSet(doc, foundation, config.AddT2Type, config.HookTopY, startTopY, endTopY,
-                        XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddT2Count);
+                        XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddT2Count,
+                        RebarHookOrientation.Left, RebarHookOrientation.Right);  // SWAPPED
                     }
                 }
             }
 
-            // DOWELS (Simple 4-bar placeholder)
-            if (config.DowelsEnabled)
-            {
-                XYZ center = (min + max) / 2.0;
-                double dowelBottomZ = min.Z + coverDist;
-                double dowelLenFeet = config.DowelLength * mmToFeet;
-                double offset = 1.0; // 1 ft offset from center constant for now
-                
-                List<XYZ> dowelPoints = new List<XYZ>
-                {
-                    new XYZ(center.X - offset, center.Y - offset, dowelBottomZ),
-                    new XYZ(center.X + offset, center.Y - offset, dowelBottomZ),
-                    new XYZ(center.X + offset, center.Y + offset, dowelBottomZ),
-                    new XYZ(center.X - offset, center.Y + offset, dowelBottomZ)
-                };
-
-                foreach (var pt in dowelPoints)
-                {
-                    XYZ endPt = new XYZ(pt.X, pt.Y, pt.Z + dowelLenFeet);
-                    Line curve = Line.CreateBound(pt, endPt);
-                    List<Curve> curves = new List<Curve> { curve };
-                    
-                    try {
-                        Rebar.CreateFromCurves(doc, RebarStyle.Standard, config.DowelBarType, 
-                        config.DowelHookBase, null, foundation, XYZ.BasisY, curves, 
-                        RebarHookOrientation.Right, RebarHookOrientation.Right, true, true);  // Right = hook at bottom points up
-                    } catch {}
-                }
-            }
+            // DOWELS - DISABLED PER USER REQUEST
+            // if (config.DowelsEnabled)
+            // {
+            //     ... dowel generation code commented out
+            // }
         }
 
         private void CreateRebarSet(Document doc, Element host, RebarBarType barType, RebarHookType hookType, 

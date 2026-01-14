@@ -325,29 +325,6 @@ namespace RevitAIAgent
                 }
             }
 
-            // --- DOWELS & STIRRUPS ---
-            if (CheckAddDowels?.IsChecked == true) {
-                int dowelCount = 2;
-                for(int i=0; i<dowelCount; i++) {
-                    double dx = x0 + (drawW * 0.3) + i * (drawW * 0.4);
-                    PointCollection dPts = new PointCollection {
-                        new System.Windows.Point(dx + 15, y0 + drawH - 12),
-                        new System.Windows.Point(dx, y0 + drawH - 12),
-                        new System.Windows.Point(dx, y0 - 40)
-                    };
-                    canvas.Children.Add(new System.Windows.Shapes.Polyline { Stroke=greyBrush, StrokeThickness=4, Points=dPts });
-                }
-
-                if (CheckAddStirrups?.IsChecked == true) {
-                    for(int i=0; i<3; i++) {
-                        System.Windows.Shapes.Rectangle stirrup = new System.Windows.Shapes.Rectangle { 
-                            Width = drawW * 0.5, Height=5, Stroke=greyBrush, StrokeThickness=1.5 
-                        };
-                        Canvas.SetLeft(stirrup, x0 + drawW * 0.25); Canvas.SetTop(stirrup, y0 - 10 - i*15);
-                        canvas.Children.Add(stirrup);
-                    }
-                }
-            }
 
             // Labels for dimensions (rounded to whole numbers)
             int roundedW = (int)Math.Round(realW);
