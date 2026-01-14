@@ -176,115 +176,131 @@ namespace RevitAIAgent
         {
             canvas.Children.Clear();
             double cw = canvas.Width, ch = canvas.Height;
-            double fw = 200, fh = 70;
+            double fw = 220, fh = 80;
             double x0 = (cw - fw) / 2, y0 = (ch - fh) / 2 + 10;
 
             // Footing Rect
             System.Windows.Shapes.Rectangle footing = new System.Windows.Shapes.Rectangle
             {
-                Width = fw, Height = fh, Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(240, 240, 240)), 
+                Width = fw, Height = fh, Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(242, 242, 242)), 
                 Stroke = System.Windows.Media.Brushes.DimGray, StrokeThickness = 2
             };
             Canvas.SetLeft(footing, x0); Canvas.SetTop(footing, y0);
             canvas.Children.Add(footing);
 
-            // Rebar Logic
-            bool hasTop = CheckAddTopBars?.IsChecked == true;
-            bool hasDowels = CheckAddDowels?.IsChecked == true;
             var redBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(220, 20, 20));
+            var greyBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(100, 100, 100));
 
-            // Bottom Bars (Section Dots for cross, Line for main)
-            double bz = y0 + fh - 10;
-            for(int i=0; i<8; i++)
-            {
+            // --- BOTTOM BARS ---
+            bool isX = isMajor; 
+            string hookName = isX ? ComboHookX?.Text : ComboHookY?.Text;
+            bool hasAdditional = isX ? (CheckAdditionalB1?.IsChecked == true) : (CheckAdditionalB2?.IsChecked == true);
+            int addCount = 0;
+            if (hasAdditional) int.TryParse(isX ? InputAddB1Count?.Text : InputAddB2Count?.Text, out addCount);
+
+            int mainCount = 8; // Default visual count
+            int totalDots = mainCount + addCount;
+
+            // Main Line with Hook Logic
+            double hookSize = 25;
+            double offset = isMajor ? 6 : 12; // Layering B1 and B2
+            PointCollection bPts = new PointCollection();
+            
+            // Hook Type Logic
+            if (hookName != null && hookName.Contains("None")) {
+                bPts.Add(new System.Windows.Point(x0+5, y0+fh-offset));
+                bPts.Add(new System.Windows.Point(x0+fw-5, y0+fh-offset));
+            } else if (hookName != null && hookName.Contains("180")) {
+                bPts.Add(new System.Windows.Point(x0+15, y0+fh-offset-10));
+                bPts.Add(new System.Windows.Point(x0+5, y0+fh-offset));
+                bPts.Add(new System.Windows.Point(x0+fw-5, y0+fh-offset));
+                bPts.Add(new System.Windows.Point(x0+fw-15, y0+fh-offset-10));
+            } else { // 90 deg default
+                bPts.Add(new System.Windows.Point(x0+8, y0+fh-offset-hookSize));
+                bPts.Add(new System.Windows.Point(x0+8, y0+fh-offset));
+                bPts.Add(new System.Windows.Point(x0+fw-8, y0+fh-offset));
+                bPts.Add(new System.Windows.Point(x0+fw-8, y0+fh-offset-hookSize));
+            }
+
+            canvas.Children.Add(new System.Windows.Shapes.Polyline { Stroke = redBrush, StrokeThickness = 2.5, Points = bPts });
+
+            // Dots (Cross bars)
+            double dotZ = y0 + fh - (isMajor ? 12 : 6);
+            for(int i=0; i < totalDots; i++) {
                 System.Windows.Shapes.Ellipse dot = new System.Windows.Shapes.Ellipse { Width=5, Height=5, Fill=redBrush };
-                Canvas.SetLeft(dot, x0 + 15 + i * (fw-30)/7 - 2.5);
-                Canvas.SetTop(dot, bz - (isMajor ? 0 : 7) - 2.5);
+                Canvas.SetLeft(dot, x0 + 15 + i * (fw-30)/(totalDots-1) - 2.5);
+                Canvas.SetTop(dot, dotZ - 2.5);
                 canvas.Children.Add(dot);
             }
-            
-            // Bottom Main Line (with Hooks)
-            System.Windows.Shapes.Polyline bMain = new System.Windows.Shapes.Polyline
-            {
-                Stroke = redBrush, StrokeThickness = 2.5,
-                Points = new PointCollection { 
-                    new System.Windows.Point(x0+8, y0+fh-30), 
-                    new System.Windows.Point(x0+8, y0+fh-8 - (isMajor ? 7 : 0)), 
-                    new System.Windows.Point(x0+fw-8, y0+fh-8 - (isMajor ? 7 : 0)), 
-                    new System.Windows.Point(x0+fw-8, y0+fh-30) 
-                }
-            };
-            canvas.Children.Add(bMain);
 
-            // Top Bars
-            if (hasTop)
-            {
-                double tz = y0 + 10;
-                for(int i=0; i<8; i++)
-                {
+            // --- TOP BARS ---
+            if (CheckAddTopBars?.IsChecked == true) {
+                double topOffset = isMajor ? 6 : 12;
+                PointCollection tPts = new PointCollection();
+                tPts.Add(new System.Windows.Point(x0+8, y0+topOffset+hookSize));
+                tPts.Add(new System.Windows.Point(x0+8, y0+topOffset));
+                tPts.Add(new System.Windows.Point(x0+fw-8, y0+topOffset));
+                tPts.Add(new System.Windows.Point(x0+fw-8, y0+topOffset+hookSize));
+                canvas.Children.Add(new System.Windows.Shapes.Polyline { Stroke = redBrush, StrokeThickness = 2.5, Points = tPts });
+
+                double tDotZ = y0 + (isMajor ? 12 : 6);
+                for(int i=0; i<8; i++) {
                     System.Windows.Shapes.Ellipse dot = new System.Windows.Shapes.Ellipse { Width=5, Height=5, Fill=redBrush };
                     Canvas.SetLeft(dot, x0 + 15 + i * (fw-30)/7 - 2.5);
-                    Canvas.SetTop(dot, tz + (isMajor ? 0 : 7) - 2.5);
+                    Canvas.SetTop(dot, tDotZ - 2.5);
                     canvas.Children.Add(dot);
                 }
-
-                System.Windows.Shapes.Polyline tLine = new System.Windows.Shapes.Polyline
-                {
-                    Stroke = redBrush, StrokeThickness = 2.5,
-                    Points = new PointCollection { 
-                        new System.Windows.Point(x0+8, y0+30), 
-                        new System.Windows.Point(x0+8, y0+8 + (isMajor ? 7 : 0)), 
-                        new System.Windows.Point(x0+fw-8, y0+8 + (isMajor ? 7 : 0)), 
-                        new System.Windows.Point(x0+fw-8, y0+30) 
-                    }
-                };
-                canvas.Children.Add(tLine);
             }
 
-            // Dowels
-            if (hasDowels)
-            {
-                var greyBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(100, 100, 100));
-                for(int i=0; i<2; i++)
-                {
-                    double dx = x0 + 60 + i * (fw-120);
-                    System.Windows.Shapes.Line dowel = new System.Windows.Shapes.Line
-                    {
-                        X1 = dx, Y1 = y0 - 30, X2 = dx, Y2 = y0 + fh - 15,
-                        Stroke = greyBrush, StrokeThickness = 4
-                    };
-                    canvas.Children.Add(dowel);
+            // --- DOWELS & STIRRUPS ---
+            if (CheckAddDowels?.IsChecked == true) {
+                for(int i=0; i<2; i++) {
+                    double dx = x0 + 70 + i * (fw-140);
+                    canvas.Children.Add(new System.Windows.Shapes.Line { X1=dx, Y1=y0-40, X2=dx, Y2=y0+fh-15, Stroke=greyBrush, StrokeThickness=5 });
+                }
+
+                if (CheckAddStirrups?.IsChecked == true) {
+                    // Stirrup rectangles around dowels
+                    for(int i=0; i<3; i++) {
+                        System.Windows.Shapes.Rectangle stirrup = new System.Windows.Shapes.Rectangle { 
+                            Width = fw - 130, Height=6, Stroke=greyBrush, StrokeThickness=1.5 
+                        };
+                        Canvas.SetLeft(stirrup, x0 + 65); Canvas.SetTop(stirrup, y0 - 10 - i*15);
+                        canvas.Children.Add(stirrup);
+                    }
                 }
             }
 
-            // Labels
-            TextBlock label = new TextBlock { Text = isMajor ? "SECTION X-X" : "SECTION Y-Y", FontWeight=FontWeights.Bold, FontSize=10, Foreground=System.Windows.Media.Brushes.DimGray };
-            Canvas.SetLeft(label, x0); Canvas.SetTop(label, y0 + fh + 5);
+            // Title
+            TextBlock label = new TextBlock { 
+                Text = isMajor ? "SECTION X-X (MAJOR)" : "SECTION Y-Y (MINOR)", 
+                FontWeight=FontWeights.Bold, FontSize=10, Foreground=System.Windows.Media.Brushes.DimGray 
+            };
+            Canvas.SetLeft(label, x0); Canvas.SetTop(label, y0 + fh + 8);
             canvas.Children.Add(label);
         }
 
         private void HookUpEvents()
         {
-            CheckAddTopBars.Checked += (s, e) => UpdatePreviews();
-            CheckAddTopBars.Unchecked += (s, e) => UpdatePreviews();
-            CheckAddDowels.Checked += (s, e) => UpdatePreviews();
-            CheckAddDowels.Unchecked += (s, e) => UpdatePreviews();
-            
-            CheckAdditionalB1.Checked += (s, e) => UpdatePreviews();
-            CheckAdditionalB1.Unchecked += (s, e) => UpdatePreviews();
-            CheckAdditionalB2.Checked += (s, e) => UpdatePreviews();
-            CheckAdditionalB2.Unchecked += (s, e) => UpdatePreviews();
-            CheckAdditionalT1.Checked += (s, e) => UpdatePreviews();
-            CheckAdditionalT1.Unchecked += (s, e) => UpdatePreviews();
-            CheckAdditionalT2.Checked += (s, e) => UpdatePreviews();
-            CheckAdditionalT2.Unchecked += (s, e) => UpdatePreviews();
+            // Toggles
+            CheckAddTopBars.Click += (s, e) => UpdatePreviews();
+            CheckAddDowels.Click += (s, e) => UpdatePreviews();
+            CheckAddStirrups.Click += (s, e) => UpdatePreviews();
+            CheckAdditionalB1.Click += (s, e) => UpdatePreviews();
+            CheckAdditionalB2.Click += (s, e) => UpdatePreviews();
+            CheckAdditionalT1.Click += (s, e) => UpdatePreviews();
+            CheckAdditionalT2.Click += (s, e) => UpdatePreviews();
 
+            // Inputs
             InputAddB1Count.TextChanged += (s, e) => UpdatePreviews();
             InputAddB2Count.TextChanged += (s, e) => UpdatePreviews();
             InputDowelCount.TextChanged += (s, e) => UpdatePreviews();
             InputSpacingX.TextChanged += (s, e) => UpdatePreviews();
             InputSpacingY.TextChanged += (s, e) => UpdatePreviews();
             
+            // Combos
+            ComboHookX.SelectionChanged += (s, e) => UpdatePreviews();
+            ComboHookY.SelectionChanged += (s, e) => UpdatePreviews();
             SidebarList.SelectionChanged += (s, e) => UpdatePreviews();
         }
 

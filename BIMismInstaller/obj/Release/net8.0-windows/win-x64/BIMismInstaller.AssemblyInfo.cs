@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BIMism_AI_Agent_Installer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e7037fd4b4cbf60ef7bf5edcbd4b91cf638a0183")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+62f6466ec792230c8a887c49e0ec17456d67ef22")]
 [assembly: System.Reflection.AssemblyProductAttribute("BIMism_AI_Agent_Installer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BIMism_AI_Agent_Installer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
