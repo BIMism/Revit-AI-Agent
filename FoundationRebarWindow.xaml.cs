@@ -120,8 +120,8 @@ namespace RevitAIAgent
             // Hook Orientations
             var hookOrients = new List<string> { "Left - Left", "Right - Right", "Left - Right", "Right - Left" };
             
-            ComboHookOrientX.ItemsSource = hookOrients; ComboHookOrientX.SelectedIndex = 0; // Left-Left default
-            ComboHookOrientY.ItemsSource = hookOrients; ComboHookOrientY.SelectedIndex = 0; 
+            ComboHookOrientX.ItemsSource = hookOrients; ComboHookOrientX.SelectedIndex = 1; // Right-Right default
+            ComboHookOrientY.ItemsSource = hookOrients; ComboHookOrientY.SelectedIndex = 1; 
             ComboTopHookXOrient.ItemsSource = hookOrients; ComboTopHookXOrient.SelectedIndex = 1; // Right-Right default (inverted)
             ComboTopHookYOrient.ItemsSource = hookOrients; ComboTopHookYOrient.SelectedIndex = 1;
 

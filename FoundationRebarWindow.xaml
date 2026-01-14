@@ -155,7 +155,7 @@
                                         <TextBlock Grid.Row="1" Text="Hook:" Margin="0,5"/>
                                         <ComboBox Grid.Row="1" Grid.Column="1" x:Name="ComboHookX" Margin="10,5,0,5"/>
 
-                                        <TextBlock Grid.Row="2" Text="Hook Dir:" Margin="0,5"/>
+                                        <TextBlock Grid.Row="2" Text="Orientation:" Margin="0,5"/>
                                         <ComboBox Grid.Row="2" Grid.Column="1" x:Name="ComboHookOrientX" Margin="10,5,0,5"/>
                                         
                                         <TextBlock Grid.Row="3" Text="Spacing (mm):" Margin="0,5"/>
@@ -194,7 +194,7 @@
                                         <TextBlock Grid.Row="1" Text="Hook:" Margin="0,5"/>
                                         <ComboBox Grid.Row="1" Grid.Column="1" x:Name="ComboHookY" Margin="10,5,0,5"/>
 
-                                        <TextBlock Grid.Row="2" Text="Hook Dir:" Margin="0,5"/>
+                                        <TextBlock Grid.Row="2" Text="Orientation:" Margin="0,5"/>
                                         <ComboBox Grid.Row="2" Grid.Column="1" x:Name="ComboHookOrientY" Margin="10,5,0,5"/>
                                         
                                         <TextBlock Grid.Row="3" Text="Spacing (mm):" Margin="0,5"/>
@@ -235,7 +235,7 @@
                                             <TextBlock Grid.Row="1" Text="Hook:" Margin="0,5"/>
                                             <ComboBox Grid.Row="1" Grid.Column="1" x:Name="ComboTopHookX" Margin="10,5,0,5"/>
 
-                                        <TextBlock Grid.Row="2" Text="Hook Dir:" Margin="0,5"/>
+                                        <TextBlock Grid.Row="2" Text="Orientation:" Margin="0,5"/>
                                         <ComboBox Grid.Row="2" Grid.Column="1" x:Name="ComboTopHookXOrient" Margin="10,5,0,5"/>
                                             
                                             <TextBlock Grid.Row="3" Text="Spacing (mm):" Margin="0,5"/>
@@ -277,7 +277,7 @@
                                             <TextBlock Grid.Row="1" Text="Hook:" Margin="0,5"/>
                                             <ComboBox Grid.Row="1" Grid.Column="1" x:Name="ComboTopHookY" Margin="10,5,0,5"/>
 
-                                            <TextBlock Grid.Row="2" Text="Hook Dir:" Margin="0,5"/>
+                                            <TextBlock Grid.Row="2" Text="Orientation:" Margin="0,5"/>
                                             <ComboBox Grid.Row="2" Grid.Column="1" x:Name="ComboTopHookYOrient" Margin="10,5,0,5"/>
                                             
                                             <TextBlock Grid.Row="3" Text="Spacing (mm):" Margin="0,5"/>

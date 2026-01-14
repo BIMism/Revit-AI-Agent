@@ -1,5 +1,5 @@
 {
-  "version": "2.11.0",
+  "version": "2.11.1",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.11.0: Added MANUAL Hook Direction selection for all rebar layers. You can now choose Left-Left, Right-Right, Left-Right, or Right-Left for each bar group."
+  "releaseNotes": "v2.11.1: Default Hook Orientation is now 'Right-Right' for all layers. Renamed UI label to 'Orientation' for clarity."
 }
