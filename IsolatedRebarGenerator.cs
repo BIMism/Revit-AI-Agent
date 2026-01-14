@@ -123,12 +123,14 @@ namespace RevitAIAgent
                 XYZ endY = new XYZ(min.X + coverDist, max.Y - coverDist, bottomZY);
 
                 CreateRebarSet(doc, foundation, config.BottomBarY, config.HookBottomY, startY, endY,
-                    XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingBottomY * mmToFeet, config.OverrideHookLenBottomY * mmToFeet);
+                    XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingBottomY * mmToFeet, config.OverrideHookLenBottomY * mmToFeet,
+                    RebarHookOrientation.Right, RebarHookOrientation.Left);  // Swapped for Y-direction
                     
                 if (config.AddB2Enabled && config.AddB2Count > 0)
                 {
                    CreateFixedRebarSet(doc, foundation, config.AddB2Type, config.HookBottomY, startY, endY,
-                    XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddB2Count);
+                    XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddB2Count,
+                    RebarHookOrientation.Right, RebarHookOrientation.Left);
                 }
             }
 
@@ -160,13 +162,13 @@ namespace RevitAIAgent
                     XYZ endTopY = new XYZ(min.X + coverDist, max.Y - coverDist, topZY);
                     CreateRebarSet(doc, foundation, config.TopBarY, config.HookTopY, startTopY, endTopY,
                         XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingTopY * mmToFeet, config.OverrideHookLenTopY * mmToFeet,
-                        RebarHookOrientation.Right, RebarHookOrientation.Left);
+                        RebarHookOrientation.Left, RebarHookOrientation.Right);  // Swapped for Y-direction
 
                     if (config.AddT2Enabled && config.AddT2Count > 0)
                     {
                         CreateFixedRebarSet(doc, foundation, config.AddT2Type, config.HookTopY, startTopY, endTopY,
                         XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddT2Count,
-                        RebarHookOrientation.Right, RebarHookOrientation.Left);
+                        RebarHookOrientation.Left, RebarHookOrientation.Right);
                     }
                 }
             }
@@ -196,7 +198,7 @@ namespace RevitAIAgent
                     try {
                         Rebar.CreateFromCurves(doc, RebarStyle.Standard, config.DowelBarType, 
                         config.DowelHookBase, null, foundation, XYZ.BasisY, curves, 
-                        RebarHookOrientation.Left, RebarHookOrientation.Left, true, true);
+                        RebarHookOrientation.Right, RebarHookOrientation.Right, true, true);  // Right = hook at bottom points up
                     } catch {}
                 }
             }
