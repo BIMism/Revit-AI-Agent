@@ -159,151 +159,109 @@ namespace RevitAIAgent
                 case 6: PanelStirrups.Visibility = System.Windows.Visibility.Visible; break;
             }
             
-            // Trigger 3D update
-            Update3DPreview();
+            // Trigger update
+            UpdatePreviews();
         }
         
-        private void Update3DPreview()
+        private void UpdatePreviews()
         {
-            if (PreviewViewport == null) return;
+            if (CanvasSectionMajor == null || CanvasSectionMinor == null) return;
             if (CheckDynamicUpdate != null && CheckDynamicUpdate.IsChecked == false) return;
 
-            var toRemove = new List<Visual3D>();
-            foreach (var child in PreviewViewport.Children)
-            {
-                if (!(child is ModelVisual3D mv && mv.Content is Light))
-                    toRemove.Add(child as Visual3D);
-            }
-            foreach (var r in toRemove) PreviewViewport.Children.Remove(r);
-
-            double w = 2.0, l = 2.0, h = 0.8;
-            Model3DGroup group = new Model3DGroup();
-
-            // Concrete (Solid light grey for visibility)
-            AddCube(group, new Point3D(0, 0, 0), new Point3D(w, l, h), 
-                System.Windows.Media.Color.FromArgb(120, 200, 200, 200));
-
-            double cover = 0.12;
-            double barThick = 0.1; // Bright red and thick
-            var redColor = System.Windows.Media.Color.FromRgb(255, 0, 0);
-            var whiteColor = System.Windows.Media.Color.FromRgb(255, 255, 255);
-
-            // B1 & B2 (Bottom Rebar)
-            RenderRebarLayer(group, w, l, h, cover, barThick, redColor, true);
-
-            // T1 & T2 (Top Rebar)
-            if (CheckAddTopBars?.IsChecked == true)
-                RenderRebarLayer(group, w, l, h, cover, barThick, redColor, false);
-
-            // Dowels
-            if (CheckAddDowels?.IsChecked == true)
-                RenderDowels(group, w, l, h, cover, 0.1, whiteColor);
-
-            ModelVisual3D modelVis = new ModelVisual3D { Content = group };
-            PreviewViewport.Children.Add(modelVis);
-
-            UpdateSectionPreview();
+            DrawSection(CanvasSectionMajor, true);  // Major (B1, T1)
+            DrawSection(CanvasSectionMinor, false); // Minor (B2, T2)
         }
 
-        private void UpdateSectionPreview()
+        private void DrawSection(Canvas canvas, bool isMajor)
         {
-            if (SectionCanvas == null) return;
-            SectionCanvas.Children.Clear();
-
-            double cw = SectionCanvas.Width, ch = SectionCanvas.Height;
-            double fw = 180, fh = 60;
-            double x0 = (cw - fw) / 2, y0 = (ch - fh) / 2 + 20;
+            canvas.Children.Clear();
+            double cw = canvas.Width, ch = canvas.Height;
+            double fw = 200, fh = 70;
+            double x0 = (cw - fw) / 2, y0 = (ch - fh) / 2 + 10;
 
             // Footing Rect
             System.Windows.Shapes.Rectangle footing = new System.Windows.Shapes.Rectangle
             {
-                Width = fw, Height = fh, Fill = System.Windows.Media.Brushes.LightGray, Stroke = System.Windows.Media.Brushes.DimGray, StrokeThickness = 2
+                Width = fw, Height = fh, Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(240, 240, 240)), 
+                Stroke = System.Windows.Media.Brushes.DimGray, StrokeThickness = 2
             };
             Canvas.SetLeft(footing, x0); Canvas.SetTop(footing, y0);
-            SectionCanvas.Children.Add(footing);
+            canvas.Children.Add(footing);
 
-            // Bottom Bars
-            for(int i=0; i<10; i++)
+            // Rebar Logic
+            bool hasTop = CheckAddTopBars?.IsChecked == true;
+            bool hasDowels = CheckAddDowels?.IsChecked == true;
+            var redBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(220, 20, 20));
+
+            // Bottom Bars (Section Dots for cross, Line for main)
+            double bz = y0 + fh - 10;
+            for(int i=0; i<8; i++)
             {
-                System.Windows.Shapes.Ellipse dot = new System.Windows.Shapes.Ellipse { Width=4, Height=4, Fill=System.Windows.Media.Brushes.Red };
-                Canvas.SetLeft(dot, x0 + 10 + i * (fw-20)/9 - 2); Canvas.SetTop(dot, y0 + fh - 10 - 2);
-                SectionCanvas.Children.Add(dot);
+                System.Windows.Shapes.Ellipse dot = new System.Windows.Shapes.Ellipse { Width=5, Height=5, Fill=redBrush };
+                Canvas.SetLeft(dot, x0 + 15 + i * (fw-30)/7 - 2.5);
+                Canvas.SetTop(dot, bz - (isMajor ? 0 : 7) - 2.5);
+                canvas.Children.Add(dot);
             }
             
-            System.Windows.Shapes.Polyline bLine = new System.Windows.Shapes.Polyline { Stroke = System.Windows.Media.Brushes.Red, StrokeThickness = 2, Points = new PointCollection { new System.Windows.Point(x0+5, y0+fh-30), new System.Windows.Point(x0+5, y0+fh-5), new System.Windows.Point(x0+fw-5, y0+fh-5), new System.Windows.Point(x0+fw-5, y0+fh-30) } };
-            SectionCanvas.Children.Add(bLine);
+            // Bottom Main Line (with Hooks)
+            System.Windows.Shapes.Polyline bMain = new System.Windows.Shapes.Polyline
+            {
+                Stroke = redBrush, StrokeThickness = 2.5,
+                Points = new PointCollection { 
+                    new System.Windows.Point(x0+8, y0+fh-30), 
+                    new System.Windows.Point(x0+8, y0+fh-8 - (isMajor ? 7 : 0)), 
+                    new System.Windows.Point(x0+fw-8, y0+fh-8 - (isMajor ? 7 : 0)), 
+                    new System.Windows.Point(x0+fw-8, y0+fh-30) 
+                }
+            };
+            canvas.Children.Add(bMain);
 
             // Top Bars
-            if (CheckAddTopBars?.IsChecked == true)
+            if (hasTop)
             {
-                System.Windows.Shapes.Polyline tLine = new System.Windows.Shapes.Polyline { Stroke = System.Windows.Media.Brushes.Red, StrokeThickness = 2, Points = new PointCollection { new System.Windows.Point(x0+5, y0+30), new System.Windows.Point(x0+5, y0+5), new System.Windows.Point(x0+fw-5, y0+5), new System.Windows.Point(x0+fw-5, y0+30) } };
-                SectionCanvas.Children.Add(tLine);
+                double tz = y0 + 10;
+                for(int i=0; i<8; i++)
+                {
+                    System.Windows.Shapes.Ellipse dot = new System.Windows.Shapes.Ellipse { Width=5, Height=5, Fill=redBrush };
+                    Canvas.SetLeft(dot, x0 + 15 + i * (fw-30)/7 - 2.5);
+                    Canvas.SetTop(dot, tz + (isMajor ? 0 : 7) - 2.5);
+                    canvas.Children.Add(dot);
+                }
+
+                System.Windows.Shapes.Polyline tLine = new System.Windows.Shapes.Polyline
+                {
+                    Stroke = redBrush, StrokeThickness = 2.5,
+                    Points = new PointCollection { 
+                        new System.Windows.Point(x0+8, y0+30), 
+                        new System.Windows.Point(x0+8, y0+8 + (isMajor ? 7 : 0)), 
+                        new System.Windows.Point(x0+fw-8, y0+8 + (isMajor ? 7 : 0)), 
+                        new System.Windows.Point(x0+fw-8, y0+30) 
+                    }
+                };
+                canvas.Children.Add(tLine);
+            }
+
+            // Dowels
+            if (hasDowels)
+            {
+                var greyBrush = new SolidColorBrush(System.Windows.Media.Color.FromRgb(100, 100, 100));
+                for(int i=0; i<2; i++)
+                {
+                    double dx = x0 + 60 + i * (fw-120);
+                    System.Windows.Shapes.Line dowel = new System.Windows.Shapes.Line
+                    {
+                        X1 = dx, Y1 = y0 - 30, X2 = dx, Y2 = y0 + fh - 15,
+                        Stroke = greyBrush, StrokeThickness = 4
+                    };
+                    canvas.Children.Add(dowel);
+                }
             }
 
             // Labels
-            TextBlock lb = new TextBlock { Text="lb", FontSize=10, Foreground=System.Windows.Media.Brushes.Black };
-            Canvas.SetLeft(lb, x0 - 15); Canvas.SetTop(lb, y0 + fh - 20);
-            SectionCanvas.Children.Add(lb);
+            TextBlock label = new TextBlock { Text = isMajor ? "SECTION X-X" : "SECTION Y-Y", FontWeight=FontWeights.Bold, FontSize=10, Foreground=System.Windows.Media.Brushes.DimGray };
+            Canvas.SetLeft(label, x0); Canvas.SetTop(label, y0 + fh + 5);
+            canvas.Children.Add(label);
         }
-
-        private void RenderRebarLayer(Model3DGroup group, double w, double l, double h, double cover, double thick, System.Windows.Media.Color c, bool isBottom)
-        {
-            double z = isBottom ? cover : (h - cover);
-            double hookLen = 0.4, hookDir = isBottom ? 1.0 : -1.0;
-            int count = 8;
-            for (int i = 0; i < count; i++)
-            {
-                double pos = cover + i * (l - 2 * cover) / (count - 1);
-                Point3D p1 = new Point3D(cover, pos, z), p2 = new Point3D(w - cover, pos, z);
-                AddCylinder(group, p1, p2, thick, c); 
-                AddCylinder(group, p1, new Point3D(p1.X, p1.Y, p1.Z + hookLen * hookDir), thick, c);
-                AddCylinder(group, p2, new Point3D(p2.X, p2.Y, p2.Z + hookLen * hookDir), thick, c);
-            }
-            for (int i = 0; i < count; i++)
-            {
-                double pos = cover + i * (w - 2 * cover) / (count - 1);
-                Point3D p1 = new Point3D(pos, cover, z), p2 = new Point3D(pos, l - cover, z);
-                AddCylinder(group, p1, p2, thick, c);
-            }
-        }
-
-        private void RenderDowels(Model3DGroup group, double w, double l, double h, double cover, double thick, System.Windows.Media.Color c)
-        {
-            double m = 0.4, dH = h + 0.6;
-            AddCylinder(group, new Point3D(m, m, 0), new Point3D(m, m, dH), thick, c);
-            AddCylinder(group, new Point3D(w-m, m, 0), new Point3D(w-m, m, dH), thick, c);
-            AddCylinder(group, new Point3D(w-m, l-m, 0), new Point3D(w-m, l-m, dH), thick, c);
-            AddCylinder(group, new Point3D(m, l-m, 0), new Point3D(m, l-m, dH), thick, c);
-        }
-
-        private void AddCube(Model3DGroup group, Point3D min, Point3D max, System.Windows.Media.Color c)
-        {
-            GeometryModel3D model = new GeometryModel3D();
-            MeshGeometry3D mesh = new MeshGeometry3D();
-            Point3D[] pts = { new Point3D(min.X, min.Y, min.Z), new Point3D(max.X, min.Y, min.Z), new Point3D(max.X, max.Y, min.Z), new Point3D(min.X, max.Y, min.Z), new Point3D(min.X, min.Y, max.Z), new Point3D(max.X, min.Y, max.Z), new Point3D(max.X, max.Y, max.Z), new Point3D(min.X, max.Y, max.Z) };
-            foreach (var p in pts) mesh.Positions.Add(p);
-            int[] idx = { 0,1,2, 0,2,3, 4,6,5, 4,7,6, 0,4,1, 1,4,5, 2,6,3, 3,6,7, 1,5,2, 2,5,6, 0,3,4, 3,7,4 };
-            foreach (var i in idx) mesh.TriangleIndices.Add(i);
-            model.Geometry = mesh;
-            model.Material = new DiffuseMaterial(new SolidColorBrush(c));
-            group.Children.Add(model);
-        }
-
-        private void AddCylinder(Model3DGroup group, Point3D p1, Point3D p2, double rad, System.Windows.Media.Color c)
-        {
-            double x1 = Math.Min(p1.X, p2.X)-rad, x2 = Math.Max(p1.X, p2.X)+rad, y1 = Math.Min(p1.Y, p2.Y)-rad, y2 = Math.Max(p1.Y, p2.Y)+rad, z1 = Math.Min(p1.Z, p2.Z)-rad, z2 = Math.Max(p1.Z, p2.Z)+rad;
-            GeometryModel3D model = new GeometryModel3D();
-            MeshGeometry3D mesh = new MeshGeometry3D();
-            Point3D[] pts = { new Point3D(x1,y1,z1), new Point3D(x2,y1,z1), new Point3D(x2,y2,z1), new Point3D(x1,y2,z1), new Point3D(x1,y1,z2), new Point3D(x2,y1,z2), new Point3D(x2,y2,z2), new Point3D(x1,y2,z2) };
-            foreach (var p in pts) mesh.Positions.Add(p);
-            int[] idx = { 0,1,2, 0,2,3, 4,6,5, 4,7,6, 0,4,1, 1,4,5, 1,5,2, 2,5,6, 2,6,3, 3,6,7, 3,7,0, 0,7,4 };
-            foreach (var i in idx) mesh.TriangleIndices.Add(i);
-            model.Geometry = mesh;
-            model.Material = new EmissiveMaterial(new SolidColorBrush(c)); 
-            group.Children.Add(model);
-        }
-
-        private void AddCylinder(Model3DGroup group, Point3D p1, Point3D p2, double rad, System.Windows.Media.Color c) { }
 
         private void HookUpEvents()
         {
@@ -311,6 +269,7 @@ namespace RevitAIAgent
             CheckAddTopBars.Unchecked += (s, e) => UpdatePreviews();
             CheckAddDowels.Checked += (s, e) => UpdatePreviews();
             CheckAddDowels.Unchecked += (s, e) => UpdatePreviews();
+            
             CheckAdditionalB1.Checked += (s, e) => UpdatePreviews();
             CheckAdditionalB1.Unchecked += (s, e) => UpdatePreviews();
             CheckAdditionalB2.Checked += (s, e) => UpdatePreviews();
