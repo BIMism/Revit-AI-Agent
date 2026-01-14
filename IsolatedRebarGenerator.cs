@@ -141,12 +141,14 @@ namespace RevitAIAgent
                 XYZ startTopX = new XYZ(min.X + coverDist, min.Y + coverDist, topZ);
                 XYZ endTopX = new XYZ(max.X - coverDist, min.Y + coverDist, topZ);
                 CreateRebarSet(doc, foundation, config.TopBarX, config.HookTopX, startTopX, endTopX,
-                    XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.SpacingTopX * mmToFeet, config.OverrideHookLenTopX * mmToFeet);
+                    XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.SpacingTopX * mmToFeet, config.OverrideHookLenTopX * mmToFeet,
+                    RebarHookOrientation.Right, RebarHookOrientation.Left);
 
                 if (config.AddT1Enabled && config.AddT1Count > 0)
                 {
                     CreateFixedRebarSet(doc, foundation, config.AddT1Type, config.HookTopX, startTopX, endTopX,
-                    XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.AddT1Count);
+                    XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.AddT1Count,
+                    RebarHookOrientation.Right, RebarHookOrientation.Left);
                 }
 
                 // Top Y (Under Top X)
@@ -157,12 +159,14 @@ namespace RevitAIAgent
                     XYZ startTopY = new XYZ(min.X + coverDist, min.Y + coverDist, topZY);
                     XYZ endTopY = new XYZ(min.X + coverDist, max.Y - coverDist, topZY);
                     CreateRebarSet(doc, foundation, config.TopBarY, config.HookTopY, startTopY, endTopY,
-                        XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingTopY * mmToFeet, config.OverrideHookLenTopY * mmToFeet);
+                        XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingTopY * mmToFeet, config.OverrideHookLenTopY * mmToFeet,
+                        RebarHookOrientation.Right, RebarHookOrientation.Left);
 
                     if (config.AddT2Enabled && config.AddT2Count > 0)
                     {
                         CreateFixedRebarSet(doc, foundation, config.AddT2Type, config.HookTopY, startTopY, endTopY,
-                        XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddT2Count);
+                        XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddT2Count,
+                        RebarHookOrientation.Right, RebarHookOrientation.Left);
                     }
                 }
             }
@@ -199,7 +203,9 @@ namespace RevitAIAgent
         }
 
         private void CreateRebarSet(Document doc, Element host, RebarBarType barType, RebarHookType hookType, 
-            XYZ start, XYZ end, XYZ distributionDir, double distributionLength, double spacing, double? overrideHookLen = null)
+            XYZ start, XYZ end, XYZ distributionDir, double distributionLength, double spacing, double? overrideHookLen = null,
+            RebarHookOrientation hookOrientStart = RebarHookOrientation.Left, 
+            RebarHookOrientation hookOrientEnd = RebarHookOrientation.Right)
         {
             if (barType == null) return;
             
@@ -209,7 +215,7 @@ namespace RevitAIAgent
             try
             {
                 Rebar rebar = Rebar.CreateFromCurves(doc, RebarStyle.Standard, barType, hookType, hookType, 
-                    host, distributionDir, curves, RebarHookOrientation.Right, RebarHookOrientation.Right, true, true);
+                    host, distributionDir, curves, hookOrientStart, hookOrientEnd, true, true);
 
                 if (rebar != null)
                 {
@@ -236,7 +242,9 @@ namespace RevitAIAgent
         }
 
         private void CreateFixedRebarSet(Document doc, Element host, RebarBarType barType, RebarHookType hookType, 
-            XYZ start, XYZ end, XYZ distributionDir, double distributionLength, int count)
+            XYZ start, XYZ end, XYZ distributionDir, double distributionLength, int count,
+            RebarHookOrientation hookOrientStart = RebarHookOrientation.Left, 
+            RebarHookOrientation hookOrientEnd = RebarHookOrientation.Right)
         {
             if (barType == null || count < 2) return;
             
@@ -246,7 +254,7 @@ namespace RevitAIAgent
             try
             {
                 Rebar rebar = Rebar.CreateFromCurves(doc, RebarStyle.Standard, barType, hookType, hookType, 
-                    host, distributionDir, curves, RebarHookOrientation.Right, RebarHookOrientation.Right, true, true);
+                    host, distributionDir, curves, hookOrientStart, hookOrientEnd, true, true);
 
                 if (rebar != null)
                 {

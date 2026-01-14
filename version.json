@@ -1,5 +1,5 @@
 {
-  "version": "2.9.1",
+  "version": "2.9.2",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.9.1: UI Polish - Rounded dimensions, removed duplicate labels, improved hook visualization with better proportions."
+  "releaseNotes": "v2.9.2: CRITICAL FIX - Corrected rebar hook orientations. Bottom bar hooks now point UP, Top bar hooks point DOWN for proper structural detailing."
 }
