@@ -190,7 +190,7 @@ namespace RevitAIAgent
             }
         }
 
-        private void BtnOK_Click(object sender, RoutedEventArgs e)
+        private void BtnOk_Click(object sender, RoutedEventArgs e)
         {
             try
             {
