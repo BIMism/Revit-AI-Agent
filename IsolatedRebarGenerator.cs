@@ -17,6 +17,14 @@ namespace RevitAIAgent
         public RebarHookType HookBottomY { get; set; }
         public double? OverrideHookLenBottomX { get; set; } // Null if no override
         public double? OverrideHookLenBottomY { get; set; }
+        
+        public bool AddB1Enabled { get; set; }
+        public RebarBarType AddB1Type { get; set; }
+        public int AddB1Count { get; set; }
+
+        public bool AddB2Enabled { get; set; }
+        public RebarBarType AddB2Type { get; set; }
+        public int AddB2Count { get; set; }
 
         // Top Bars
         public bool TopBarsEnabled { get; set; }
@@ -28,6 +36,14 @@ namespace RevitAIAgent
         public RebarHookType HookTopY { get; set; }
         public double? OverrideHookLenTopX { get; set; }
         public double? OverrideHookLenTopY { get; set; }
+
+        public bool AddT1Enabled { get; set; }
+        public RebarBarType AddT1Type { get; set; }
+        public int AddT1Count { get; set; }
+
+        public bool AddT2Enabled { get; set; }
+        public RebarBarType AddT2Type { get; set; }
+        public int AddT2Count { get; set; }
 
         // Dowels
         public bool DowelsEnabled { get; set; }
@@ -87,6 +103,14 @@ namespace RevitAIAgent
             CreateRebarSet(doc, foundation, config.BottomBarX, config.HookBottomX, startX, endX, 
                 XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.SpacingBottomX * mmToFeet, config.OverrideHookLenBottomX * mmToFeet);
 
+            if (config.AddB1Enabled && config.AddB1Count > 0)
+            {
+                // Create additional bars distributed same as B1
+                // Just use fixed count instead of spacing
+                CreateFixedRebarSet(doc, foundation, config.AddB1Type, config.HookBottomX, startX, endX, 
+                    XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.AddB1Count); 
+            }
+
             // BOTTOM BARS Y (Transversal)
             if (config.BottomBarX != null)
             {
@@ -100,6 +124,12 @@ namespace RevitAIAgent
 
                 CreateRebarSet(doc, foundation, config.BottomBarY, config.HookBottomY, startY, endY,
                     XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingBottomY * mmToFeet, config.OverrideHookLenBottomY * mmToFeet);
+                    
+                if (config.AddB2Enabled && config.AddB2Count > 0)
+                {
+                   CreateFixedRebarSet(doc, foundation, config.AddB2Type, config.HookBottomY, startY, endY,
+                    XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddB2Count);
+                }
             }
 
             // TOP BARS
@@ -113,6 +143,12 @@ namespace RevitAIAgent
                 CreateRebarSet(doc, foundation, config.TopBarX, config.HookTopX, startTopX, endTopX,
                     XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.SpacingTopX * mmToFeet, config.OverrideHookLenTopX * mmToFeet);
 
+                if (config.AddT1Enabled && config.AddT1Count > 0)
+                {
+                    CreateFixedRebarSet(doc, foundation, config.AddT1Type, config.HookTopX, startTopX, endTopX,
+                    XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.AddT1Count);
+                }
+
                 // Top Y (Under Top X)
                 if (config.TopBarX != null)
                 {
@@ -122,6 +158,12 @@ namespace RevitAIAgent
                     XYZ endTopY = new XYZ(min.X + coverDist, max.Y - coverDist, topZY);
                     CreateRebarSet(doc, foundation, config.TopBarY, config.HookTopY, startTopY, endTopY,
                         XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingTopY * mmToFeet, config.OverrideHookLenTopY * mmToFeet);
+
+                    if (config.AddT2Enabled && config.AddT2Count > 0)
+                    {
+                        CreateFixedRebarSet(doc, foundation, config.AddT2Type, config.HookTopY, startTopY, endTopY,
+                        XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddT2Count);
+                    }
                 }
             }
 
@@ -188,6 +230,27 @@ namespace RevitAIAgent
                         if (pStart != null && !pStart.IsReadOnly) pStart.Set(overrideHookLen.Value);
                         if (pEnd != null && !pEnd.IsReadOnly) pEnd.Set(overrideHookLen.Value);
                     }
+                }
+            }
+            catch { }
+        }
+
+        private void CreateFixedRebarSet(Document doc, Element host, RebarBarType barType, RebarHookType hookType, 
+            XYZ start, XYZ end, XYZ distributionDir, double distributionLength, int count)
+        {
+            if (barType == null || count < 2) return;
+            
+            Line curve = Line.CreateBound(start, end);
+            List<Curve> curves = new List<Curve> { curve };
+
+            try
+            {
+                Rebar rebar = Rebar.CreateFromCurves(doc, RebarStyle.Standard, barType, hookType, hookType, 
+                    host, distributionDir, curves, RebarHookOrientation.Right, RebarHookOrientation.Right, true, true);
+
+                if (rebar != null)
+                {
+                    rebar.GetShapeDrivenAccessor().SetLayoutAsFixedNumber(count, distributionLength, true, true, true);
                 }
             }
             catch { }
