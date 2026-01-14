@@ -26,6 +26,7 @@ namespace RevitAIAgent
             LoadIcons();
             
             // Init 3D
+            HookUpEvents();
             Update3DPreview();
         }
 
@@ -237,31 +238,74 @@ namespace RevitAIAgent
             double cover = 0.1;
             double z = isBottom ? cover : h - cover;
             double spacing = isX ? (l - 2*cover) / (count-1) : (w - 2*cover) / (count-1);
-            
+            double t = 0.05; // Bar thickness
+
             for(int i=0; i<count; i++)
             {
                 GeometryModel3D bar = new GeometryModel3D();
                 MeshGeometry3D mesh = new MeshGeometry3D();
                 
-                double thickness = 0.02;
-                Point3D p1 = isX 
+                // Calculate center line start/end
+                Point3D pStart = isX 
                     ? new Point3D(cover, cover + i*spacing, z)
                     : new Point3D(cover + i*spacing, cover, z);
                 
-                Point3D p2 = isX
+                Point3D pEnd = isX
                     ? new Point3D(w - cover, cover + i*spacing, z)
                     : new Point3D(cover + i*spacing, l - cover, z);
-                
-                // Extremely simple line thickness (box)
-                mesh.Positions.Add(p1);
-                mesh.Positions.Add(p2);
-                mesh.Positions.Add(new Point3D(p1.X, p1.Y, p1.Z+thickness));
-                mesh.TriangleIndices.Add(0); mesh.TriangleIndices.Add(1); mesh.TriangleIndices.Add(2);
-                
+
+                // Create a thin box around this line
+                // For simplicity, axis aligned box
+                double x1 = Math.Min(pStart.X, pEnd.X) - t/2;
+                double x2 = Math.Max(pStart.X, pEnd.X) + t/2;
+                double y1 = Math.Min(pStart.Y, pEnd.Y) - t/2;
+                double y2 = Math.Max(pStart.Y, pEnd.Y) + t/2;
+                double z1 = z - t/2;
+                double z2 = z + t/2;
+
+                Point3D[] pts = new Point3D[]
+                {
+                    new Point3D(x1, y1, z1), new Point3D(x2, y1, z1), new Point3D(x2, y2, z1), new Point3D(x1, y2, z1), // Bottom
+                    new Point3D(x1, y1, z2), new Point3D(x2, y1, z2), new Point3D(x2, y2, z2), new Point3D(x1, y2, z2)  // Top
+                };
+                foreach (Point3D p in pts) mesh.Positions.Add(p);
+
+                int[] idx = new int[] 
+                { 
+                    0,1,2, 0,2,3, // Bottom
+                    4,6,5, 4,7,6, // Top
+                    0,4,1, 1,4,5, // Side 1
+                    1,5,2, 2,5,6, // Side 2
+                    2,6,3, 3,6,7, // Side 3
+                    3,7,0, 0,7,4  // Side 4
+                };
+                foreach (int id in idx) mesh.TriangleIndices.Add(id);
+
                 bar.Geometry = mesh;
                 bar.Material = new DiffuseMaterial(new SolidColorBrush(c));
                 group.Children.Add(bar);
             }
+        }
+
+        private void HookUpEvents()
+        {
+            // Helper to hook up events safely
+            CheckAddTopBars.Checked += (s, e) => Update3DPreview();
+            CheckAddTopBars.Unchecked += (s, e) => Update3DPreview();
+            
+            CheckAdditionalB1.Checked += (s, e) => Update3DPreview();
+            CheckAdditionalB1.Unchecked += (s, e) => Update3DPreview();
+   
+            CheckAdditionalB2.Checked += (s, e) => Update3DPreview();
+            CheckAdditionalB2.Unchecked += (s, e) => Update3DPreview();
+
+            CheckAdditionalT1.Checked += (s, e) => Update3DPreview();
+            CheckAdditionalT1.Unchecked += (s, e) => Update3DPreview();
+
+            // Text changes (simple lost focus or changed)
+            InputAddB1Count.TextChanged += (s, e) => Update3DPreview();
+            InputAddB2Count.TextChanged += (s, e) => Update3DPreview();
+            // ... add others if needed
         }
 
         private void BtnOk_Click(object sender, RoutedEventArgs e)

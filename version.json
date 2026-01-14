@@ -1,5 +1,5 @@
 {
-  "version": "2.4.2",
+  "version": "2.4.3",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.4.2: Fixed critical crash related to 'StaticResourceExtension' in Foundation Rebar tool."
+  "releaseNotes": "v2.4.3: Fixed 3D Preview Geometry visibility and added dynamic updates for UI changes."
 }

@@ -6,7 +6,7 @@
     <Configurations>Debug;Release</Configurations>
     <Platforms>x64</Platforms>
     <AssemblyName>RevitAIAgent</AssemblyName>
-    <Version>2.4.2</Version>
+    <Version>2.4.3</Version>
     <AssemblyTitle>BIMism AI Agent</AssemblyTitle>
     <Product>BIMism AI Agent</Product>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
