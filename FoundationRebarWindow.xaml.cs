@@ -167,120 +167,159 @@ namespace RevitAIAgent
         {
             if (PreviewViewport == null) return;
 
-            // Clear existing models except lights
             var toRemove = new List<Visual3D>();
             foreach (var child in PreviewViewport.Children)
             {
                 if (!(child is ModelVisual3D mv && mv.Content is Light))
-                {
                     toRemove.Add(child as Visual3D);
-                }
             }
             foreach (var r in toRemove) PreviewViewport.Children.Remove(r);
 
-            // Create Footing Box (Transparent Grey)
-            double w = 2.0; double l = 2.0; double h = 1.0;
-            
+            double w = 2.0, l = 2.0, h = 1.0;
             Model3DGroup group = new Model3DGroup();
-            
-            // Concrete
-            GeometryModel3D concrete = new GeometryModel3D();
-            MeshGeometry3D mesh = new MeshGeometry3D();
-            
-            Point3D[] corners = new Point3D[] {
-                new Point3D(0,0,0), new Point3D(w,0,0), new Point3D(w,l,0), new Point3D(0,l,0),
-                new Point3D(0,0,h), new Point3D(w,0,h), new Point3D(w,l,h), new Point3D(0,l,h)
-            };
-            foreach(var p in corners) mesh.Positions.Add(p);
-            
-            int[] indices = new int[] { 
-                0,1,2, 0,2,3, 4,6,5, 4,7,6, 0,4,1, 1,4,5, 2,6,3, 3,6,7, 1,5,2, 2,5,6, 0,3,4, 3,7,4
-            };
-            foreach(var i in indices) mesh.TriangleIndices.Add(i);
-            
-            concrete.Geometry = mesh;
-            concrete.Material = new DiffuseMaterial(new SolidColorBrush(System.Windows.Media.Color.FromArgb(100, 200, 200, 200))); 
-            concrete.BackMaterial = new DiffuseMaterial(new SolidColorBrush(System.Windows.Media.Color.FromArgb(100, 150, 150, 150)));
-            group.Children.Add(concrete);
 
-            // Rebar Color (Red for all to match request)
-            var rebarColor = System.Windows.Media.Color.FromRgb(255, 50, 50);
+            // Concrete (Semi-transparent grey)
+            AddCube(group, new Point3D(0, 0, 0), new Point3D(w, l, h), 
+                System.Windows.Media.Color.FromArgb(80, 180, 180, 180));
 
-            // B1 (X dir, bottom) - Hooks Up
-            AddRebarSet(group, w, l, h, true, true, 8, rebarColor, true);
-            // B2 (Y dir, bottom) - Hooks Up
-            AddRebarSet(group, w, l, h, false, true, 8, rebarColor, true);
-            
-            if (CheckAddTopBars.IsChecked == true)
+            double cover = 0.1;
+            double barThick = 0.08; // MUCH thicker for visibility
+            var redColor = System.Windows.Media.Color.FromRgb(220, 50, 50);
+            var greyColor = System.Windows.Media.Color.FromRgb(140, 140, 140);
+
+            // B1 & B2 (Bottom Rebar)
+            RenderRebarLayer(group, w, l, h, cover, barThick, redColor, true);
+
+            // T1 & T2 (Top Rebar) - if enabled
+            if (CheckAddTopBars != null && CheckAddTopBars.IsChecked == true)
+                RenderRebarLayer(group, w, l, h, cover, barThick, redColor, false);
+
+            // Dowels (if enabled)
+            if (CheckAddDowels != null && CheckAddDowels.IsChecked == true)
             {
-                 // T1 (X dir, top) - Hooks Down
-                AddRebarSet(group, w, l, h, true, false, 8, rebarColor, true);
-                // T2 (Y dir, top) - Hooks Down
-                AddRebarSet(group, w, l, h, false, false, 8, rebarColor, true);
+                int dowelCount = 4;
+                if (int.TryParse(InputDowelCount?.Text, out int dc)) dowelCount = dc;
+                RenderDowels(group, w, l, h, cover, dowelCount, barThick, greyColor);
             }
 
-            ModelVisual3D modelVis = new ModelVisual3D();
-            modelVis.Content = group;
+            ModelVisual3D modelVis = new ModelVisual3D { Content = group };
             PreviewViewport.Children.Add(modelVis);
         }
 
-        private void AddRebarSet(Model3DGroup group, double w, double l, double h, bool isX, bool isBottom, int count, System.Windows.Media.Color c, bool hasHooks)
+        private void RenderRebarLayer(Model3DGroup group, double w, double l, double h, double cover, double thick, System.Windows.Media.Color c, bool isBottom)
         {
-            double cover = 0.1;
-            double z = isBottom ? cover : h - cover;
-            double spacing = isX ? (l - 2*cover) / (count-1) : (w - 2*cover) / (count-1);
-            double t = 0.03; // Bar thickness
-            double hookLen = 0.6; // Visual hook length
+            double z = isBottom ? cover : (h - cover);
+            double hookLen = 0.5; // Hook length
+            double hookDir = isBottom ? 1.0 : -1.0;
+            int count = 8;
 
-            for(int i=0; i<count; i++)
+            // X-direction bars (B1 or T1)
+            for (int i = 0; i < count; i++)
             {
-                // Main Bar
-                Point3D pStart = isX ? new Point3D(cover, cover + i*spacing, z) : new Point3D(cover + i*spacing, cover, z);
-                Point3D pEnd = isX ? new Point3D(w - cover, cover + i*spacing, z) : new Point3D(cover + i*spacing, l - cover, z);
+                double y = cover + i * (l - 2 * cover) / (count - 1);
+                Point3D p1 = new Point3D(cover, y, z);
+                Point3D p2 = new Point3D(w - cover, y, z);
                 
-                AddBox(group, pStart, pEnd, t, c);
+                // Main bar
+                AddCylinder(group, p1, p2, thick, c);
+                
+                // Hooks at ends
+                AddCylinder(group, p1, new Point3D(p1.X, p1.Y, p1.Z + hookLen * hookDir), thick, c);
+                AddCylinder(group, p2, new Point3D(p2.X, p2.Y, p2.Z + hookLen * hookDir), thick, c);
+            }
 
-                // Hooks
-                if (hasHooks)
+            // Y-direction bars (B2 or T2)
+            for (int i = 0; i < count; i++)
+            {
+                double x = cover + i * (w - 2 * cover) / (count - 1);
+                Point3D p1 = new Point3D(x, cover, z);
+                Point3D p2 = new Point3D(x, l - cover, z);
+                
+                // Main bar
+                AddCylinder(group, p1, p2, thick, c);
+                
+                // Hooks at ends
+                AddCylinder(group, p1, new Point3D(p1.X, p1.Y, p1.Z + hookLen * hookDir), thick, c);
+                AddCylinder(group, p2, new Point3D(p2.X, p2.Y, p2.Z + hookLen * hookDir), thick, c);
+            }
+        }
+
+        private void RenderDowels(Model3DGroup group, double w, double l, double h, double cover, int count, double thick, System.Windows.Media.Color c)
+        {
+            double dowelH = h + 0.8; // Extend above footing
+            
+            if (count == 4)
+            {
+                // Four corners
+                double margin = 0.3;
+                AddCylinder(group, new Point3D(margin, margin, 0), new Point3D(margin, margin, dowelH), thick, c);
+                AddCylinder(group, new Point3D(w - margin, margin, 0), new Point3D(w - margin, margin, dowelH), thick, c);
+                AddCylinder(group, new Point3D(w - margin, l - margin, 0), new Point3D(w - margin, l - margin, dowelH), thick, c);
+                AddCylinder(group, new Point3D(margin, l - margin, 0), new Point3D(margin, l - margin, dowelH), thick, c);
+            }
+            else
+            {
+                // Distribute evenly
+                double spacing = Math.Min(w, l) / (count + 1);
+                for (int i = 0; i < count; i++)
                 {
-                    double hookDirZ = isBottom ? 1.0 : -1.0;
-                    Point3D h1Tip = new Point3D(pStart.X, pStart.Y, pStart.Z + hookLen * hookDirZ);
-                    Point3D h2Tip = new Point3D(pEnd.X, pEnd.Y, pEnd.Z + hookLen * hookDirZ);
-                    
-                    AddBox(group, pStart, h1Tip, t, c);
-                    AddBox(group, pEnd, h2Tip, t, c);
+                    double pos = spacing * (i + 1);
+                    AddCylinder(group, new Point3D(pos, l / 2, 0), new Point3D(pos, l / 2, dowelH), thick, c);
                 }
             }
         }
 
-        private void AddBox(Model3DGroup group, Point3D p1, Point3D p2, double thickness, System.Windows.Media.Color c)
+        private void AddCube(Model3DGroup group, Point3D min, Point3D max, System.Windows.Media.Color c)
         {
-            GeometryModel3D bar = new GeometryModel3D();
+            GeometryModel3D model = new GeometryModel3D();
             MeshGeometry3D mesh = new MeshGeometry3D();
-            
-            double x1 = Math.Min(p1.X, p2.X) - thickness/2;
-            double x2 = Math.Max(p1.X, p2.X) + thickness/2;
-            double y1 = Math.Min(p1.Y, p2.Y) - thickness/2;
-            double y2 = Math.Max(p1.Y, p2.Y) + thickness/2;
-            double z1 = Math.Min(p1.Z, p2.Z) - thickness/2;
-            double z2 = Math.Max(p1.Z, p2.Z) + thickness/2;
 
-            Point3D[] pts = new Point3D[]
-            {
-                new Point3D(x1, y1, z1), new Point3D(x2, y1, z1), new Point3D(x2, y2, z1), new Point3D(x1, y2, z1), 
-                new Point3D(x1, y1, z2), new Point3D(x2, y1, z2), new Point3D(x2, y2, z2), new Point3D(x1, y2, z2) 
+            Point3D[] corners = {
+                new Point3D(min.X, min.Y, min.Z), new Point3D(max.X, min.Y, min.Z),
+                new Point3D(max.X, max.Y, min.Z), new Point3D(min.X, max.Y, min.Z),
+                new Point3D(min.X, min.Y, max.Z), new Point3D(max.X, min.Y, max.Z),
+                new Point3D(max.X, max.Y, max.Z), new Point3D(min.X, max.Y, max.Z)
             };
-            foreach (Point3D p in pts) mesh.Positions.Add(p);
+            foreach (var p in corners) mesh.Positions.Add(p);
 
-            int[] idx = new int[] 
-            { 
-                0,1,2, 0,2,3, 4,6,5, 4,7,6, 0,4,1, 1,4,5, 1,5,2, 2,5,6, 2,6,3, 3,6,7, 3,7,0, 0,7,4 
+            int[] indices = { 0,1,2, 0,2,3, 4,6,5, 4,7,6, 0,4,1, 1,4,5, 2,6,3, 3,6,7, 1,5,2, 2,5,6, 0,3,4, 3,7,4 };
+            foreach (var i in indices) mesh.TriangleIndices.Add(i);
+
+            model.Geometry = mesh;
+            model.Material = new DiffuseMaterial(new SolidColorBrush(c));
+            model.BackMaterial = new DiffuseMaterial(new SolidColorBrush(System.Windows.Media.Color.FromArgb((byte)(c.A / 2), c.R, c.G, c.B)));
+            group.Children.Add(model);
+        }
+
+        private void AddCylinder(Model3DGroup group, Point3D p1, Point3D p2, double radius, System.Windows.Media.Color c)
+        {
+            // Simplified: render as thick box instead of cylinder for performance
+            Vector3D dir = new Vector3D(p2.X - p1.X, p2.Y - p1.Y, p2.Z - p1.Z);
+            double len = dir.Length;
+            if (len < 0.001) return;
+
+            double x1 = Math.Min(p1.X, p2.X) - radius;
+            double x2 = Math.Max(p1.X, p2.X) + radius;
+            double y1 = Math.Min(p1.Y, p2.Y) - radius;
+            double y2 = Math.Max(p1.Y, p2.Y) + radius;
+            double z1 = Math.Min(p1.Z, p2.Z) - radius;
+            double z2 = Math.Max(p1.Z, p2.Z) + radius;
+
+            GeometryModel3D model = new GeometryModel3D();
+            MeshGeometry3D mesh = new MeshGeometry3D();
+
+            Point3D[] pts = {
+                new Point3D(x1, y1, z1), new Point3D(x2, y1, z1), new Point3D(x2, y2, z1), new Point3D(x1, y2, z1),
+                new Point3D(x1, y1, z2), new Point3D(x2, y1, z2), new Point3D(x2, y2, z2), new Point3D(x1, y2, z2)
             };
-            foreach (int id in idx) mesh.TriangleIndices.Add(id);
+            foreach (var p in pts) mesh.Positions.Add(p);
 
-            bar.Geometry = mesh;
-            bar.Material = new DiffuseMaterial(new SolidColorBrush(c));
-            group.Children.Add(bar);
+            int[] idx = { 0,1,2, 0,2,3, 4,6,5, 4,7,6, 0,4,1, 1,4,5, 1,5,2, 2,5,6, 2,6,3, 3,6,7, 3,7,0, 0,7,4 };
+            foreach (var i in idx) mesh.TriangleIndices.Add(i);
+
+            model.Geometry = mesh;
+            model.Material = new DiffuseMaterial(new SolidColorBrush(c));
+            group.Children.Add(model);
         }
 
         private void HookUpEvents()
