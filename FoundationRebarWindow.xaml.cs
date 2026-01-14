@@ -20,6 +20,38 @@ namespace RevitAIAgent
             _uiDoc = uiDoc;
             _doc = uiDoc.Document;
             LoadRevitData();
+            LoadIcons();
+        }
+
+        private void LoadIcons()
+        {
+            try
+            {
+                // Explicitly load images using Pack URI in code-behind
+                ImgIsolated.Source = GetImage("footing.png");
+                ImgCombined.Source = GetImage("combined.png");
+                ImgStrap.Source = GetImage("strap.png");
+                ImgRaft.Source = GetImage("raft.png");
+                ImgPile.Source = GetImage("pile.png");
+                ImgPileCap.Source = GetImage("pile_cap.png");
+                ImgStrip.Source = GetImage("strip.png");
+            }
+            catch (Exception ex)
+            {
+                // Fail silently or log
+            }
+        }
+
+        private System.Windows.Media.ImageSource GetImage(string name)
+        {
+            try
+            {
+                return new System.Windows.Media.Imaging.BitmapImage(new Uri($"pack://application:,,,/RevitAIAgent;component/Assets/{name}"));
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private void LoadRevitData()
