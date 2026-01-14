@@ -1,5 +1,5 @@
 {
-  "version": "2.4.0",
+  "version": "2.4.1",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.4.0: MAJOR UPDATE - Real 3D Preview (Interactive), Split Tabs (B1/B2/T1/T2), and Additional Rebar support."
+  "releaseNotes": "v2.4.1: Hotfix ensuring UI updates (Tabs & 3D View) are correctly applied. Clean build."
 }
