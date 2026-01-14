@@ -16,6 +16,9 @@ namespace RevitAIAgent
         private UIDocument _uiDoc;
         private Document _doc;
         private List<RebarBarType> _barTypes;
+        private double _footingW = 2000; // in mm
+        private double _footingL = 2000; 
+        private double _footingH = 600;
 
         public FoundationRebarWindow(UIDocument uiDoc)
         {
@@ -109,10 +112,47 @@ namespace RevitAIAgent
             ComboCoverBottom.ItemsSource = coverTypes; ComboCoverBottom.DisplayMemberPath = "Name";
             ComboCoverSide.ItemsSource = coverTypes; ComboCoverSide.DisplayMemberPath = "Name";
 
-             if (coverTypes.Count > 0)
+            if (coverTypes.Count > 0)
             {
                 ComboCoverTop.SelectedIndex = 0; ComboCoverBottom.SelectedIndex = 0; ComboCoverSide.SelectedIndex = 0;
             }
+
+            // --- Parametric Dimension Initialization ---
+            try
+            {
+                var selectedIds = _uiDoc.Selection.GetElementIds();
+                if (selectedIds.Count > 0)
+                {
+                    Element elem = _doc.GetElement(selectedIds.First());
+                    if (elem != null && (elem.Category.Id.IntegerValue == (int)BuiltInCategory.OST_StructuralFoundation))
+                    {
+                        double w = GetParamValue(elem, BuiltInParameter.FOOTING_WIDTH, 2.0);
+                        double l = GetParamValue(elem, BuiltInParameter.FOOTING_LENGTH, 2.0);
+                        double h = GetParamValue(elem, BuiltInParameter.FOOTING_THICKNESS, 1.0);
+
+                        _footingW = UnitUtils.ConvertFromInternalUnits(w, UnitTypeId.Millimeters);
+                        _footingL = UnitUtils.ConvertFromInternalUnits(l, UnitTypeId.Millimeters);
+                        _footingH = UnitUtils.ConvertFromInternalUnits(h, UnitTypeId.Millimeters);
+                    }
+                }
+            }
+            catch { }
+        }
+
+        private double GetParamValue(Element e, BuiltInParameter bip, double def)
+        {
+            Parameter p = e.get_Parameter(bip);
+            if (p != null && p.HasValue) return p.AsDouble();
+            
+            // Try type parameter
+            ElementId typeId = e.GetTypeId();
+            if (typeId != ElementId.InvalidElementId)
+            {
+                Element type = e.Document.GetElement(typeId);
+                p = type.get_Parameter(bip);
+                if (p != null && p.HasValue) return p.AsDouble();
+            }
+            return def;
         }
 
         private void BtnIsolated_Click(object sender, RoutedEventArgs e)
@@ -176,13 +216,25 @@ namespace RevitAIAgent
         {
             canvas.Children.Clear();
             double cw = canvas.Width, ch = canvas.Height;
-            double fw = 220, fh = 80;
-            double x0 = (cw - fw) / 2, y0 = (ch - fh) / 2 + 10;
+            
+            // Parametric proportions
+            double realW = isMajor ? _footingW : _footingL;
+            double realH = _footingH;
+            
+            // Scaling to fit canvas (max width 240, max height 100)
+            double scaleW = 220 / realW;
+            double scaleH = 80 / realH;
+            double scale = Math.Min(scaleW, scaleH);
+            if (scale > 0.5) scale = 0.5; // Don't overscale small things
+
+            double drawW = realW * scale;
+            double drawH = realH * scale;
+            double x0 = (cw - drawW) / 2, y0 = (ch - drawH) / 2 + 10;
 
             // Footing Rect
             System.Windows.Shapes.Rectangle footing = new System.Windows.Shapes.Rectangle
             {
-                Width = fw, Height = fh, Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(242, 242, 242)), 
+                Width = drawW, Height = drawH, Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(242, 242, 242)), 
                 Stroke = System.Windows.Media.Brushes.DimGray, StrokeThickness = 2
             };
             Canvas.SetLeft(footing, x0); Canvas.SetTop(footing, y0);
@@ -194,89 +246,122 @@ namespace RevitAIAgent
             // --- BOTTOM BARS ---
             bool isX = isMajor; 
             string hookName = isX ? ComboHookX?.Text : ComboHookY?.Text;
-            bool hasAdditional = isX ? (CheckAdditionalB1?.IsChecked == true) : (CheckAdditionalB2?.IsChecked == true);
-            int addCount = 0;
-            if (hasAdditional) int.TryParse(isX ? InputAddB1Count?.Text : InputAddB2Count?.Text, out addCount);
+            
+            // Spacing vs Count logic
+            double spacing = 200;
+            double.TryParse(isX ? InputSpacingX?.Text : InputSpacingY?.Text, out spacing);
+            if (spacing <= 0) spacing = 200;
+            
+            // Calculate how many dots (cross-bars depend on the OTHER dimension)
+            double crossDim = isMajor ? _footingL : _footingW;
+            double crossSpacing = 200;
+            double.TryParse(isMajor ? InputSpacingY?.Text : InputSpacingX?.Text, out crossSpacing);
+            if (crossSpacing <= 0) crossSpacing = 200;
+            
+            int mainDots = (int)(crossDim / crossSpacing) + 1;
+            if (mainDots < 2) mainDots = 2;
+            if (mainDots > 20) mainDots = 20; // Cap for visual clarity
 
-            int mainCount = 8; // Default visual count
-            int totalDots = mainCount + addCount;
+            // Additional dots?
+            bool hasAddDots = isMajor ? (CheckAdditionalB2?.IsChecked == true) : (CheckAdditionalB1?.IsChecked == true);
+            int addDots = 0;
+            if (hasAddDots) int.TryParse(isMajor ? InputAddB2Count?.Text : InputAddB1Count?.Text, out addDots);
+            int totalDots = mainDots + addDots;
 
             // Main Line with Hook Logic
-            double hookSize = 25;
-            double offset = isMajor ? 6 : 12; // Layering B1 and B2
-            PointCollection bPts = new PointCollection();
+            double hookSize = 25 * (drawH / 80.0); // scaled hook
+            if (hookSize < 10) hookSize = 10;
             
-            // Hook Type Logic
-            if (hookName != null && hookName.Contains("None")) {
-                bPts.Add(new System.Windows.Point(x0+5, y0+fh-offset));
-                bPts.Add(new System.Windows.Point(x0+fw-5, y0+fh-offset));
-            } else if (hookName != null && hookName.Contains("180")) {
-                bPts.Add(new System.Windows.Point(x0+15, y0+fh-offset-10));
-                bPts.Add(new System.Windows.Point(x0+5, y0+fh-offset));
-                bPts.Add(new System.Windows.Point(x0+fw-5, y0+fh-offset));
-                bPts.Add(new System.Windows.Point(x0+fw-15, y0+fh-offset-10));
-            } else { // 90 deg default
-                bPts.Add(new System.Windows.Point(x0+8, y0+fh-offset-hookSize));
-                bPts.Add(new System.Windows.Point(x0+8, y0+fh-offset));
-                bPts.Add(new System.Windows.Point(x0+fw-8, y0+fh-offset));
-                bPts.Add(new System.Windows.Point(x0+fw-8, y0+fh-offset-hookSize));
-            }
+            double offset = (isMajor ? 6 : 12) * scale * 10; // offset based on layer
+            if (offset < 4) offset = 4;
 
-            canvas.Children.Add(new System.Windows.Shapes.Polyline { Stroke = redBrush, StrokeThickness = 2.5, Points = bPts });
+            PointCollection bPts = new PointCollection();
+            if (hookName != null && hookName.Contains("None")) {
+                bPts.Add(new System.Windows.Point(x0+5, y0+drawH-offset));
+                bPts.Add(new System.Windows.Point(x0+drawW-5, y0+drawH-offset));
+            } else if (hookName != null && hookName.Contains("180")) {
+                bPts.Add(new System.Windows.Point(x0+15, y0+drawH-offset-10));
+                bPts.Add(new System.Windows.Point(x0+5, y0+drawH-offset));
+                bPts.Add(new System.Windows.Point(x0+drawW-5, y0+drawH-offset));
+                bPts.Add(new System.Windows.Point(x0+drawW-15, y0+drawH-offset-10));
+            } else { // 90 deg default
+                bPts.Add(new System.Windows.Point(x0+8, y0+drawH-offset-hookSize));
+                bPts.Add(new System.Windows.Point(x0+8, y0+drawH-offset));
+                bPts.Add(new System.Windows.Point(x0+drawW-8, y0+drawH-offset));
+                bPts.Add(new System.Windows.Point(x0+drawW-8, y0+drawH-offset-hookSize));
+            }
+            canvas.Children.Add(new System.Windows.Shapes.Polyline { Stroke = redBrush, StrokeThickness = 2, Points = bPts });
 
             // Dots (Cross bars)
-            double dotZ = y0 + fh - (isMajor ? 12 : 6);
+            double dotZ = y0 + drawH - (isMajor ? offset + 5 : offset - 5);
             for(int i=0; i < totalDots; i++) {
-                System.Windows.Shapes.Ellipse dot = new System.Windows.Shapes.Ellipse { Width=5, Height=5, Fill=redBrush };
-                Canvas.SetLeft(dot, x0 + 15 + i * (fw-30)/(totalDots-1) - 2.5);
-                Canvas.SetTop(dot, dotZ - 2.5);
+                System.Windows.Shapes.Ellipse dot = new System.Windows.Shapes.Ellipse { Width=4, Height=4, Fill=redBrush };
+                Canvas.SetLeft(dot, x0 + 15 + i * (drawW-30)/(totalDots-1) - 2);
+                Canvas.SetTop(dot, dotZ - 2);
                 canvas.Children.Add(dot);
             }
 
             // --- TOP BARS ---
             if (CheckAddTopBars?.IsChecked == true) {
-                double topOffset = isMajor ? 6 : 12;
+                double topOffset = (isMajor ? 6 : 12) * scale * 10;
+                if (topOffset < 4) topOffset = 4;
+                
                 PointCollection tPts = new PointCollection();
                 tPts.Add(new System.Windows.Point(x0+8, y0+topOffset+hookSize));
                 tPts.Add(new System.Windows.Point(x0+8, y0+topOffset));
-                tPts.Add(new System.Windows.Point(x0+fw-8, y0+topOffset));
-                tPts.Add(new System.Windows.Point(x0+fw-8, y0+topOffset+hookSize));
-                canvas.Children.Add(new System.Windows.Shapes.Polyline { Stroke = redBrush, StrokeThickness = 2.5, Points = tPts });
+                tPts.Add(new System.Windows.Point(x0+drawW-8, y0+topOffset));
+                tPts.Add(new System.Windows.Point(x0+drawW-8, y0+topOffset+hookSize));
+                canvas.Children.Add(new System.Windows.Shapes.Polyline { Stroke = redBrush, StrokeThickness = 2, Points = tPts });
 
-                double tDotZ = y0 + (isMajor ? 12 : 6);
+                double tDotZ = y0 + (isMajor ? topOffset + 5 : topOffset - 5);
                 for(int i=0; i<8; i++) {
-                    System.Windows.Shapes.Ellipse dot = new System.Windows.Shapes.Ellipse { Width=5, Height=5, Fill=redBrush };
-                    Canvas.SetLeft(dot, x0 + 15 + i * (fw-30)/7 - 2.5);
-                    Canvas.SetTop(dot, tDotZ - 2.5);
+                    System.Windows.Shapes.Ellipse dot = new System.Windows.Shapes.Ellipse { Width=4, Height=4, Fill=redBrush };
+                    Canvas.SetLeft(dot, x0 + 15 + i * (drawW-30)/7 - 2);
+                    Canvas.SetTop(dot, tDotZ - 2);
                     canvas.Children.Add(dot);
                 }
             }
 
             // --- DOWELS & STIRRUPS ---
             if (CheckAddDowels?.IsChecked == true) {
-                for(int i=0; i<2; i++) {
-                    double dx = x0 + 70 + i * (fw-140);
-                    canvas.Children.Add(new System.Windows.Shapes.Line { X1=dx, Y1=y0-40, X2=dx, Y2=y0+fh-15, Stroke=greyBrush, StrokeThickness=5 });
+                int dowelCount = 2; // Default for section
+                for(int i=0; i<dowelCount; i++) {
+                    double dx = x0 + (drawW * 0.3) + i * (drawW * 0.4);
+                    // Dowel with L-hook at bottom
+                    PointCollection dPts = new PointCollection {
+                        new System.Windows.Point(dx + 15, y0 + drawH - offset - 5),
+                        new System.Windows.Point(dx, y0 + drawH - offset - 5),
+                        new System.Windows.Point(dx, y0 - 40)
+                    };
+                    canvas.Children.Add(new System.Windows.Shapes.Polyline { Stroke=greyBrush, StrokeThickness=4, Points=dPts });
                 }
 
                 if (CheckAddStirrups?.IsChecked == true) {
-                    // Stirrup rectangles around dowels
                     for(int i=0; i<3; i++) {
                         System.Windows.Shapes.Rectangle stirrup = new System.Windows.Shapes.Rectangle { 
-                            Width = fw - 130, Height=6, Stroke=greyBrush, StrokeThickness=1.5 
+                            Width = drawW * 0.5, Height=5, Stroke=greyBrush, StrokeThickness=1.5 
                         };
-                        Canvas.SetLeft(stirrup, x0 + 65); Canvas.SetTop(stirrup, y0 - 10 - i*15);
+                        Canvas.SetLeft(stirrup, x0 + drawW * 0.25); Canvas.SetTop(stirrup, y0 - 10 - i*15);
                         canvas.Children.Add(stirrup);
                     }
                 }
             }
+
+            // Labels for dimensions
+            TextBlock wLabel = new TextBlock { Text = $"{realW} mm", FontSize=9, Foreground=System.Windows.Media.Brushes.Gray };
+            Canvas.SetLeft(wLabel, x0 + drawW/2 - 20); Canvas.SetTop(wLabel, y0 + drawH + 2);
+            canvas.Children.Add(wLabel);
+
+            TextBlock hLabel = new TextBlock { Text = $"{realH} mm", FontSize=9, Foreground=System.Windows.Media.Brushes.Gray };
+            Canvas.SetLeft(hLabel, x0 + drawW + 5); Canvas.SetTop(hLabel, y0 + drawH/2 - 5);
+            canvas.Children.Add(hLabel);
 
             // Title
             TextBlock label = new TextBlock { 
                 Text = isMajor ? "SECTION X-X (MAJOR)" : "SECTION Y-Y (MINOR)", 
                 FontWeight=FontWeights.Bold, FontSize=10, Foreground=System.Windows.Media.Brushes.DimGray 
             };
-            Canvas.SetLeft(label, x0); Canvas.SetTop(label, y0 + fh + 8);
+            Canvas.SetLeft(label, x0); Canvas.SetTop(label, y0 - 25);
             canvas.Children.Add(label);
         }
 

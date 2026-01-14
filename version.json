@@ -1,5 +1,5 @@
 {
-  "version": "2.8.0",
+  "version": "2.9.0",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.8.0: Fixed Hook type preview, implemented Additional Rebar visualization, and added Stirrup rectangles in Section views."
+  "releaseNotes": "v2.9.0: Parametric 2D Preview (scaled to footing size), Real-time bar count calculation, Dimension labels, and Improved Dowel/Hook visualization."
 }
