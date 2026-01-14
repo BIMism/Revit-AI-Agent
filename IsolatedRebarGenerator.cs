@@ -56,6 +56,19 @@ namespace RevitAIAgent
         public bool StirrupsEnabled { get; set; }
         public RebarBarType StirrupBarType { get; set; }
         public double StirrupSpacing { get; set; } // mm
+
+        // Hook Orientations (Manual Override)
+        public RebarHookOrientation B1_HookOrientStart { get; set; } = RebarHookOrientation.Right;
+        public RebarHookOrientation B1_HookOrientEnd { get; set; } = RebarHookOrientation.Right;
+
+        public RebarHookOrientation B2_HookOrientStart { get; set; } = RebarHookOrientation.Right;
+        public RebarHookOrientation B2_HookOrientEnd { get; set; } = RebarHookOrientation.Right;
+
+        public RebarHookOrientation T1_HookOrientStart { get; set; } = RebarHookOrientation.Left;
+        public RebarHookOrientation T1_HookOrientEnd { get; set; } = RebarHookOrientation.Left;
+
+        public RebarHookOrientation T2_HookOrientStart { get; set; } = RebarHookOrientation.Left;
+        public RebarHookOrientation T2_HookOrientEnd { get; set; } = RebarHookOrientation.Left;
     }
 
     public class IsolatedRebarGenerator
@@ -102,7 +115,7 @@ namespace RevitAIAgent
             
             CreateRebarSet(doc, foundation, config.BottomBarX, config.HookBottomX, startX, endX, 
                 XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.SpacingBottomX * mmToFeet, config.OverrideHookLenBottomX * mmToFeet,
-                RebarHookOrientation.Right, RebarHookOrientation.Right);  // Both RIGHT for bottom
+                config.B1_HookOrientStart, config.B1_HookOrientEnd);
 
             if (config.AddB1Enabled && config.AddB1Count > 0)
             {
@@ -110,7 +123,7 @@ namespace RevitAIAgent
                 // Just use fixed count instead of spacing
                 CreateFixedRebarSet(doc, foundation, config.AddB1Type, config.HookBottomX, startX, endX, 
                     XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.AddB1Count,
-                    RebarHookOrientation.Right, RebarHookOrientation.Right); 
+                    config.B1_HookOrientStart, config.B1_HookOrientEnd); 
             }
 
             // BOTTOM BARS Y (Transversal)
@@ -126,13 +139,13 @@ namespace RevitAIAgent
 
                 CreateRebarSet(doc, foundation, config.BottomBarY, config.HookBottomY, startY, endY,
                     XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingBottomY * mmToFeet, config.OverrideHookLenBottomY * mmToFeet,
-                    RebarHookOrientation.Right, RebarHookOrientation.Right);  // Both RIGHT for bottom
+                    config.B2_HookOrientStart, config.B2_HookOrientEnd);
                     
                 if (config.AddB2Enabled && config.AddB2Count > 0)
                 {
                    CreateFixedRebarSet(doc, foundation, config.AddB2Type, config.HookBottomY, startY, endY,
                     XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddB2Count,
-                    RebarHookOrientation.Right, RebarHookOrientation.Right);
+                    config.B2_HookOrientStart, config.B2_HookOrientEnd);
                 }
             }
 
@@ -146,13 +159,13 @@ namespace RevitAIAgent
                 XYZ endTopX = new XYZ(max.X - coverDist, min.Y + coverDist, topZ);
                 CreateRebarSet(doc, foundation, config.TopBarX, config.HookTopX, startTopX, endTopX,
                     XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.SpacingTopX * mmToFeet, config.OverrideHookLenTopX * mmToFeet,
-                    RebarHookOrientation.Left, RebarHookOrientation.Left);  // Both LEFT for top
+                    config.T1_HookOrientStart, config.T1_HookOrientEnd);
 
                 if (config.AddT1Enabled && config.AddT1Count > 0)
                 {
                     CreateFixedRebarSet(doc, foundation, config.AddT1Type, config.HookTopX, startTopX, endTopX,
                     XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.AddT1Count,
-                    RebarHookOrientation.Left, RebarHookOrientation.Left);
+                    config.T1_HookOrientStart, config.T1_HookOrientEnd);
                 }
 
                 // Top Y (Under Top X)
@@ -164,13 +177,13 @@ namespace RevitAIAgent
                     XYZ endTopY = new XYZ(min.X + coverDist, max.Y - coverDist, topZY);
                     CreateRebarSet(doc, foundation, config.TopBarY, config.HookTopY, startTopY, endTopY,
                         XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingTopY * mmToFeet, config.OverrideHookLenTopY * mmToFeet,
-                        RebarHookOrientation.Left, RebarHookOrientation.Left);  // Both LEFT for top
+                        config.T2_HookOrientStart, config.T2_HookOrientEnd);
 
                     if (config.AddT2Enabled && config.AddT2Count > 0)
                     {
                         CreateFixedRebarSet(doc, foundation, config.AddT2Type, config.HookTopY, startTopY, endTopY,
                         XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddT2Count,
-                        RebarHookOrientation.Left, RebarHookOrientation.Left);
+                        config.T2_HookOrientStart, config.T2_HookOrientEnd);
                     }
                 }
             }

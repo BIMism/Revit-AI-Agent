@@ -117,6 +117,14 @@ namespace RevitAIAgent
                 ComboCoverTop.SelectedIndex = 0; ComboCoverBottom.SelectedIndex = 0; ComboCoverSide.SelectedIndex = 0;
             }
 
+            // Hook Orientations
+            var hookOrients = new List<string> { "Left - Left", "Right - Right", "Left - Right", "Right - Left" };
+            
+            ComboHookOrientX.ItemsSource = hookOrients; ComboHookOrientX.SelectedIndex = 0; // Left-Left default
+            ComboHookOrientY.ItemsSource = hookOrients; ComboHookOrientY.SelectedIndex = 0; 
+            ComboTopHookXOrient.ItemsSource = hookOrients; ComboTopHookXOrient.SelectedIndex = 1; // Right-Right default (inverted)
+            ComboTopHookYOrient.ItemsSource = hookOrients; ComboTopHookYOrient.SelectedIndex = 1;
+
             // --- Parametric Dimension Initialization ---
             try
             {
@@ -386,6 +394,13 @@ namespace RevitAIAgent
                 if (double.TryParse(InputSpacingY.Text, out double sy)) config.SpacingBottomY = sy;
                 config.HookBottomX = ComboHookX.SelectedItem as RebarHookType;
                 config.HookBottomY = ComboHookY.SelectedItem as RebarHookType;
+                
+                GetHookOrient(ComboHookOrientX.SelectedItem, out var hXStart, out var hXEnd);
+                config.B1_HookOrientStart = hXStart; config.B1_HookOrientEnd = hXEnd;
+
+                GetHookOrient(ComboHookOrientY.SelectedItem, out var hYStart, out var hYEnd);
+                config.B2_HookOrientStart = hYStart; config.B2_HookOrientEnd = hYEnd;
+
                 if (CheckOverrideHookX.IsChecked == true && double.TryParse(InputHookLenX.Text, out double hx)) config.OverrideHookLenBottomX = hx;
                 if (CheckOverrideHookY.IsChecked == true && double.TryParse(InputHookLenY.Text, out double hy)) config.OverrideHookLenBottomY = hy;
 
@@ -408,6 +423,13 @@ namespace RevitAIAgent
                 if (double.TryParse(InputTopSpacingY.Text, out double tsy)) config.SpacingTopY = tsy;
                 config.HookTopX = ComboTopHookX.SelectedItem as RebarHookType;
                 config.HookTopY = ComboTopHookY.SelectedItem as RebarHookType;
+
+                GetHookOrient(ComboTopHookXOrient.SelectedItem, out var thXStart, out var thXEnd);
+                config.T1_HookOrientStart = thXStart; config.T1_HookOrientEnd = thXEnd;
+
+                GetHookOrient(ComboTopHookYOrient.SelectedItem, out var thYStart, out var thYEnd);
+                config.T2_HookOrientStart = thYStart; config.T2_HookOrientEnd = thYEnd;
+
                 if (CheckOverrideTopHookX.IsChecked == true && double.TryParse(InputTopHookLenX.Text, out double thx)) config.OverrideHookLenTopX = thx;
                 if (CheckOverrideTopHookY.IsChecked == true && double.TryParse(InputTopHookLenY.Text, out double thy)) config.OverrideHookLenTopY = thy;
 
@@ -463,6 +485,20 @@ namespace RevitAIAgent
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void GetHookOrient(object selectedItem, out RebarHookOrientation start, out RebarHookOrientation end)
+        {
+            start = RebarHookOrientation.Left; 
+            end = RebarHookOrientation.Right;
+            
+            if (selectedItem is string s)
+            {
+                 if (s == "Left - Left") { start = RebarHookOrientation.Left; end = RebarHookOrientation.Left; }
+                 else if (s == "Right - Right") { start = RebarHookOrientation.Right; end = RebarHookOrientation.Right; }
+                 else if (s == "Left - Right") { start = RebarHookOrientation.Left; end = RebarHookOrientation.Right; }
+                 else if (s == "Right - Left") { start = RebarHookOrientation.Right; end = RebarHookOrientation.Left; }
+            }
         }
     }
 }
