@@ -142,7 +142,7 @@
 
                         <!-- BOTTOM BARS PANEL -->
                         <Grid x:Name="PanelBottomBars" Visibility="Collapsed">
-                            <GroupBox Header="Longitudinal Bars (Direction X)">
+                            <GroupBox Header="Bottom Major (B1)">
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition/></Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
@@ -164,7 +164,7 @@
                                 </Grid>
                             </GroupBox>
                             
-                             <GroupBox Header="Transversal Bars (Direction Y)">
+                             <GroupBox Header="Bottom Minor (B2)">
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition/></Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
@@ -189,8 +189,13 @@
                         
                         <!-- TOP BARS PANEL -->
                         <Grid x:Name="PanelTopBars" Visibility="Collapsed">
-                             <CheckBox x:Name="CheckAddTopBars" Content="Enable Top Bars" IsChecked="False" Margin="0,0,0,10"/>
-                             <GroupBox Header="Longitudinal Bars (Direction X)">
+                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                             </Grid.RowDefinitions>
+                             <CheckBox Grid.Row="0" x:Name="CheckAddTopBars" Content="Enable Top Bars" IsChecked="False" Margin="0,0,0,10"/>
+                             <GroupBox Grid.Row="1" Header="Top Major (T1)">
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition/></Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
@@ -211,7 +216,7 @@
                                     </StackPanel>
                                 </Grid>
                             </GroupBox>
-                            <GroupBox Header="Transversal Bars (Direction Y)">
+                            <GroupBox Grid.Row="2" Header="Top Minor (T2)">
                                 <Grid>
                                     <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition/></Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
@@ -290,13 +295,12 @@
                 <Border Grid.Column="2" Background="White" BorderBrush="#CCC" BorderThickness="1,0,0,0" Padding="10">
                     <StackPanel>
                          <TextBlock Text="3D Preview" FontWeight="Bold" Margin="0,0,0,10"/>
-                         <!-- Placeholder for 3D View -->
-                         <Border Height="200" Background="#EEE" BorderBrush="#CCC" BorderThickness="1">
-                             <TextBlock Text="[3D View]" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Gray"/>
+                         <Border Height="200" Background="White" BorderBrush="#CCC" BorderThickness="1" Margin="0,0,0,20">
+                              <Image Source="pack://application:,,,/RevitAIAgent;component/Assets/preview_3d.png" Stretch="Uniform"/>
                          </Border>
-                         <TextBlock Text="Schematic" FontWeight="Bold" Margin="0,20,0,10"/>
-                          <Border Height="150" Background="#EEE" BorderBrush="#CCC" BorderThickness="1">
-                             <TextBlock Text="[Section View]" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Gray"/>
+                         <TextBlock Text="Schematic" FontWeight="Bold" Margin="0,0,0,10"/>
+                          <Border Height="150" Background="White" BorderBrush="#CCC" BorderThickness="1">
+                              <Image Source="pack://application:,,,/RevitAIAgent;component/Assets/preview_section.png" Stretch="Uniform"/>
                          </Border>
                     </StackPanel>
                 </Border>

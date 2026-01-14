@@ -1,5 +1,5 @@
 {
-  "version": "2.3.0",
+  "version": "2.3.1",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.3.0: ENHANCED - Added 3D Preview images, Custom Hook Lengths, and fixed Top Bars visibility control."
+  "releaseNotes": "v2.3.1: UI FIX - Fixed overlapping controls, renamed bars to B1/B2/T1/T2, and enabled correct preview images."
 }

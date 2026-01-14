@@ -5,7 +5,7 @@
   },
   "projects": {
     "E:\\My\\BIM'ism\\Revit Pluging\\RevitAIAgent.csproj": {
-      "version": "2.3.0",
+      "version": "2.3.1",
       "restore": {
         "projectUniqueName": "E:\\My\\BIM'ism\\Revit Pluging\\RevitAIAgent.csproj",
         "projectName": "RevitAIAgent",
