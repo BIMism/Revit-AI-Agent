@@ -166,6 +166,7 @@ namespace RevitAIAgent
         private void Update3DPreview()
         {
             if (PreviewViewport == null) return;
+            if (CheckDynamicUpdate != null && CheckDynamicUpdate.IsChecked == false) return;
 
             var toRemove = new List<Visual3D>();
             foreach (var child in PreviewViewport.Children)
@@ -175,172 +176,159 @@ namespace RevitAIAgent
             }
             foreach (var r in toRemove) PreviewViewport.Children.Remove(r);
 
-            double w = 2.0, l = 2.0, h = 1.0;
+            double w = 2.0, l = 2.0, h = 0.8;
             Model3DGroup group = new Model3DGroup();
 
-            // Concrete (Semi-transparent grey)
+            // Concrete (Solid light grey for visibility)
             AddCube(group, new Point3D(0, 0, 0), new Point3D(w, l, h), 
-                System.Windows.Media.Color.FromArgb(80, 180, 180, 180));
+                System.Windows.Media.Color.FromArgb(120, 200, 200, 200));
 
-            double cover = 0.1;
-            double barThick = 0.08; // MUCH thicker for visibility
-            var redColor = System.Windows.Media.Color.FromRgb(220, 50, 50);
-            var greyColor = System.Windows.Media.Color.FromRgb(140, 140, 140);
+            double cover = 0.12;
+            double barThick = 0.1; // Bright red and thick
+            var redColor = System.Windows.Media.Color.FromRgb(255, 0, 0);
+            var whiteColor = System.Windows.Media.Color.FromRgb(255, 255, 255);
 
             // B1 & B2 (Bottom Rebar)
             RenderRebarLayer(group, w, l, h, cover, barThick, redColor, true);
 
-            // T1 & T2 (Top Rebar) - if enabled
-            if (CheckAddTopBars != null && CheckAddTopBars.IsChecked == true)
+            // T1 & T2 (Top Rebar)
+            if (CheckAddTopBars?.IsChecked == true)
                 RenderRebarLayer(group, w, l, h, cover, barThick, redColor, false);
 
-            // Dowels (if enabled)
-            if (CheckAddDowels != null && CheckAddDowels.IsChecked == true)
-            {
-                int dowelCount = 4;
-                if (int.TryParse(InputDowelCount?.Text, out int dc)) dowelCount = dc;
-                RenderDowels(group, w, l, h, cover, dowelCount, barThick, greyColor);
-            }
+            // Dowels
+            if (CheckAddDowels?.IsChecked == true)
+                RenderDowels(group, w, l, h, cover, 0.1, whiteColor);
 
             ModelVisual3D modelVis = new ModelVisual3D { Content = group };
             PreviewViewport.Children.Add(modelVis);
+
+            UpdateSectionPreview();
+        }
+
+        private void UpdateSectionPreview()
+        {
+            if (SectionCanvas == null) return;
+            SectionCanvas.Children.Clear();
+
+            double cw = SectionCanvas.Width, ch = SectionCanvas.Height;
+            double fw = 180, fh = 60;
+            double x0 = (cw - fw) / 2, y0 = (ch - fh) / 2 + 20;
+
+            // Footing Rect
+            System.Windows.Shapes.Rectangle footing = new System.Windows.Shapes.Rectangle
+            {
+                Width = fw, Height = fh, Fill = System.Windows.Media.Brushes.LightGray, Stroke = System.Windows.Media.Brushes.DimGray, StrokeThickness = 2
+            };
+            Canvas.SetLeft(footing, x0); Canvas.SetTop(footing, y0);
+            SectionCanvas.Children.Add(footing);
+
+            // Bottom Bars
+            for(int i=0; i<10; i++)
+            {
+                System.Windows.Shapes.Ellipse dot = new System.Windows.Shapes.Ellipse { Width=4, Height=4, Fill=System.Windows.Media.Brushes.Red };
+                Canvas.SetLeft(dot, x0 + 10 + i * (fw-20)/9 - 2); Canvas.SetTop(dot, y0 + fh - 10 - 2);
+                SectionCanvas.Children.Add(dot);
+            }
+            
+            System.Windows.Shapes.Polyline bLine = new System.Windows.Shapes.Polyline { Stroke = System.Windows.Media.Brushes.Red, StrokeThickness = 2, Points = new PointCollection { new System.Windows.Point(x0+5, y0+fh-30), new System.Windows.Point(x0+5, y0+fh-5), new System.Windows.Point(x0+fw-5, y0+fh-5), new System.Windows.Point(x0+fw-5, y0+fh-30) } };
+            SectionCanvas.Children.Add(bLine);
+
+            // Top Bars
+            if (CheckAddTopBars?.IsChecked == true)
+            {
+                System.Windows.Shapes.Polyline tLine = new System.Windows.Shapes.Polyline { Stroke = System.Windows.Media.Brushes.Red, StrokeThickness = 2, Points = new PointCollection { new System.Windows.Point(x0+5, y0+30), new System.Windows.Point(x0+5, y0+5), new System.Windows.Point(x0+fw-5, y0+5), new System.Windows.Point(x0+fw-5, y0+30) } };
+                SectionCanvas.Children.Add(tLine);
+            }
+
+            // Labels
+            TextBlock lb = new TextBlock { Text="lb", FontSize=10, Foreground=System.Windows.Media.Brushes.Black };
+            Canvas.SetLeft(lb, x0 - 15); Canvas.SetTop(lb, y0 + fh - 20);
+            SectionCanvas.Children.Add(lb);
         }
 
         private void RenderRebarLayer(Model3DGroup group, double w, double l, double h, double cover, double thick, System.Windows.Media.Color c, bool isBottom)
         {
             double z = isBottom ? cover : (h - cover);
-            double hookLen = 0.5; // Hook length
-            double hookDir = isBottom ? 1.0 : -1.0;
+            double hookLen = 0.4, hookDir = isBottom ? 1.0 : -1.0;
             int count = 8;
-
-            // X-direction bars (B1 or T1)
             for (int i = 0; i < count; i++)
             {
-                double y = cover + i * (l - 2 * cover) / (count - 1);
-                Point3D p1 = new Point3D(cover, y, z);
-                Point3D p2 = new Point3D(w - cover, y, z);
-                
-                // Main bar
-                AddCylinder(group, p1, p2, thick, c);
-                
-                // Hooks at ends
+                double pos = cover + i * (l - 2 * cover) / (count - 1);
+                Point3D p1 = new Point3D(cover, pos, z), p2 = new Point3D(w - cover, pos, z);
+                AddCylinder(group, p1, p2, thick, c); 
                 AddCylinder(group, p1, new Point3D(p1.X, p1.Y, p1.Z + hookLen * hookDir), thick, c);
                 AddCylinder(group, p2, new Point3D(p2.X, p2.Y, p2.Z + hookLen * hookDir), thick, c);
             }
-
-            // Y-direction bars (B2 or T2)
             for (int i = 0; i < count; i++)
             {
-                double x = cover + i * (w - 2 * cover) / (count - 1);
-                Point3D p1 = new Point3D(x, cover, z);
-                Point3D p2 = new Point3D(x, l - cover, z);
-                
-                // Main bar
+                double pos = cover + i * (w - 2 * cover) / (count - 1);
+                Point3D p1 = new Point3D(pos, cover, z), p2 = new Point3D(pos, l - cover, z);
                 AddCylinder(group, p1, p2, thick, c);
-                
-                // Hooks at ends
-                AddCylinder(group, p1, new Point3D(p1.X, p1.Y, p1.Z + hookLen * hookDir), thick, c);
-                AddCylinder(group, p2, new Point3D(p2.X, p2.Y, p2.Z + hookLen * hookDir), thick, c);
             }
         }
 
-        private void RenderDowels(Model3DGroup group, double w, double l, double h, double cover, int count, double thick, System.Windows.Media.Color c)
+        private void RenderDowels(Model3DGroup group, double w, double l, double h, double cover, double thick, System.Windows.Media.Color c)
         {
-            double dowelH = h + 0.8; // Extend above footing
-            
-            if (count == 4)
-            {
-                // Four corners
-                double margin = 0.3;
-                AddCylinder(group, new Point3D(margin, margin, 0), new Point3D(margin, margin, dowelH), thick, c);
-                AddCylinder(group, new Point3D(w - margin, margin, 0), new Point3D(w - margin, margin, dowelH), thick, c);
-                AddCylinder(group, new Point3D(w - margin, l - margin, 0), new Point3D(w - margin, l - margin, dowelH), thick, c);
-                AddCylinder(group, new Point3D(margin, l - margin, 0), new Point3D(margin, l - margin, dowelH), thick, c);
-            }
-            else
-            {
-                // Distribute evenly
-                double spacing = Math.Min(w, l) / (count + 1);
-                for (int i = 0; i < count; i++)
-                {
-                    double pos = spacing * (i + 1);
-                    AddCylinder(group, new Point3D(pos, l / 2, 0), new Point3D(pos, l / 2, dowelH), thick, c);
-                }
-            }
+            double m = 0.4, dH = h + 0.6;
+            AddCylinder(group, new Point3D(m, m, 0), new Point3D(m, m, dH), thick, c);
+            AddCylinder(group, new Point3D(w-m, m, 0), new Point3D(w-m, m, dH), thick, c);
+            AddCylinder(group, new Point3D(w-m, l-m, 0), new Point3D(w-m, l-m, dH), thick, c);
+            AddCylinder(group, new Point3D(m, l-m, 0), new Point3D(m, l-m, dH), thick, c);
         }
 
         private void AddCube(Model3DGroup group, Point3D min, Point3D max, System.Windows.Media.Color c)
         {
             GeometryModel3D model = new GeometryModel3D();
             MeshGeometry3D mesh = new MeshGeometry3D();
-
-            Point3D[] corners = {
-                new Point3D(min.X, min.Y, min.Z), new Point3D(max.X, min.Y, min.Z),
-                new Point3D(max.X, max.Y, min.Z), new Point3D(min.X, max.Y, min.Z),
-                new Point3D(min.X, min.Y, max.Z), new Point3D(max.X, min.Y, max.Z),
-                new Point3D(max.X, max.Y, max.Z), new Point3D(min.X, max.Y, max.Z)
-            };
-            foreach (var p in corners) mesh.Positions.Add(p);
-
-            int[] indices = { 0,1,2, 0,2,3, 4,6,5, 4,7,6, 0,4,1, 1,4,5, 2,6,3, 3,6,7, 1,5,2, 2,5,6, 0,3,4, 3,7,4 };
-            foreach (var i in indices) mesh.TriangleIndices.Add(i);
-
+            Point3D[] pts = { new Point3D(min.X, min.Y, min.Z), new Point3D(max.X, min.Y, min.Z), new Point3D(max.X, max.Y, min.Z), new Point3D(min.X, max.Y, min.Z), new Point3D(min.X, min.Y, max.Z), new Point3D(max.X, min.Y, max.Z), new Point3D(max.X, max.Y, max.Z), new Point3D(min.X, max.Y, max.Z) };
+            foreach (var p in pts) mesh.Positions.Add(p);
+            int[] idx = { 0,1,2, 0,2,3, 4,6,5, 4,7,6, 0,4,1, 1,4,5, 2,6,3, 3,6,7, 1,5,2, 2,5,6, 0,3,4, 3,7,4 };
+            foreach (var i in idx) mesh.TriangleIndices.Add(i);
             model.Geometry = mesh;
             model.Material = new DiffuseMaterial(new SolidColorBrush(c));
-            model.BackMaterial = new DiffuseMaterial(new SolidColorBrush(System.Windows.Media.Color.FromArgb((byte)(c.A / 2), c.R, c.G, c.B)));
             group.Children.Add(model);
         }
 
-        private void AddCylinder(Model3DGroup group, Point3D p1, Point3D p2, double radius, System.Windows.Media.Color c)
+        private void AddCylinder(Model3DGroup group, Point3D p1, Point3D p2, double rad, System.Windows.Media.Color c)
         {
-            // Simplified: render as thick box instead of cylinder for performance
-            Vector3D dir = new Vector3D(p2.X - p1.X, p2.Y - p1.Y, p2.Z - p1.Z);
-            double len = dir.Length;
-            if (len < 0.001) return;
-
-            double x1 = Math.Min(p1.X, p2.X) - radius;
-            double x2 = Math.Max(p1.X, p2.X) + radius;
-            double y1 = Math.Min(p1.Y, p2.Y) - radius;
-            double y2 = Math.Max(p1.Y, p2.Y) + radius;
-            double z1 = Math.Min(p1.Z, p2.Z) - radius;
-            double z2 = Math.Max(p1.Z, p2.Z) + radius;
-
+            double x1 = Math.Min(p1.X, p2.X)-rad, x2 = Math.Max(p1.X, p2.X)+rad, y1 = Math.Min(p1.Y, p2.Y)-rad, y2 = Math.Max(p1.Y, p2.Y)+rad, z1 = Math.Min(p1.Z, p2.Z)-rad, z2 = Math.Max(p1.Z, p2.Z)+rad;
             GeometryModel3D model = new GeometryModel3D();
             MeshGeometry3D mesh = new MeshGeometry3D();
-
-            Point3D[] pts = {
-                new Point3D(x1, y1, z1), new Point3D(x2, y1, z1), new Point3D(x2, y2, z1), new Point3D(x1, y2, z1),
-                new Point3D(x1, y1, z2), new Point3D(x2, y1, z2), new Point3D(x2, y2, z2), new Point3D(x1, y2, z2)
-            };
+            Point3D[] pts = { new Point3D(x1,y1,z1), new Point3D(x2,y1,z1), new Point3D(x2,y2,z1), new Point3D(x1,y2,z1), new Point3D(x1,y1,z2), new Point3D(x2,y1,z2), new Point3D(x2,y2,z2), new Point3D(x1,y2,z2) };
             foreach (var p in pts) mesh.Positions.Add(p);
-
             int[] idx = { 0,1,2, 0,2,3, 4,6,5, 4,7,6, 0,4,1, 1,4,5, 1,5,2, 2,5,6, 2,6,3, 3,6,7, 3,7,0, 0,7,4 };
             foreach (var i in idx) mesh.TriangleIndices.Add(i);
-
             model.Geometry = mesh;
-            model.Material = new DiffuseMaterial(new SolidColorBrush(c));
+            model.Material = new EmissiveMaterial(new SolidColorBrush(c)); 
             group.Children.Add(model);
         }
 
         private void HookUpEvents()
         {
-            // Helper to hook up events safely
+            // All toggle events
             CheckAddTopBars.Checked += (s, e) => Update3DPreview();
             CheckAddTopBars.Unchecked += (s, e) => Update3DPreview();
-            
+            CheckAddDowels.Checked += (s, e) => Update3DPreview();
+            CheckAddDowels.Unchecked += (s, e) => Update3DPreview();
             CheckAdditionalB1.Checked += (s, e) => Update3DPreview();
             CheckAdditionalB1.Unchecked += (s, e) => Update3DPreview();
-   
             CheckAdditionalB2.Checked += (s, e) => Update3DPreview();
             CheckAdditionalB2.Unchecked += (s, e) => Update3DPreview();
-
             CheckAdditionalT1.Checked += (s, e) => Update3DPreview();
             CheckAdditionalT1.Unchecked += (s, e) => Update3DPreview();
+            CheckAdditionalT2.Checked += (s, e) => Update3DPreview();
+            CheckAdditionalT2.Unchecked += (s, e) => Update3DPreview();
 
-            // Text changes (simple lost focus or changed)
+            // All input change events
             InputAddB1Count.TextChanged += (s, e) => Update3DPreview();
             InputAddB2Count.TextChanged += (s, e) => Update3DPreview();
-            // ... add others if needed
+            InputDowelCount.TextChanged += (s, e) => Update3DPreview();
+            InputSpacingX.TextChanged += (s, e) => Update3DPreview();
+            InputSpacingY.TextChanged += (s, e) => Update3DPreview();
+            
+            // Selection events
+            SidebarList.SelectionChanged += (s, e) => Update3DPreview();
+            ComboBarTypeX.SelectionChanged += (s, e) => Update3DPreview();
         }
 
         private void BtnOk_Click(object sender, RoutedEventArgs e)
