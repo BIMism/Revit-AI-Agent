@@ -126,9 +126,10 @@ namespace RevitAIAgent
                     Element elem = _doc.GetElement(selectedIds.First());
                     if (elem != null && (elem.Category.Id.IntegerValue == (int)BuiltInCategory.OST_StructuralFoundation))
                     {
-                        double w = GetParamValue(elem, BuiltInParameter.FOOTING_WIDTH, 2.0);
-                        double l = GetParamValue(elem, BuiltInParameter.FOOTING_LENGTH, 2.0);
-                        double h = GetParamValue(elem, BuiltInParameter.FOOTING_THICKNESS, 1.0);
+                        double w = GetParamValue(elem, "Width", 2.0);
+                        double l = GetParamValue(elem, "Length", 2.0);
+                        double h = GetParamValue(elem, "Thickness", 0.6);
+                        if (h == 0.6) h = GetParamValue(elem, "Foundation Thickness", 0.6);
 
                         _footingW = UnitUtils.ConvertFromInternalUnits(w, UnitTypeId.Millimeters);
                         _footingL = UnitUtils.ConvertFromInternalUnits(l, UnitTypeId.Millimeters);
@@ -139,9 +140,9 @@ namespace RevitAIAgent
             catch { }
         }
 
-        private double GetParamValue(Element e, BuiltInParameter bip, double def)
+        private double GetParamValue(Element e, string name, double def)
         {
-            Parameter p = e.get_Parameter(bip);
+            Parameter p = e.LookupParameter(name);
             if (p != null && p.HasValue) return p.AsDouble();
             
             // Try type parameter
@@ -149,7 +150,7 @@ namespace RevitAIAgent
             if (typeId != ElementId.InvalidElementId)
             {
                 Element type = e.Document.GetElement(typeId);
-                p = type.get_Parameter(bip);
+                p = type.LookupParameter(name);
                 if (p != null && p.HasValue) return p.AsDouble();
             }
             return def;
