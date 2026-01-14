@@ -1,5 +1,5 @@
 {
-  "version": "2.11.2",
+  "version": "2.11.3",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.11.2: Fixed UI overlap in B1 panel. Updated Orientation labels to Top/Bottom. Improved layout spacing and default logic."
+  "releaseNotes": "v2.11.3: CRITICAL FIX. Corrected Rebar Hook Orientations (Top/Bottom mapping). Fixed UI overlap in all panels. Increased cover distance to 50mm."
 }

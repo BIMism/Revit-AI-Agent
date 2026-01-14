@@ -105,7 +105,7 @@ namespace RevitAIAgent
             XYZ min = bbox.Min;
             XYZ max = bbox.Max;
             
-            double coverDist = 0.05; // 50mm default cover (feet)
+            double coverDist = 50.0 / 304.8; // 50mm standard cover (approx 0.164 feet)
             double mmToFeet = 0.00328084;
             
             // BOTTOM BARS X (Longitudinal)
@@ -115,7 +115,7 @@ namespace RevitAIAgent
             
             CreateRebarSet(doc, foundation, config.BottomBarX, config.HookBottomX, startX, endX, 
                 XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.SpacingBottomX * mmToFeet, config.OverrideHookLenBottomX * mmToFeet,
-                config.B1_HookOrientStart, config.B1_HookOrientEnd);
+                InvertX(config.B1_HookOrientStart), InvertX(config.B1_HookOrientEnd));
 
             if (config.AddB1Enabled && config.AddB1Count > 0)
             {
@@ -123,7 +123,7 @@ namespace RevitAIAgent
                 // Just use fixed count instead of spacing
                 CreateFixedRebarSet(doc, foundation, config.AddB1Type, config.HookBottomX, startX, endX, 
                     XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.AddB1Count,
-                    config.B1_HookOrientStart, config.B1_HookOrientEnd); 
+                    InvertX(config.B1_HookOrientStart), InvertX(config.B1_HookOrientEnd)); 
             }
 
             // BOTTOM BARS Y (Transversal)
@@ -159,13 +159,13 @@ namespace RevitAIAgent
                 XYZ endTopX = new XYZ(max.X - coverDist, min.Y + coverDist, topZ);
                 CreateRebarSet(doc, foundation, config.TopBarX, config.HookTopX, startTopX, endTopX,
                     XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.SpacingTopX * mmToFeet, config.OverrideHookLenTopX * mmToFeet,
-                    config.T1_HookOrientStart, config.T1_HookOrientEnd);
+                    InvertX(config.T1_HookOrientStart), InvertX(config.T1_HookOrientEnd));
 
                 if (config.AddT1Enabled && config.AddT1Count > 0)
                 {
                     CreateFixedRebarSet(doc, foundation, config.AddT1Type, config.HookTopX, startTopX, endTopX,
                     XYZ.BasisY, max.Y - min.Y - (2 * coverDist), config.AddT1Count,
-                    config.T1_HookOrientStart, config.T1_HookOrientEnd);
+                    InvertX(config.T1_HookOrientStart), InvertX(config.T1_HookOrientEnd));
                 }
 
                 // Top Y (Under Top X)
@@ -255,6 +255,15 @@ namespace RevitAIAgent
                 }
             }
             catch { }
+        }
+        private RebarHookOrientation InvertX(RebarHookOrientation orient)
+        {
+            // For X-direction bars, our cross product V x N (BasisX x BasisY) is Up (+Z).
+            // So Right = Up, Left = Down.
+            // Our UI maps "Top" to Left. So we must flip Left to Right for X bars to point Up.
+            if (orient == RebarHookOrientation.Left) return RebarHookOrientation.Right;
+            if (orient == RebarHookOrientation.Right) return RebarHookOrientation.Left;
+            return orient;
         }
     }
 }

@@ -161,15 +161,15 @@
                                         <TextBlock Grid.Row="1" Text="Hook:" Margin="0,5"/>
                                         <ComboBox Grid.Row="1" Grid.Column="1" x:Name="ComboHookX" Margin="10,5,0,5"/>
 
-                                        <TextBlock Grid.Row="2" Text="Orientation:" Margin="0,5"/>
+                                        <TextBlock Grid.Row="2" Text="Orientation:" Margin="0,5,10,5"/>
                                         <ComboBox Grid.Row="2" Grid.Column="1" x:Name="ComboHookOrientX" Margin="10,5,0,5"/>
                                         
-                                        <TextBlock Grid.Row="3" Text="Spacing (mm):" Margin="0,5"/>
+                                        <TextBlock Grid.Row="3" Text="Spacing (mm):" Margin="0,5,10,5"/>
                                         <TextBox Grid.Row="3" Grid.Column="1" x:Name="InputSpacingX" Text="200" Margin="10,5,0,5"/>
 
-                                        <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,5">
+                                        <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,10,0,5">
                                             <CheckBox x:Name="CheckOverrideHookX" Content="Override Hook Len:" VerticalAlignment="Center"/>
-                                            <TextBox x:Name="InputHookLenX" Text="300" Width="50" Margin="5,0,0,0" IsEnabled="{Binding IsChecked, ElementName=CheckOverrideHookX}"/>
+                                            <TextBox x:Name="InputHookLenX" Text="300" Width="60" Margin="10,0,0,0" IsEnabled="{Binding IsChecked, ElementName=CheckOverrideHookX}"/>
                                             <TextBlock Text="mm" VerticalAlignment="Center" Margin="5,0,0,0"/>
                                         </StackPanel>
                                     </Grid>
@@ -206,15 +206,15 @@
                                         <TextBlock Grid.Row="1" Text="Hook:" Margin="0,5"/>
                                         <ComboBox Grid.Row="1" Grid.Column="1" x:Name="ComboHookY" Margin="10,5,0,5"/>
 
-                                        <TextBlock Grid.Row="2" Text="Orientation:" Margin="0,5"/>
+                                        <TextBlock Grid.Row="2" Text="Orientation:" Margin="0,5,10,5"/>
                                         <ComboBox Grid.Row="2" Grid.Column="1" x:Name="ComboHookOrientY" Margin="10,5,0,5"/>
                                         
-                                        <TextBlock Grid.Row="3" Text="Spacing (mm):" Margin="0,5"/>
+                                        <TextBlock Grid.Row="3" Text="Spacing (mm):" Margin="0,5,10,5"/>
                                         <TextBox Grid.Row="3" Grid.Column="1" x:Name="InputSpacingY" Text="200" Margin="10,5,0,5"/>
                                         
-                                        <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,5">
+                                        <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,10,0,5">
                                             <CheckBox x:Name="CheckOverrideHookY" Content="Override Hook Len:" VerticalAlignment="Center"/>
-                                            <TextBox x:Name="InputHookLenY" Text="300" Width="50" Margin="5,0,0,0" IsEnabled="{Binding IsChecked, ElementName=CheckOverrideHookY}"/>
+                                            <TextBox x:Name="InputHookLenY" Text="300" Width="60" Margin="10,0,0,0" IsEnabled="{Binding IsChecked, ElementName=CheckOverrideHookY}"/>
                                             <TextBlock Text="mm" VerticalAlignment="Center" Margin="5,0,0,0"/>
                                         </StackPanel>
                                     </Grid>
@@ -253,15 +253,15 @@
                                             <TextBlock Grid.Row="1" Text="Hook:" Margin="0,5"/>
                                             <ComboBox Grid.Row="1" Grid.Column="1" x:Name="ComboTopHookX" Margin="10,5,0,5"/>
 
-                                        <TextBlock Grid.Row="2" Text="Orientation:" Margin="0,5"/>
+                                        <TextBlock Grid.Row="2" Text="Orientation:" Margin="0,5,10,5"/>
                                         <ComboBox Grid.Row="2" Grid.Column="1" x:Name="ComboTopHookXOrient" Margin="10,5,0,5"/>
                                             
-                                            <TextBlock Grid.Row="3" Text="Spacing (mm):" Margin="0,5"/>
+                                            <TextBlock Grid.Row="3" Text="Spacing (mm):" Margin="0,5,10,5"/>
                                             <TextBox Grid.Row="3" Grid.Column="1" x:Name="InputTopSpacingX" Text="200" Margin="10,5,0,5"/>
     
-                                            <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,5">
+                                            <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,10,0,5">
                                                 <CheckBox x:Name="CheckOverrideTopHookX" Content="Override Hook Len:" VerticalAlignment="Center"/>
-                                                <TextBox x:Name="InputTopHookLenX" Text="300" Width="50" Margin="5,0,0,0" IsEnabled="{Binding IsChecked, ElementName=CheckOverrideTopHookX}"/>
+                                                <TextBox x:Name="InputTopHookLenX" Text="300" Width="60" Margin="10,0,0,0" IsEnabled="{Binding IsChecked, ElementName=CheckOverrideTopHookX}"/>
                                                 <TextBlock Text="mm" VerticalAlignment="Center" Margin="5,0,0,0"/>
                                             </StackPanel>
                                         </Grid>
@@ -301,15 +301,15 @@
                                             <TextBlock Grid.Row="1" Text="Hook:" Margin="0,5"/>
                                             <ComboBox Grid.Row="1" Grid.Column="1" x:Name="ComboTopHookY" Margin="10,5,0,5"/>
 
-                                            <TextBlock Grid.Row="2" Text="Orientation:" Margin="0,5"/>
+                                            <TextBlock Grid.Row="2" Text="Orientation:" Margin="0,5,10,5"/>
                                             <ComboBox Grid.Row="2" Grid.Column="1" x:Name="ComboTopHookYOrient" Margin="10,5,0,5"/>
                                             
-                                            <TextBlock Grid.Row="3" Text="Spacing (mm):" Margin="0,5"/>
+                                            <TextBlock Grid.Row="3" Text="Spacing (mm):" Margin="0,5,10,5"/>
                                             <TextBox Grid.Row="3" Grid.Column="1" x:Name="InputTopSpacingY" Text="200" Margin="10,5,0,5"/>
     
-                                            <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,5">
+                                            <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,10,0,5">
                                                 <CheckBox x:Name="CheckOverrideTopHookY" Content="Override Hook Len:" VerticalAlignment="Center"/>
-                                                <TextBox x:Name="InputTopHookLenY" Text="300" Width="50" Margin="5,0,0,0" IsEnabled="{Binding IsChecked, ElementName=CheckOverrideTopHookY}"/>
+                                                <TextBox x:Name="InputTopHookLenY" Text="300" Width="60" Margin="10,0,0,0" IsEnabled="{Binding IsChecked, ElementName=CheckOverrideTopHookY}"/>
                                                 <TextBlock Text="mm" VerticalAlignment="Center" Margin="5,0,0,0"/>
                                             </StackPanel>
                                         </Grid>
