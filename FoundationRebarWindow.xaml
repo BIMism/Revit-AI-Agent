@@ -39,37 +39,37 @@
                     </Button>
                     <Button x:Name="BtnCombined" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
                         <StackPanel>
-                            <TextBlock Text="?" FontSize="32" HorizontalAlignment="Center" Foreground="Gray"/>
+                            <Image Source="pack://application:,,,/RevitAIAgent;component/Assets/combined.png" Width="48" Height="48" Margin="0,0,0,10"/>
                             <TextBlock Text="Combined" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                     <Button x:Name="BtnStrap" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
                         <StackPanel>
-                            <TextBlock Text="?" FontSize="32" HorizontalAlignment="Center" Foreground="Gray"/>
+                            <Image Source="pack://application:,,,/RevitAIAgent;component/Assets/strap.png" Width="48" Height="48" Margin="0,0,0,10"/>
                             <TextBlock Text="Strap" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                     <Button x:Name="BtnRaftMat" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
                         <StackPanel>
-                            <Image Source="pack://application:,,,/RevitAIAgent;component/Assets/slab.png" Width="48" Height="48" Margin="0,0,0,10"/>
+                            <Image Source="pack://application:,,,/RevitAIAgent;component/Assets/raft.png" Width="48" Height="48" Margin="0,0,0,10"/>
                             <TextBlock Text="Raft/Mat" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                     <Button x:Name="BtnPile" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
                         <StackPanel>
-                            <TextBlock Text="?" FontSize="32" HorizontalAlignment="Center" Foreground="Gray"/>
+                            <Image Source="pack://application:,,,/RevitAIAgent;component/Assets/pile.png" Width="48" Height="48" Margin="0,0,0,10"/>
                             <TextBlock Text="Pile" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                     <Button x:Name="BtnPileCap" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
                         <StackPanel>
-                            <TextBlock Text="?" FontSize="32" HorizontalAlignment="Center" Foreground="Gray"/>
+                            <Image Source="pack://application:,,,/RevitAIAgent;component/Assets/pile_cap.png" Width="48" Height="48" Margin="0,0,0,10"/>
                             <TextBlock Text="Pile Cap" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                     <Button x:Name="BtnStrip" Width="150" Height="120" Margin="10" Click="BtnComingSoon_Click">
                         <StackPanel>
-                            <TextBlock Text="?" FontSize="32" HorizontalAlignment="Center" Foreground="Gray"/>
+                            <Image Source="pack://application:,,,/RevitAIAgent;component/Assets/strip.png" Width="48" Height="48" Margin="0,0,0,10"/>
                             <TextBlock Text="Strip" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
@@ -175,15 +175,87 @@
                             </GroupBox>
                         </Grid>
                         
-                        <!-- OTHER PANELS (Placeholders) -->
+                        <!-- TOP BARS PANEL -->
                         <Grid x:Name="PanelTopBars" Visibility="Collapsed">
-                             <TextBlock Text="Top Bars settings coming soon..." Foreground="Gray"/>
+                             <GroupBox Header="Longitudinal Bars (Direction X)">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
+                                    
+                                    <TextBlock Grid.Row="0" Text="Bar Type:" Margin="0,5"/>
+                                    <ComboBox Grid.Row="0" Grid.Column="1" x:Name="ComboTopBarTypeX" Margin="10,5,0,5"/>
+
+                                    <TextBlock Grid.Row="1" Text="Hook:" Margin="0,5"/>
+                                    <ComboBox Grid.Row="1" Grid.Column="1" x:Name="ComboTopHookX" Margin="10,5,0,5"/>
+                                    
+                                    <TextBlock Grid.Row="2" Text="Spacing (mm):" Margin="0,5"/>
+                                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="InputTopSpacingX" Text="200" Margin="10,5,0,5"/>
+                                </Grid>
+                            </GroupBox>
+                            <GroupBox Header="Transversal Bars (Direction Y)">
+                                <Grid>
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
+                                    
+                                    <TextBlock Grid.Row="0" Text="Bar Type:" Margin="0,5"/>
+                                    <ComboBox Grid.Row="0" Grid.Column="1" x:Name="ComboTopBarTypeY" Margin="10,5,0,5"/>
+
+                                    <TextBlock Grid.Row="1" Text="Hook:" Margin="0,5"/>
+                                    <ComboBox Grid.Row="1" Grid.Column="1" x:Name="ComboTopHookY" Margin="10,5,0,5"/>
+                                    
+                                    <TextBlock Grid.Row="2" Text="Spacing (mm):" Margin="0,5"/>
+                                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="InputTopSpacingY" Text="200" Margin="10,5,0,5"/>
+                                </Grid>
+                            </GroupBox>
                         </Grid>
+
+                         <!-- DOWELS PANEL -->
                          <Grid x:Name="PanelDowels" Visibility="Collapsed">
-                             <TextBlock Text="Dowels settings coming soon..." Foreground="Gray"/>
+                             <GroupBox Header="Column Dowels">
+                                 <StackPanel>
+                                     <CheckBox x:Name="CheckAddDowels" Content="Add Dowels" IsChecked="True" Margin="0,0,0,10"/>
+                                     <Grid>
+                                         <Grid.ColumnDefinitions><ColumnDefinition Width="100"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                         <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
+
+                                         <TextBlock Grid.Row="0" Text="Bar Type:" Margin="0,5"/>
+                                         <ComboBox Grid.Row="0" Grid.Column="1" x:Name="ComboDowelBarType" Margin="0,5"/>
+
+                                          <TextBlock Grid.Row="1" Text="Hook Base:" Margin="0,5"/>
+                                          <ComboBox Grid.Row="1" Grid.Column="1" x:Name="ComboDowelHookBase" Margin="0,5"/>
+
+                                         <TextBlock Grid.Row="2" Text="Number of Bars:" Margin="0,5"/>
+                                         <TextBox Grid.Row="2" Grid.Column="1" x:Name="InputDowelCount" Text="4" Margin="0,5"/>
+                                         
+                                         <TextBlock Grid.Row="3" Text="Length (mm):" Margin="0,5"/>
+                                         <TextBox Grid.Row="3" Grid.Column="1" x:Name="InputDowelLength" Text="1000" Margin="0,5"/>
+                                     </Grid>
+                                 </StackPanel>
+                             </GroupBox>
                         </Grid>
+                        
+                         <!-- STIRRUPS PANEL -->
                          <Grid x:Name="PanelStirrups" Visibility="Collapsed">
-                             <TextBlock Text="Stirrups settings coming soon..." Foreground="Gray"/>
+                              <GroupBox Header="Pier Stirrups">
+                                 <StackPanel>
+                                     <CheckBox x:Name="CheckAddStirrups" Content="Add Stirrups" IsChecked="True" Margin="0,0,0,10"/>
+                                      <Grid>
+                                         <Grid.ColumnDefinitions><ColumnDefinition Width="100"/><ColumnDefinition/></Grid.ColumnDefinitions>
+                                         <Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
+
+                                         <TextBlock Grid.Row="0" Text="Bar Type:" Margin="0,5"/>
+                                         <ComboBox Grid.Row="0" Grid.Column="1" x:Name="ComboStirrupBarType" Margin="0,5"/>
+
+                                         <TextBlock Grid.Row="1" Text="Distribution Type:" Margin="0,5"/>
+                                         <ComboBox Grid.Row="1" Grid.Column="1" x:Name="ComboStirrupTarget" SelectedIndex="0" Margin="0,5">
+                                             <ComboBoxItem Content="Uniform Spacing"/>
+                                         </ComboBox>
+
+                                         <TextBlock Grid.Row="2" Text="Spacing (mm):" Margin="0,5"/>
+                                         <TextBox Grid.Row="2" Grid.Column="1" x:Name="InputStirrupSpacing" Text="150" Margin="0,5"/>
+                                     </Grid>
+                                 </StackPanel>
+                             </GroupBox>
                         </Grid>
 
                     </StackPanel>

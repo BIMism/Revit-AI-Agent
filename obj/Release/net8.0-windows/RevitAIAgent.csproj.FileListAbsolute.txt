@@ -131,3 +131,9 @@ E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\costing.png
 E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\resources.png
 E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\FoundationRebarWindow.baml
 E:\My\BIM'ism\Revit Pluging\obj\Release\net8.0-windows\FoundationRebarWindow.g.cs
+E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\combined.png
+E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\strap.png
+E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\raft.png
+E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\pile.png
+E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\pile_cap.png
+E:\My\BIM'ism\Revit Pluging\bin\Release\net8.0-windows\Assets\strip.png

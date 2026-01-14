@@ -1,5 +1,5 @@
 {
-  "version": "2.1.1",
+  "version": "2.1.2",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.1.1: UPDATED UI - Added 7 Foundation Types for selection (Isolated, Combined, Raft, etc.)."
+  "releaseNotes": "v2.1.2: VISUAL OVERHAUL - Added 3D icons for all foundations. Completed detailed UI tabs (Top Bars, Dowels)."
 }

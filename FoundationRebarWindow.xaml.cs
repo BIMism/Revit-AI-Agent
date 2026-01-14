@@ -37,10 +37,26 @@ namespace RevitAIAgent
             ComboBarTypeY.ItemsSource = barTypes;
             ComboBarTypeY.DisplayMemberPath = "Name";
 
+            // Bind Top Bars
+            ComboTopBarTypeX.ItemsSource = barTypes;
+            ComboTopBarTypeX.DisplayMemberPath = "Name";
+            ComboTopBarTypeY.ItemsSource = barTypes;
+            ComboTopBarTypeY.DisplayMemberPath = "Name";
+
+            // Bind Dowels and Stirrups
+            ComboDowelBarType.ItemsSource = barTypes;
+            ComboDowelBarType.DisplayMemberPath = "Name";
+            ComboStirrupBarType.ItemsSource = barTypes;
+            ComboStirrupBarType.DisplayMemberPath = "Name";
+
             if (barTypes.Count > 0)
             {
                 ComboBarTypeX.SelectedIndex = 0;
                 ComboBarTypeY.SelectedIndex = 0;
+                ComboTopBarTypeX.SelectedIndex = 0;
+                ComboTopBarTypeY.SelectedIndex = 0;
+                ComboDowelBarType.SelectedIndex = 0;
+                ComboStirrupBarType.SelectedIndex = 0;
             }
 
             // Load Hook Types
@@ -56,11 +72,24 @@ namespace RevitAIAgent
             
             ComboHookY.ItemsSource = hookTypes;
             ComboHookY.DisplayMemberPath = "Name";
+
+            // Bind Top Hooks
+            ComboTopHookX.ItemsSource = hookTypes;
+            ComboTopHookX.DisplayMemberPath = "Name";
+            ComboTopHookY.ItemsSource = hookTypes;
+            ComboTopHookY.DisplayMemberPath = "Name";
+
+            // Bind Dowel Hooks
+            ComboDowelHookBase.ItemsSource = hookTypes;
+            ComboDowelHookBase.DisplayMemberPath = "Name";
             
              if (hookTypes.Count > 0)
             {
                 ComboHookX.SelectedIndex = 0;
                 ComboHookY.SelectedIndex = 0;
+                ComboTopHookX.SelectedIndex = 0;
+                ComboTopHookY.SelectedIndex = 0;
+                ComboDowelHookBase.SelectedIndex = 0;
             }
 
             // Load Covers (RebarCoverType)
