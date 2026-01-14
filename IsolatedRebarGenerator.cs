@@ -56,7 +56,7 @@ namespace RevitAIAgent
                     {
                         GenerateForSingle(doc, foundation, config);
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         // Log error for this specific foundation but continue
                     }
@@ -70,6 +70,8 @@ namespace RevitAIAgent
         {
             BoundingBoxXYZ bbox = foundation.get_BoundingBox(null);
             if (bbox == null) return;
+            
+            // ... (rest of method)
 
             XYZ min = bbox.Min;
             XYZ max = bbox.Max;
@@ -174,12 +176,14 @@ namespace RevitAIAgent
                     
                     if (overrideHookLen.HasValue && hookType != null)
                     {
-                        // Override hook length
-                        // Note: To override hook length, we need to ensure the RebarShape allows it or we modify parameters.
-                        // Actually Revit API allows modifying "Override Hook Length" parameter if the shape supports it.
-                        // Ideally we use:
-                        Parameter pStart = rebar.GetParameter(BuiltInParameter.REBAR_HOOK_START_OVERRIDE);
-                        Parameter pEnd = rebar.GetParameter(BuiltInParameter.REBAR_HOOK_END_OVERRIDE);
+                        // Attempt to override hook lengths
+                        // "Override Hook Lengths" is the checkbox parameter
+                        Parameter pOverride = rebar.LookupParameter("Override Hook Lengths");
+                        if (pOverride != null && !pOverride.IsReadOnly) pOverride.Set(1);
+
+                        // "Hook Length Start" and "Hook Length End"
+                        Parameter pStart = rebar.LookupParameter("Hook Length Start");
+                        Parameter pEnd = rebar.LookupParameter("Hook Length End");
                         
                         if (pStart != null && !pStart.IsReadOnly) pStart.Set(overrideHookLen.Value);
                         if (pEnd != null && !pEnd.IsReadOnly) pEnd.Set(overrideHookLen.Value);
