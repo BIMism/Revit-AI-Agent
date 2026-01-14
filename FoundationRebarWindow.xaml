@@ -111,8 +111,6 @@
                         <ListBoxItem Content="Bottom Minor (B2)" Padding="10"/>
                         <ListBoxItem Content="Top Major (T1)" Padding="10"/>
                         <ListBoxItem Content="Top Minor (T2)" Padding="10"/>
-                        <ListBoxItem Content="Dowels" Padding="10"/>
-                        <ListBoxItem Content="Stirrups" Padding="10"/>
                     </ListBox>
                 </Border>
 

@@ -1,5 +1,5 @@
 {
-  "version": "2.9.3",
+  "version": "2.10.0",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.9.3: Fixed Y-direction hook orientations and dowel hooks. Bottom Y-bars now Right-Left, Top Y-bars Left-Right, Dowels hooks point up."
+  "releaseNotes": "v2.10.0: Simplified hook logic - uniform orientations for all bars in same layer. Removed Dowels and Stirrups from UI."
 }

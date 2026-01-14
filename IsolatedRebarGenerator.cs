@@ -123,14 +123,12 @@ namespace RevitAIAgent
                 XYZ endY = new XYZ(min.X + coverDist, max.Y - coverDist, bottomZY);
 
                 CreateRebarSet(doc, foundation, config.BottomBarY, config.HookBottomY, startY, endY,
-                    XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingBottomY * mmToFeet, config.OverrideHookLenBottomY * mmToFeet,
-                    RebarHookOrientation.Right, RebarHookOrientation.Left);  // Swapped for Y-direction
+                    XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingBottomY * mmToFeet, config.OverrideHookLenBottomY * mmToFeet);  // Same as B1
                     
                 if (config.AddB2Enabled && config.AddB2Count > 0)
                 {
                    CreateFixedRebarSet(doc, foundation, config.AddB2Type, config.HookBottomY, startY, endY,
-                    XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddB2Count,
-                    RebarHookOrientation.Right, RebarHookOrientation.Left);
+                    XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddB2Count);
                 }
             }
 
@@ -161,14 +159,12 @@ namespace RevitAIAgent
                     XYZ startTopY = new XYZ(min.X + coverDist, min.Y + coverDist, topZY);
                     XYZ endTopY = new XYZ(min.X + coverDist, max.Y - coverDist, topZY);
                     CreateRebarSet(doc, foundation, config.TopBarY, config.HookTopY, startTopY, endTopY,
-                        XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingTopY * mmToFeet, config.OverrideHookLenTopY * mmToFeet,
-                        RebarHookOrientation.Left, RebarHookOrientation.Right);  // Swapped for Y-direction
+                        XYZ.BasisX, max.X - min.X - (2 * coverDist), config.SpacingTopY * mmToFeet, config.OverrideHookLenTopY * mmToFeet);  // Same as T1
 
                     if (config.AddT2Enabled && config.AddT2Count > 0)
                     {
                         CreateFixedRebarSet(doc, foundation, config.AddT2Type, config.HookTopY, startTopY, endTopY,
-                        XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddT2Count,
-                        RebarHookOrientation.Left, RebarHookOrientation.Right);
+                        XYZ.BasisX, max.X - min.X - (2 * coverDist), config.AddT2Count);
                     }
                 }
             }
