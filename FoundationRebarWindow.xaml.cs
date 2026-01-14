@@ -208,23 +208,23 @@ namespace RevitAIAgent
             
             concrete.Geometry = mesh;
             // Transparent Gray
-            concrete.Material = new DiffuseMaterial(new SolidColorBrush(Color.FromArgb(100, 200, 200, 200))); 
+            concrete.Material = new DiffuseMaterial(new SolidColorBrush(System.Windows.Media.Color.FromArgb(100, 200, 200, 200))); 
             // Also add back material for inside
-            concrete.BackMaterial = new DiffuseMaterial(new SolidColorBrush(Color.FromArgb(100, 150, 150, 150)));
+            concrete.BackMaterial = new DiffuseMaterial(new SolidColorBrush(System.Windows.Media.Color.FromArgb(100, 150, 150, 150)));
             group.Children.Add(concrete);
 
             // Rebar (Approximated as thin boxes/lines)
             // B1 (X dir, bottom)
-            AddRebarSet(group, w, l, h, true, true, 8, Color.FromRgb(255,0,0));
+            AddRebarSet(group, w, l, h, true, true, 8, System.Windows.Media.Color.FromRgb(255,0,0));
             // B2 (Y dir, bottom)
-            AddRebarSet(group, w, l, h, false, true, 8, Color.FromRgb(0,255,0));
+            AddRebarSet(group, w, l, h, false, true, 8, System.Windows.Media.Color.FromRgb(0,255,0));
             
             if (CheckAddTopBars.IsChecked == true)
             {
                  // T1 (X dir, top)
-                AddRebarSet(group, w, l, h, true, false, 8, Color.FromRgb(255,50,50));
+                AddRebarSet(group, w, l, h, true, false, 8, System.Windows.Media.Color.FromRgb(255,50,50));
                 // T2 (Y dir, top)
-                AddRebarSet(group, w, l, h, false, false, 8, Color.FromRgb(50,255,50));
+                AddRebarSet(group, w, l, h, false, false, 8, System.Windows.Media.Color.FromRgb(50,255,50));
             }
 
             ModelVisual3D modelVis = new ModelVisual3D();
@@ -232,7 +232,7 @@ namespace RevitAIAgent
             PreviewViewport.Children.Add(modelVis);
         }
 
-        private void AddRebarSet(Model3DGroup group, double w, double l, double h, bool isX, bool isBottom, int count, Color c)
+        private void AddRebarSet(Model3DGroup group, double w, double l, double h, bool isX, bool isBottom, int count, System.Windows.Media.Color c)
         {
             double cover = 0.1;
             double z = isBottom ? cover : h - cover;
