@@ -112,6 +112,62 @@ namespace RevitAIAgent
             return doc.Create.NewRoom(view.GenLevel, new UV(point.X, point.Y));
         }
 
+        public static Floor CreateFloor(Document doc, List<XYZ> points, Level level = null, FloorType type = null)
+        {
+            if (level == null) level = GetLevel(doc);
+            if (type == null) type = new FilteredElementCollector(doc).OfClass(typeof(FloorType)).Cast<FloorType>().First();
+
+            CurveLoop profile = new CurveLoop();
+            for (int i = 0; i < points.Count; i++)
+            {
+                XYZ p1 = points[i];
+                XYZ p2 = points[(i + 1) % points.Count];
+                profile.Append(Line.CreateBound(new XYZ(p1.X, p1.Y, 0), new XYZ(p2.X, p2.Y, 0)));
+            }
+            
+            return Floor.Create(doc, new List<CurveLoop> { profile }, type.Id, level.Id);
+        }
+
+        public static FootPrintRoof CreateRoof(Document doc, List<XYZ> points, Level level = null, RoofType type = null)
+        {
+            if (level == null) level = GetLevel(doc);
+            if (type == null) type = new FilteredElementCollector(doc).OfClass(typeof(RoofType)).Cast<RoofType>().First();
+
+            CurveArray profile = new CurveArray();
+            for (int i = 0; i < points.Count; i++)
+            {
+                XYZ p1 = points[i];
+                XYZ p2 = points[(i + 1) % points.Count];
+                profile.Append(Line.CreateBound(new XYZ(p1.X, p1.Y, 0), new XYZ(p2.X, p2.Y, 0)));
+            }
+
+            ModelCurveArray footprint = new ModelCurveArray();
+            return doc.Create.NewFootPrintRoof(profile, level, type, out footprint);
+        }
+
+        // 4. MODIFICATION
+        public static void MoveElements(Document doc, IEnumerable<Element> elements, XYZ vector)
+        {
+            if (elements == null || !elements.Any()) return;
+            ElementTransformUtils.MoveElements(doc, elements.Select(e => e.Id).ToList(), vector);
+        }
+
+        public static void CopyElements(Document doc, IEnumerable<Element> elements, XYZ vector)
+        {
+            if (elements == null || !elements.Any()) return;
+            ElementTransformUtils.CopyElements(doc, elements.Select(e => e.Id).ToList(), vector);
+        }
+
+        public static void RotateElement(Document doc, Element element, double angleDegree, XYZ axisPoint = null)
+        {
+            if (element == null) return;
+            XYZ p1 = axisPoint ?? XYZ.Zero;
+            XYZ p2 = p1 + XYZ.BasisZ;
+            Line axis = Line.CreateBound(p1, p2);
+            double angleRad = angleDegree * (Math.PI / 180.0);
+            ElementTransformUtils.RotateElement(doc, element.Id, axis, angleRad);
+        }
+
         // 5. DELETION
         public static void Delete(Document doc, IEnumerable<Element> elements)
         {

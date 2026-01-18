@@ -1,5 +1,5 @@
 {
-  "version": "2.13.1",
+  "version": "2.14.0",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.13.1: AI BRAIN REFINEMENT. Improved composite command handling (e.g., select + delete) and polished Singlish personality for more natural, less repetitive communication."
+  "releaseNotes": "v2.14.0: GRAND VISION PHASE 1. Added Floor and Roof creation, and powerful Modification tools (Move, Copy, Rotate). AI is now capable of full geometry manipulation."
 }
