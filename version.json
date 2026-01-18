@@ -1,5 +1,5 @@
 {
-  "version": "2.14.4",
+  "version": "2.14.5",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.14.4: CRITICAL UPDATE. Fixed AI brain—now knows about CreateFloor, RotateElement, and all v2.14 capabilities. English language detection improved."
+  "releaseNotes": "v2.14.5: FINAL FIX. Keyword-based language detection ensures English queries ALWAYS get English responses."
 }
