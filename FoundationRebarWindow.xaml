@@ -31,23 +31,23 @@
         <Grid x:Name="TypeSelectionGrid" Background="White" Visibility="Visible">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="Select Foundation Type" FontSize="24" FontWeight="Bold" Margin="0,0,0,30" HorizontalAlignment="Center"/>
-                <WrapPanel HorizontalAlignment="Center" Width="600" HorizontalContentAlignment="Center">
+                <WrapPanel HorizontalAlignment="Center" Width="600">
                     <Button x:Name="BtnIsolated" Width="150" Height="120" Margin="15" Click="BtnIsolated_Click">
                         <StackPanel>
                             <Image x:Name="ImgIsolated" Width="48" Height="48" Margin="0,0,0,10"/>
                             <TextBlock Text="Isolated" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="BtnStrip" Width="150" Height="120" Margin="15" Click="BtnStrip_Click">
+                    <Button x:Name="BtnWall" Width="150" Height="120" Margin="15" Click="BtnWall_Click">
                         <StackPanel>
-                            <Image x:Name="ImgStrip" Width="48" Height="48" Margin="0,0,0,10"/>
-                            <TextBlock Text="Strip (Wall)" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                            <Image x:Name="ImgWall" Width="48" Height="48" Margin="0,0,0,10"/>
+                            <TextBlock Text="Wall" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="BtnPile" Width="150" Height="120" Margin="15" Click="BtnPile_Click">
+                    <Button x:Name="BtnSlab" Width="150" Height="120" Margin="15" Click="BtnSlab_Click">
                         <StackPanel>
-                            <Image x:Name="ImgPile" Width="48" Height="48" Margin="0,0,0,10"/>
-                            <TextBlock Text="Pile" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                            <Image x:Name="ImgSlab" Width="48" Height="48" Margin="0,0,0,10"/>
+                            <TextBlock Text="Slab" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                 </WrapPanel>

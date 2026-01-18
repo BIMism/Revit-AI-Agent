@@ -97,18 +97,82 @@ namespace RevitAIAgent
 
         private void GenerateForSingle(Document doc, Element foundation, IsolatedRebarConfig config)
         {
-            // Improved bounding box handling for irregular shapes (e.g. Triangular Pile Caps)
-            // We still use the Axis-Aligned Bounding Box (AABB) for the Main Grid.
-            // Future improvement: Use faces to orient the grid.
+            // SMART DETECTION: Determine if this is a Pile (vertical) or Pad/Cap (horizontal)
             BoundingBoxXYZ bbox = foundation.get_BoundingBox(null);
             if (bbox == null) return;
-            
-            // ... (rest of method)
 
             XYZ min = bbox.Min;
             XYZ max = bbox.Max;
-            
-            double coverDist = 50.0 / 304.8; // 50mm standard cover (approx 0.164 feet)
+
+            double width = max.X - min.X;
+            double depth = max.Y - min.Y;
+            double height = max.Z - min.Z;
+
+            // If Height is significantly greater than Width/Depth, it's a PILE
+            // Typical pile: H > 3 * max(W, D)
+            bool isPile = height > 3.0 * Math.Max(width, depth);
+
+            if (isPile)
+            {
+                // Generate PILE rebar (Vertical cage)
+                GeneratePileCage(doc, foundation, config, bbox);
+            }
+            else
+            {
+                // Generate PAD/CAP rebar (Horizontal mesh)
+                GeneratePadMesh(doc, foundation, config, bbox);
+            }
+        }
+
+        private void GeneratePileCage(Document doc, Element foundation, IsolatedRebarConfig config, BoundingBoxXYZ bbox)
+        {
+            // Pile rebar: Vertical bars around perimeter + ties
+            XYZ min = bbox.Min;
+            XYZ max = bbox.Max;
+
+            double coverDist = 50.0 / 304.8;
+            double width = max.X - min.X;
+            double depth = max.Y - min.Y;
+
+            // For simplicity: place vertical bars in a grid (or circular if close to square)
+            // This is a simplified approach - real piles might need circular distribution
+
+            // Vertical bar placement (4-corner + mid if large)
+            int barCount = 4; // Minimum 4 corners
+            if (width > 1.5 || depth > 1.5) barCount = 8; // Add mid-points for larger piles
+
+            XYZ center = (min + max) / 2;
+            double radius = Math.Min(width, depth) / 2 - coverDist;
+
+            // Create vertical bars distributed around perimeter
+            for (int i = 0; i < barCount; i++)
+            {
+                double angle = (360.0 / barCount) * i * (Math.PI / 180.0);
+                double offsetX = radius * Math.Cos(angle);
+                double offsetY = radius * Math.Sin(angle);
+
+                XYZ start = new XYZ(center.X + offsetX, center.Y + offsetY, min.Z + coverDist);
+                XYZ end = new XYZ(center.X + offsetX, center.Y + offsetY, max.Z - coverDist);
+
+                try
+                {
+                    Line barLine = Line.CreateBound(start, end);
+                    List<Curve> curves = new List<Curve> { barLine };
+
+                    Rebar rebar = Rebar.CreateFromCurves(doc, RebarStyle.Standard, config.BottomBarX, null, null,
+                        foundation, XYZ.BasisX, curves, RebarHookOrientation.Left, RebarHookOrientation.Left, false, false);
+                }
+                catch { }
+            }
+        }
+
+        private void GeneratePadMesh(Document doc, Element foundation, IsolatedRebarConfig config, BoundingBoxXYZ bbox)
+        {
+            // Original logic for Pad/Cap (horizontal mesh)
+            XYZ min = bbox.Min;
+            XYZ max = bbox.Max;
+
+            double coverDist = 50.0 / 304.8;
             double mmToFeet = 0.00328084;
             
             // BOTTOM BARS X (Longitudinal)

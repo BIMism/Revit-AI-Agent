@@ -102,6 +102,10 @@ namespace RevitAIAgent
 
 LIBRARY:
 - RevitAI.Select(doc, elements);
+- RevitAI.GetWalls(doc); // Returns List<Wall>
+- RevitAI.GetFoundations(doc); // Returns List<Element> (Structural Foundations)
+- RevitAI.GetColumns(doc); // Returns List<Element> (Structural Columns)
+- RevitAI.GetBeams(doc); // Returns List<Element> (Structural Framing/Beams)
 - RevitAI.GetLevel(doc, 'Name'); // Returns Level
 - RevitAI.GetWallType(doc, 'Name'); // Returns WallType
 - RevitAI.CreateWall(doc, start, end, level, type, heightFt);

@@ -6,11 +6,11 @@ using Autodesk.Revit.DB.Structure;
 
 namespace RevitAIAgent
 {
-    public class StripRebarGenerator
+    public class WallRebarGenerator
     {
         public void Generate(Document doc, List<Element> foundations, IsolatedRebarConfig config)
         {
-            using (Transaction t = new Transaction(doc, "Generate Strip Rebar"))
+            using (Transaction t = new Transaction(doc, "Generate Wall Rebar"))
             {
                 t.Start();
                 foreach (var footing in foundations)
@@ -91,7 +91,59 @@ namespace RevitAIAgent
 
         private void CreateStirrups(Document doc, Element host, Curve curve, double width, IsolatedRebarConfig config)
         {
-            // Similar logic but Shape is Stirrup (O-shape or U-shape) and Distribution is along the Curve
+            // Create stirrups perpendicular to the longitudinal bars
+            // Stirrups are rectangular/U-shaped links distributed along the curve
+            
+            BoundingBoxXYZ bbox = host.get_BoundingBox(null);
+            if (bbox == null) return;
+
+            double height = bbox.Max.Z - bbox.Min.Z;
+            double cover = 50.0 / 304.8; // 50mm
+            double mmToFeet = 0.00328084;
+
+            // For Wall foundations, stirrups are typically vertical U-shapes or closed rectangles
+            // spanning the width and height of the foundation
+            
+            // We'll create a simple approach: place stirrups as closed rectangular loops
+            // perpendicular to the curve at regular spacing
+            
+            XYZ p1 = curve.GetEndPoint(0);
+            XYZ p2 = curve.GetEndPoint(1);
+            XYZ dir = (p2 - p1).Normalize();
+            XYZ normal = XYZ.BasisZ.CrossProduct(dir).Normalize(); // Perpendicular horizontal
+            
+            // Create a single stirrup at the start and distribute along curve
+            // Stirrup corner points (simplified rectangular cross-section)
+            double halfWidth = width / 2 - cover;
+            double bottomZ = bbox.Min.Z + cover;
+            double topZ = bbox.Max.Z - cover;
+            
+            // Define stirrup shape on the cross-section
+            XYZ corner1 = p1 + normal * halfWidth + XYZ.BasisZ * (bottomZ - p1.Z);
+            XYZ corner2 = p1 - normal * halfWidth + XYZ.BasisZ * (bottomZ - p1.Z);
+            XYZ corner3 = p1 - normal * halfWidth + XYZ.BasisZ * (topZ - p1.Z);
+            XYZ corner4 = p1 + normal * halfWidth + XYZ.BasisZ * (topZ - p1.Z);
+            
+            List<Curve> stirrupCurves = new List<Curve>
+            {
+                Line.CreateBound(corner1, corner2),
+                Line.CreateBound(corner2, corner3),
+                Line.CreateBound(corner3, corner4),
+                Line.CreateBound(corner4, corner1)
+            };
+            
+            try
+            {
+                Rebar stirrup = Rebar.CreateFromCurves(doc, RebarStyle.Standard, config.StirrupBarType, null, null,
+                    host, dir, stirrupCurves, RebarHookOrientation.Left, RebarHookOrientation.Left, true, false);
+                
+                if (stirrup != null)
+                {
+                    double curveLength = curve.Length - (2 * cover);
+                    stirrup.GetShapeDrivenAccessor().SetLayoutAsMaximumSpacing(config.StirrupSpacing * mmToFeet, curveLength, true, true, true);
+                }
+            }
+            catch { }
         }
     }
 }

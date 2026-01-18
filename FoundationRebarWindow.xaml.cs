@@ -24,8 +24,8 @@ namespace RevitAIAgent
         public enum FoundationType
         {
             Isolated,
-            Strip,
-            Pile
+            Wall,
+            Slab
         }
 
         public FoundationRebarWindow(UIDocument uiDoc)
@@ -47,12 +47,8 @@ namespace RevitAIAgent
             {
                 // Explicitly load images using Pack URI in code-behind
                 ImgIsolated.Source = GetImage("footing.png");
-                ImgCombined.Source = GetImage("combined.png");
-                ImgStrap.Source = GetImage("strap.png");
-                ImgRaft.Source = GetImage("raft.png");
-                ImgPile.Source = GetImage("pile.png");
-                ImgPileCap.Source = GetImage("pile_cap.png");
-                ImgStrip.Source = GetImage("strip.png");
+                ImgWall.Source = GetImage("wall.png");
+                ImgSlab.Source = GetImage("slab.png");
             }
             catch { }
         }
@@ -178,15 +174,15 @@ namespace RevitAIAgent
             SetupUIForType();
         }
 
-        private void BtnStrip_Click(object sender, RoutedEventArgs e)
+        private void BtnWall_Click(object sender, RoutedEventArgs e)
         {
-            _currentType = FoundationType.Strip;
+            _currentType = FoundationType.Wall;
             SetupUIForType();
         }
 
-        private void BtnPile_Click(object sender, RoutedEventArgs e)
+        private void BtnSlab_Click(object sender, RoutedEventArgs e)
         {
-            _currentType = FoundationType.Pile;
+            _currentType = FoundationType.Slab;
             SetupUIForType();
         }
 
@@ -207,15 +203,15 @@ namespace RevitAIAgent
                     SidebarList.Items.Add(new ListBoxItem { Content = "Top Major (T1)", Padding = new Thickness(10) });
                     SidebarList.Items.Add(new ListBoxItem { Content = "Top Minor (T2)", Padding = new Thickness(10) });
                     break;
-                case FoundationType.Strip:
-                    TitleText.Text = "Strip/Wall Footing Reinforcement";
+                case FoundationType.Wall:
+                    TitleText.Text = "Wall Footing Reinforcement";
                     SidebarList.Items.Add(new ListBoxItem { Content = "Longitudinal Bars", Padding = new Thickness(10) });
                     SidebarList.Items.Add(new ListBoxItem { Content = "Stirrups", Padding = new Thickness(10) });
                     break;
-                case FoundationType.Pile:
-                    TitleText.Text = "Pile Reinforcement";
-                    SidebarList.Items.Add(new ListBoxItem { Content = "Vertical Bars", Padding = new Thickness(10) });
-                    SidebarList.Items.Add(new ListBoxItem { Content = "Ties / Spirals", Padding = new Thickness(10) });
+                case FoundationType.Slab:
+                    TitleText.Text = "Slab/Raft Reinforcement";
+                    SidebarList.Items.Add(new ListBoxItem { Content = "Bottom Mesh", Padding = new Thickness(10) });
+                    SidebarList.Items.Add(new ListBoxItem { Content = "Top Mesh", Padding = new Thickness(10) });
                     break;
             }
         }
@@ -255,7 +251,7 @@ namespace RevitAIAgent
                     // Dowels/Stirrups hidden for pure Isolated for now, can be added back if requested
                 }
             }
-            else if (_currentType == FoundationType.Strip)
+            else if (_currentType == FoundationType.Wall)
             {
                  switch (index)
                 {
@@ -264,13 +260,13 @@ namespace RevitAIAgent
                     case 2: PanelStirrups.Visibility = System.Windows.Visibility.Visible; break; 
                 }
             }
-            else if (_currentType == FoundationType.Pile)
+            else if (_currentType == FoundationType.Slab)
             {
                  switch (index)
                 {
                     case 0: PanelGeometry.Visibility = System.Windows.Visibility.Visible; break;
-                    case 1: PanelB1.Visibility = System.Windows.Visibility.Visible; break; // Reuse B1 for Vertical
-                    case 2: PanelStirrups.Visibility = System.Windows.Visibility.Visible; break; // Reuse Stirrups for Ties
+                    case 1: PanelB1.Visibility = System.Windows.Visibility.Visible; break; // Reuse B1 for Bottom Mesh
+                    case 2: PanelT1.Visibility = System.Windows.Visibility.Visible; break; // Reuse T1 for Top Mesh
                 }
             }
             
@@ -541,14 +537,14 @@ namespace RevitAIAgent
                     IsolatedRebarGenerator generator = new IsolatedRebarGenerator();
                     generator.Generate(_doc, foundations, config);
                 }
-                else if (_currentType == FoundationType.Strip)
+                else if (_currentType == FoundationType.Wall)
                 {
-                    StripRebarGenerator generator = new StripRebarGenerator();
+                    WallRebarGenerator generator = new WallRebarGenerator();
                     generator.Generate(_doc, foundations, config);
                 }
-                else if (_currentType == FoundationType.Pile)
+                else if (_currentType == FoundationType.Slab)
                 {
-                    PileRebarGenerator generator = new PileRebarGenerator();
+                    SlabRebarGenerator generator = new SlabRebarGenerator();
                     generator.Generate(_doc, foundations, config);
                 }
 
