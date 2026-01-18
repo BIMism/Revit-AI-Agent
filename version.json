@@ -1,5 +1,5 @@
 {
-  "version": "2.15.1",
+  "version": "2.15.2",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.15.1: HOTFIX. Fixed missing Brain file deployment. Master's Scroll is now correctly included."
+  "releaseNotes": "v2.15.2: CRITICAL HOTFIX. Fixed 'Empty Brain' issue. AI now correctly locates the Master Knowledge file."
 }

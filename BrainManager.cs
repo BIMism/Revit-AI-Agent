@@ -10,7 +10,7 @@ namespace RevitAIAgent
     {
         private static string _appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BIMism", "RevitAI");
         private static string _userBrainPath = Path.Combine(_appDataPath, "UserBrain.json");
-        private static string _masterBrainPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "RevitKnowledge.json");
+        private static string _masterBrainPath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Assets", "RevitKnowledge.json");
 
         public static List<KnowledgeEntry> UserKnowledge { get; private set; } = new List<KnowledgeEntry>();
         public static List<KnowledgeEntry> MasterKnowledge { get; private set; } = new List<KnowledgeEntry>();
