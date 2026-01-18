@@ -1,5 +1,5 @@
 {
-  "version": "2.14.2",
+  "version": "2.14.3",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.14.2: HOTFIX. Added GetElementsByCategory alias for AI robustness."
+  "releaseNotes": "v2.14.3: HOTFIX. Added GetFloors method for Floor selection."
 }

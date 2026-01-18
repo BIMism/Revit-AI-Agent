@@ -30,6 +30,7 @@ namespace RevitAIAgent
         public static List<Element> GetElementsByCategory(Document doc, BuiltInCategory category) => GetAll(doc, category);
 
         public static List<Wall> GetWalls(Document doc) => GetAll(doc, BuiltInCategory.OST_Walls).Cast<Wall>().ToList();
+        public static List<Floor> GetFloors(Document doc) => GetAll(doc, BuiltInCategory.OST_Floors).Cast<Floor>().ToList();
         public static List<FamilyInstance> GetDoors(Document doc) => GetAll(doc, BuiltInCategory.OST_Doors).Cast<FamilyInstance>().ToList();
         public static List<FamilyInstance> GetWindows(Document doc) => GetAll(doc, BuiltInCategory.OST_Windows).Cast<FamilyInstance>().ToList();
         public static List<Element> GetFoundations(Document doc) => GetAll(doc, BuiltInCategory.OST_StructuralFoundation);
