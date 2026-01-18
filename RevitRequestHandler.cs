@@ -210,7 +210,7 @@ namespace RevitAIAgent
                 t.Start();
                 try
                 {
-                    ScriptRunner.RunScript(doc, code);
+                    ScriptRunner.RunScript(uiapp, code);
                 }
                 catch (Exception ex)
                 {

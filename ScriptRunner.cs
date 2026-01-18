@@ -14,7 +14,7 @@ namespace RevitAIAgent
 {
     public class ScriptRunner
     {
-        public static void RunScript(Document doc, string code)
+        public static void RunScript(UIApplication uiapp, string code)
         {
             // 1. Wrap the code in a valid class structure
             string sourceCode = @"
@@ -30,8 +30,10 @@ namespace RevitAIAgentDynamic
 {
     public class DynamicCommand
     {
-        public void Execute(Document doc)
+        public void Execute(UIApplication uiapp)
         {
+            UIDocument uidoc = uiapp.ActiveUIDocument;
+            Document doc = uidoc.Document;
             " + code + @"
         }
     }
@@ -96,7 +98,7 @@ namespace RevitAIAgentDynamic
                     
                     try
                     {
-                        method.Invoke(obj, new object[] { doc });
+                        method.Invoke(obj, new object[] { uiapp });
                     }
                     catch (TargetInvocationException ex)
                     {
