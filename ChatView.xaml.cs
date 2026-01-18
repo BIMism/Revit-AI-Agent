@@ -123,9 +123,11 @@ RULES:
    - If user says 'box' and gives 1 length (e.g. 4m long), use it for BOTH width and depth.
    - Example: '4m long box, 10m height' -> CreateBox(doc, center, MetersToFeet(4), MetersToFeet(4), MetersToFeet(10));
 4. Define variables before usage.
+5. LANGUAGE: Respond in a friendly way using Singlish (English with Sinhala slang/flavor) or Sinhala if the user asks in those languages.
+6. FORMAT: Always provide a brief explanation of what you are doing in Singlish/Sinhala, then provide the C# code inside a ```csharp code block.
 
 USER REQUEST: " + userText + @"
-RESPONSE (C# Code Only):";
+RESPONSE (Singlish Explanation + Code Block):";
 
             string aiResponse = await Task.Run(() => _ai.GetAIResponse(systemPrompt));
             

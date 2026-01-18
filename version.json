@@ -1,5 +1,5 @@
 {
-  "version": "2.12.4",
+  "version": "2.12.5",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.12.4: FIXED AI FOUNDATION SELECTION. Updated AI Engine with native structural helper methods for accurate element selection. Improved command generation for foundations, columns, and beams using RevitAI library."
+  "releaseNotes": "v2.12.5: SINGLISH SUPPORT! The AI Agent now communicates in Singlish/Sinhala just like a pro. Improved interaction and personality."
 }
