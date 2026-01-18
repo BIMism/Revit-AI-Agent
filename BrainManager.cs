@@ -22,7 +22,7 @@ namespace RevitAIAgent
             public string Description { get; set; }
         }
 
-        public static void Initialize()
+        public static int Initialize()
         {
             // Ensure directory exists
             if (!Directory.Exists(_appDataPath)) Directory.CreateDirectory(_appDataPath);
@@ -48,6 +48,8 @@ namespace RevitAIAgent
                 }
                 catch { /* Ignore */ }
             }
+
+            return MasterKnowledge.Count;
         }
 
         public static KnowledgeEntry Search(string userQuery)

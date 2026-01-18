@@ -1,5 +1,5 @@
 {
-  "version": "2.15.2",
+  "version": "2.15.3",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.15.2: CRITICAL HOTFIX. Fixed 'Empty Brain' issue. AI now correctly locates the Master Knowledge file."
+  "releaseNotes": "v2.15.3: TRUST UPDATE. Added visual 'Brain Status' indicator to verify the AI has successfully loaded its knowledge base."
 }

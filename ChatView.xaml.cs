@@ -21,14 +21,15 @@ namespace RevitAIAgent
             _handler = handler;
             _ai = new AIEngine();
             
-            // Initialize the Unified Brain
-            BrainManager.Initialize();
+            // Initialize the Unified Brain & Get Status
+            int brainCount = BrainManager.Initialize();
             
             // Fetch project context on startup
             _handler.Request = RequestId.GetContext;
             _exEvent.Raise();
 
-            AddMessage("AI", "Hello! I am ready to help. I've analyzed your project context.");
+            string status = brainCount > 0 ? $"✅ Brain Active ({brainCount} patterns loaded)" : "⚠️ Brain Empty";
+            AddMessage("AI", $"Hello! I am ready to help.\n{status}");
         }
 
         public void SetupDockablePane(DockablePaneProviderData data)
