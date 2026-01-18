@@ -27,6 +27,7 @@ namespace RevitAIAgent
 
         // Alias for AI intuition
         public static List<Element> GetElements(Document doc, BuiltInCategory category) => GetAll(doc, category);
+        public static List<Element> GetElementsByCategory(Document doc, BuiltInCategory category) => GetAll(doc, category);
 
         public static List<Wall> GetWalls(Document doc) => GetAll(doc, BuiltInCategory.OST_Walls).Cast<Wall>().ToList();
         public static List<FamilyInstance> GetDoors(Document doc) => GetAll(doc, BuiltInCategory.OST_Doors).Cast<FamilyInstance>().ToList();

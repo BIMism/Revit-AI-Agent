@@ -1,5 +1,5 @@
 {
-  "version": "2.14.1",
+  "version": "2.14.2",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.14.1: HOTFIX. Fixed 'GetElements' compilation error and enforced strict English-for-English language rules."
+  "releaseNotes": "v2.14.2: HOTFIX. Added GetElementsByCategory alias for AI robustness."
 }
