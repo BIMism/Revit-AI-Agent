@@ -1,5 +1,5 @@
 {
-  "version": "2.14.0",
+  "version": "2.14.1",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.14.0: GRAND VISION PHASE 1. Added Floor and Roof creation, and powerful Modification tools (Move, Copy, Rotate). AI is now capable of full geometry manipulation."
+  "releaseNotes": "v2.14.1: HOTFIX. Fixed 'GetElements' compilation error and enforced strict English-for-English language rules."
 }
