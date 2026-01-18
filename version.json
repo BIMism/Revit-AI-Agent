@@ -1,5 +1,5 @@
 {
-  "version": "2.12.7",
+  "version": "2.12.8",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.12.7: AI INTELLIGENCE OVERHAUL. Fixed looping issues, improved command understanding, and finalized natural Singlish/Sinhala communication. AI now distinguishes between chat and Revit tasks."
+  "releaseNotes": "v2.12.8: THE ULTIMATE AI OVERHAUL. Fixed syntax bugs, perfected human-like Singlish personality, and implemented intelligent Task vs. Chat logic."
 }
