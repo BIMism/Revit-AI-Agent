@@ -1,5 +1,5 @@
 {
-  "version": "2.15.3",
+  "version": "3.0.0",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.15.3: TRUST UPDATE. Added visual 'Brain Status' indicator to verify the AI has successfully loaded its knowledge base."
+  "releaseNotes": "v3.0.0: ARCHITECTURAL REVOLUTION. Added 'Python Bridge' listener. The plugin is now ready to be controlled by the upcoming standalone Python App."
 }

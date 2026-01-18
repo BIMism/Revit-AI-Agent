@@ -62,7 +62,8 @@ namespace RevitAIAgent
                         CreateWalls(uiapp, IntParam, DoubleParam1, DoubleParam2);
                         break;
                     case RequestId.ExecuteScript:
-                        RunScriptInTransaction(uiapp, StringParam);
+                        bool success = RunScriptInTransaction(uiapp, StringParam);
+                        UpdateBridgeStatus(success, success ? "Execution Complete" : "Execution Failed");
                         break;
                     default:
                         break;
@@ -70,12 +71,32 @@ namespace RevitAIAgent
             }
             catch (Exception ex)
             {
-                TaskDialog.Show("Error", "Error in Request Handler: " + ex.Message);
+                UpdateBridgeStatus(false, ex.Message);
             }
             finally
             {
                 Request = RequestId.None;
             }
+        }
+
+        private void UpdateBridgeStatus(bool success, string message)
+        {
+            try
+            {
+                string bridgeFile = @"C:\Temp\BIMism_Bridge.json";
+                if (System.IO.File.Exists(bridgeFile))
+                {
+                    string json = System.IO.File.ReadAllText(bridgeFile);
+                    var cmd = Newtonsoft.Json.JsonConvert.DeserializeObject<BridgeListener.BridgeCommand>(json);
+                    if (cmd != null)
+                    {
+                        cmd.Status = success ? "SUCCESS" : "ERROR";
+                        cmd.Result = message;
+                        System.IO.File.WriteAllText(bridgeFile, Newtonsoft.Json.JsonConvert.SerializeObject(cmd));
+                    }
+                }
+            }
+            catch { /* Best effort */ }
         }
 
         private void GetProjectContext(UIApplication uiapp)
@@ -178,10 +199,11 @@ namespace RevitAIAgent
             }
         }
 
-        private void RunScriptInTransaction(UIApplication uiapp, string code)
+        private bool RunScriptInTransaction(UIApplication uiapp, string code)
         {
             UIDocument uidoc = uiapp.ActiveUIDocument;
             Document doc = uidoc.Document;
+            bool success = true;
 
             using (Transaction t = new Transaction(doc, "AI Dynamic Actions"))
             {
@@ -192,10 +214,12 @@ namespace RevitAIAgent
                 }
                 catch (Exception ex)
                 {
-                    TaskDialog.Show("Runtime Error", "Script failed: " + ex.Message);
+                    // UpdateBridgeStatus handles the logging/reporting via the return value
+                    success = false;
                 }
                 t.Commit();
             }
+            return success;
         }
 
         private void CreateGridDimensions(UIApplication uiapp)

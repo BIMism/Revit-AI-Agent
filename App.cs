@@ -31,9 +31,14 @@ namespace RevitAIAgent
                 {
                     RevitRequestHandler handler = new RevitRequestHandler();
                     ExternalEvent exEvent = ExternalEvent.Create(handler);
+                    
+                    // Initialize Chat UI (Traditional)
                     ChatView chatView = new ChatView(exEvent, handler);
                     ChatPageInstance = chatView;
                     application.RegisterDockablePane(PaneId, "BIM'ism Copilot", chatView);
+
+                    // Initialize Python Bridge (New)
+                    new BridgeListener(exEvent, handler);
                 }
                 catch (Exception ex)
                 {
