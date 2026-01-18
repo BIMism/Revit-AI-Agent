@@ -1,5 +1,5 @@
 {
-  "version": "2.12.9",
+  "version": "2.13.0",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.12.9: AI BRAIN & LANGUAGE OVERHAUL. Added Delete capabilities, improved selection handling, and perfected natural Singlish/Sinhala communication. AI now understands and executes complex deletion tasks."
+  "releaseNotes": "v2.13.0: MULTI-LANGUAGE SUPPORT. AI now responds in English if queried in English, while maintaining natural Singlish personality for local terms. Perfected human-like communication across languages."
 }
