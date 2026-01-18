@@ -1,5 +1,5 @@
 {
-  "version": "2.14.3",
+  "version": "2.14.4",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.14.3: HOTFIX. Added GetFloors method for Floor selection."
+  "releaseNotes": "v2.14.4: CRITICAL UPDATE. Fixed AI brain—now knows about CreateFloor, RotateElement, and all v2.14 capabilities. English language detection improved."
 }
