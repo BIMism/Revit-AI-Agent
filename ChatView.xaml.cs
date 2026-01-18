@@ -21,6 +21,9 @@ namespace RevitAIAgent
             _handler = handler;
             _ai = new AIEngine();
             
+            // Initialize the Unified Brain
+            BrainManager.Initialize();
+            
             // Fetch project context on startup
             _handler.Request = RequestId.GetContext;
             _exEvent.Raise();
@@ -93,12 +96,20 @@ namespace RevitAIAgent
 
             // 2. AI-POWERED COMMAND GENERATION
             AddMessage("AI", "Thinking...");
+
+            // 1. GET CONTEXT FROM BRAIN (RAG)
+            string brainContext = "";
+            var knowledge = BrainManager.Search(userText);
+            if (knowledge != null)
+            {
+                brainContext = $"\n\n[BRAIN MEMORY ACTIVE]\nWait! I remember how to do this:\nDescription: {knowledge.Description}\nCode Pattern:\n{knowledge.Code}\n[END MEMORY]\n\n";
+            }
             
             // Enhanced prompt for Local AI (Ollama)
             // NOTE: Using single quotes inside the prompt to avoid escaping hell
             string systemPrompt = @"You are the BIM'ism AI Agent, an expert Revit API Developer.
 
-" + RevitRequestHandler.LastContext + @"
+" + RevitRequestHandler.LastContext + brainContext + @"
 
 LIBRARY:
 - RevitAI.Select(doc, elements);
@@ -424,6 +435,30 @@ RESPONSE (Match user language + Explanation + Code Block only if needed):";
 
         private void AddMessage(string sender, string text)
         {
+            var stack = new StackPanel { Orientation = Orientation.Vertical };
+            stack.Children.Add(new TextBlock { Text = text, TextWrapping = TextWrapping.Wrap, FontSize = 13 });
+
+            if (sender == "AI")
+            {
+                var teachLink = new TextBlock
+                {
+                    Text = "Wrong? Teach me.",
+                    FontSize = 10,
+                    Foreground = Brushes.Gray,
+                    Cursor = Cursors.Hand,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    Margin = new Thickness(0, 5, 0, 0),
+                    TextDecorations = TextDecorations.Underline
+                };
+                teachLink.MouseLeftButtonUp += (s, e) =>
+                {
+                    // Find the user query that prompted this AI response
+                     // Simplified: Just pass the last user input context we have, or empty if complex history
+                    new TeachWindow(InputBox.Text).ShowDialog(); 
+                };
+                stack.Children.Add(teachLink);
+            }
+
             Border border = new Border
             {
                 Padding = new Thickness(10),
@@ -433,17 +468,10 @@ RESPONSE (Match user language + Explanation + Code Block only if needed):";
                 BorderBrush = sender == "You" ? Brushes.LightGray : new SolidColorBrush(Color.FromRgb(180, 210, 240)),
                 BorderThickness = new Thickness(1),
                 HorizontalAlignment = sender == "You" ? HorizontalAlignment.Right : HorizontalAlignment.Left,
-                MaxWidth = 320
+                MaxWidth = 320,
+                Child = stack
             };
 
-            TextBlock block = new TextBlock
-            {
-                Text = text,
-                TextWrapping = TextWrapping.Wrap,
-                FontSize = 13
-            };
-
-            border.Child = block;
             ChatHistoryPanel.Children.Add(border);
             ChatScroll.ScrollToEnd();
         }

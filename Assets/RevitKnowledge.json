@@ -1,0 +1,60 @@
+[
+    {
+        "keywords": [
+            "create",
+            "floor"
+        ],
+        "description": "Standard method to create a floor from points",
+        "code": "var level = RevitAI.GetLevel(doc, \"Level 1\");\nvar points = new List<XYZ> { new XYZ(0,0,0), new XYZ(10,0,0), new XYZ(10,10,0), new XYZ(0,10,0) };\nRevitAI.CreateFloor(doc, points, level);"
+    },
+    {
+        "keywords": [
+            "rotate",
+            "element"
+        ],
+        "description": "Rotates an element around its center Z-axis",
+        "code": "var selection = RevitAI.GetSelection(doc);\nif (selection.Count > 0) RevitAI.RotateElement(doc, selection[0], 90);"
+    },
+    {
+        "keywords": [
+            "move",
+            "element"
+        ],
+        "description": "Moves selected elements by a vector",
+        "code": "var selection = RevitAI.GetSelection(doc);\nvar vec = new XYZ(RevitAI.MetersToFeet(5), 0, 0);\nRevitAI.MoveElements(doc, selection, vec);"
+    },
+    {
+        "keywords": [
+            "copy",
+            "element"
+        ],
+        "description": "Copies selected elements by a vector",
+        "code": "var selection = RevitAI.GetSelection(doc);\nvar vec = new XYZ(RevitAI.MetersToFeet(5), 0, 0);\nRevitAI.CopyElements(doc, selection, vec);"
+    },
+    {
+        "keywords": [
+            "create",
+            "roof"
+        ],
+        "description": "Creates a footprint roof",
+        "code": "var level = RevitAI.GetLevel(doc, \"Level 2\");\nvar points = new List<XYZ> { new XYZ(0,0,0), new XYZ(10,0,0), new XYZ(10,10,0), new XYZ(0,10,0) };\nRevitAI.CreateRoof(doc, points, level);"
+    },
+    {
+        "keywords": [
+            "select",
+            "all",
+            "walls"
+        ],
+        "description": "Selects all walls in the project",
+        "code": "var walls = RevitAI.GetWalls(doc);\nRevitAI.Select(doc, walls);"
+    },
+    {
+        "keywords": [
+            "select",
+            "all",
+            "floors"
+        ],
+        "description": "Selects all floors in the project",
+        "code": "var floors = RevitAI.GetFloors(doc);\nRevitAI.Select(doc, floors);"
+    }
+]

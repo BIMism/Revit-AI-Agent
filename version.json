@@ -1,5 +1,5 @@
 {
-  "version": "2.14.5",
+  "version": "2.15.0",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v2.14.5: FINAL FIX. Keyword-based language detection ensures English queries ALWAYS get English responses."
+  "releaseNotes": "v2.15.0: BRAIN 2.0. Added 'Teacher Mode' (Self-Training) and 'Master's Scroll' (RAG) for continuous learning."
 }
