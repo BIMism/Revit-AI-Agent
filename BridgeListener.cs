@@ -9,10 +9,11 @@ namespace RevitAIAgent
 {
     public class BridgeListener
     {
-        private FileSystemWatcher _watcher;
+        private DispatcherTimer _timer;
         private ExternalEvent _exEvent;
         private RevitRequestHandler _handler;
         private string _bridgeFile = @"C:\Temp\BIMism_Bridge.json";
+        private DateTime _lastModified = DateTime.MinValue;
 
         public BridgeListener(ExternalEvent exEvent, RevitRequestHandler handler)
         {
@@ -34,30 +35,52 @@ namespace RevitAIAgent
                     File.WriteAllText(_bridgeFile, JsonConvert.SerializeObject(new BridgeCommand { Status = "IDLE" }));
                 }
 
-                _watcher = new FileSystemWatcher(dir, Path.GetFileName(_bridgeFile));
-                _watcher.NotifyFilter = NotifyFilters.LastWrite;
-                _watcher.Changed += OnFileChanged;
-                _watcher.EnableRaisingEvents = true;
+                // Check every 0.5 seconds (High frequency polling)
+                _timer = new DispatcherTimer();
+                _timer.Interval = TimeSpan.FromMilliseconds(500);
+                _timer.Tick += OnTimerTick;
+                _timer.Start();
             }
             catch (Exception ex)
             {
-                // Log silently or show debug
-                System.Diagnostics.Debug.WriteLine("Bridge Init Failed: " + ex.Message);
+                 // Silent fail
             }
         }
 
-        private void OnFileChanged(object sender, FileSystemEventArgs e)
+        private void OnTimerTick(object sender, EventArgs e)
         {
-            // Give file time to close
-            Thread.Sleep(100);
-
             try
             {
+                if (!File.Exists(_bridgeFile)) return;
+
+                // Check if file modified
+                DateTime currentModified = File.GetLastWriteTime(_bridgeFile);
+                if (currentModified <= _lastModified) return;
+
+                _lastModified = currentModified;
+                ProcessFile();
+            }
+            catch { /* Ignore lock errors */ }
+        }
+
+        private void ProcessFile()
+        {
+             try
+            {
                 string json = "";
-                using (var fs = new FileStream(_bridgeFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                using (var sr = new StreamReader(fs))
+                // Retry loop for file locks
+                for(int i=0; i<3; i++)
                 {
-                    json = sr.ReadToEnd();
+                    try 
+                    {
+                        using (var fs = new FileStream(_bridgeFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        using (var sr = new StreamReader(fs))
+                        {
+                            json = sr.ReadToEnd();
+                        }
+                        break;
+                    }
+                    catch { Thread.Sleep(50); }
                 }
 
                 if (string.IsNullOrWhiteSpace(json)) return;
@@ -72,11 +95,7 @@ namespace RevitAIAgent
                     _exEvent.Raise();
                 }
             }
-            catch (Exception ex)
-            {
-                // File lock issues common with watchers
-                System.Diagnostics.Debug.WriteLine("Bridge Read Failed: " + ex.Message);
-            }
+            catch { }
         }
 
         public class BridgeCommand

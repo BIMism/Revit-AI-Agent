@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "3.0.1",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v3.0.0: ARCHITECTURAL REVOLUTION. Added 'Python Bridge' listener. The plugin is now ready to be controlled by the upcoming standalone Python App."
+  "releaseNotes": "v3.0.1: RELIABILITY FIX. Switched Bridge Listener to Polling mode to guarantee command detection. 'Timeout' errors are now resolved."
 }
