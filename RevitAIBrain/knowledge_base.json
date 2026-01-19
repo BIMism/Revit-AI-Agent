@@ -1,0 +1,128 @@
+{
+    "concepts": {
+        "Wall Creation": {
+            "description": "Create a standard wall.",
+            "code": "Wall.Create(doc, Line.CreateBound(p1, p2), wallType.Id, level.Id, height, 0, false, false);"
+        },
+        "Floor Creation": {
+            "description": "Create a floor from a profile.",
+            "code": "Floor.Create(doc, new List<CurveLoop> { profile }, floorType.Id, level.Id);"
+        },
+        "Roof Creation (Footprint)": {
+            "description": "Create a footprint roof.",
+            "code": "doc.Create.NewFootPrintRoof(curveArray, level, roofType, out modelCurves);"
+        },
+        "Ceiling Creation": {
+            "description": "Create a ceiling.",
+            "code": "Ceiling.Create(doc, new List<CurveLoop> { profile }, ceilingType.Id, level.Id);"
+        },
+        "Column Creation": {
+            "description": "Place a family instance (Column/Door/Window).",
+            "code": "doc.Create.NewFamilyInstance(point, familySymbol, level, StructuralType.NonStructural);"
+        },
+        "Stair Creation": {
+            "description": "Create generic stairs.",
+            "code": "// StairsPath mode\nvar path = new List<Curve> { Line.CreateBound(p1, p2) };\n// Note: Full stair creation via API matches SketchEditScope usually, but for simple run:\n// Use Assembly Instance or detailed run creation logic."
+        },
+        "Railing Creation": {
+            "description": "Create railing on a path.",
+            "code": "Railing.Create(doc, loop, railingType.Id, level.Id);"
+        },
+        "Model Line Creation": {
+            "description": "Draw a model line in 3D.",
+            "code": "var plane = sketchPlane;\ndoc.Create.NewModelCurve(line, plane);"
+        },
+        "Model Group Creation": {
+            "description": "Group element IDs.",
+            "code": "doc.Create.NewGroup(elementIds);"
+        },
+        "FilteredElementCollector": {
+            "description": "Find elements.",
+            "code": "new FilteredElementCollector(doc).OfClass(typeof(Wall)).WhereElementIsNotElementType().ToList();"
+        },
+        "Parameter Get": {
+            "description": "Get parameter value.",
+            "code": "element.get_Parameter(BuiltInParameter.WALL_USER_HEIGHT_PARAM).AsDouble();"
+        },
+        "Parameter Set": {
+            "description": "Set parameter value.",
+            "code": "element.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set('Value');"
+        },
+        "Transaction": {
+            "description": "Rules about transactions.",
+            "code": "// DO NOT START TRANSACTION. One is already open."
+        },
+        "Geometry - Point on Circle": {
+            "description": "Calculating points on a circle/arc.",
+            "code": "x = center.X + radius * Math.Cos(angle);\ny = center.Y + radius * Math.Sin(angle);"
+        },
+        "Unit Conversion": {
+            "description": "Revit uses Feet internally.",
+            "code": "double feet = meters * 3.28084;\ndouble feet = mm / 304.8;"
+        },
+        "Selection": {
+            "description": "Select elements.",
+            "code": "uidoc.Selection.SetElementIds(listOfIds);"
+        },
+        "Create ViewSheet": {
+            "description": "Create a new sheet.",
+            "code": "ViewSheet.Create(doc, titleBlockId);"
+        },
+        "Create View3D": {
+            "description": "Create 3D view.",
+            "code": "View3D.CreateIsometric(doc, viewFamilyTypeId);"
+        },
+        "Create Level": {
+            "description": "Create a level.",
+            "code": "Level.Create(doc, elevation);"
+        },
+        "Create Grid": {
+            "description": "Create a grid line.",
+            "code": "Grid.Create(doc, Line.CreateBound(p1, p2));"
+        },
+        "Materials": {
+            "description": "Find material.",
+            "code": "var material = new FilteredElementCollector(doc).OfClass(typeof(Material)).FirstOrDefault(m => m.Name == 'Concrete');"
+        },
+        "Phases": {
+            "description": "Get phase.",
+            "code": "doc.Phases.Cast<Phase>().LastOrDefault();"
+        },
+        "Worksets": {
+            "description": "Get workset.",
+            "code": "new FilteredElementCollector(doc).OfClass(typeof(WorksetKind))..."
+        },
+        "Rotate Element": {
+            "description": "Rotate element.",
+            "code": "ElementTransformUtils.RotateElement(doc, id, axis, angleRadians);"
+        },
+        "Move Element": {
+            "description": "Move element.",
+            "code": "ElementTransformUtils.MoveElement(doc, id, translationVector);"
+        },
+        "Copy Element": {
+            "description": "Copy element.",
+            "code": "ElementTransformUtils.CopyElement(doc, id, translationVector);"
+        },
+        "Pin/Unpin": {
+            "description": "Pin element.",
+            "code": "element.Pinned = true;"
+        },
+        "Delete": {
+            "description": "Delete element.",
+            "code": "doc.Delete(elementId);"
+        },
+        "Isolate/Hide": {
+            "description": "Temporary Hide/Isolate.",
+            "code": "doc.ActiveView.IsolateElementsTemporary(ids);"
+        },
+        "Tag Creation": {
+            "description": "Create Independent Tag.",
+            "code": "IndependentTag.Create(doc, viewId, ref, false, TagMode.TM_ADDBY_CATEGORY, TagOrientation.Horizontal, point);"
+        },
+        "Dimension Creation": {
+            "description": "Create Dimension.",
+            "code": "doc.Create.NewDimension(view, line, references);"
+        }
+    }
+}

@@ -37,8 +37,18 @@ namespace RevitAIAgent
                     ChatPageInstance = chatView;
                     application.RegisterDockablePane(PaneId, "BIM'ism Copilot", chatView);
 
-                    // Initialize Python Bridge (New)
-                    new BridgeListener(exEvent, handler);
+                    // 3. Initialize AI Brain Manager
+            BrainManager.Initialize();
+
+            // 4. Start Bridge Listener (The "Hands")
+            new BridgeListener(exEvent, handler);
+
+            // 5. Initial Context Dump (The "Eyes")
+            // Note: OnStartup doesn't give us a UIControlledApplication, so we can't get ActiveUIDocument yet.
+            // We'll rely on the Idling event or first command to dump context.
+            // Actually, best to hook into Idling once to dump context? 
+            // Let's stick to Listener polling for now, but BridgeListener could trigger it?
+            // For now, let's leave it to first command, but ensure BridgeListener works.
                 }
                 catch (Exception ex)
                 {

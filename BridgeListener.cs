@@ -92,6 +92,7 @@ namespace RevitAIAgent
                     // Trigger Revit Main Thread
                     _handler.Request = RequestId.ExecuteScript;
                     _handler.StringParam = cmd.Code;
+                    _handler.CurrentCommandId = cmd.CommandId; // Pass ID for tracking
                     _exEvent.Raise();
                 }
             }

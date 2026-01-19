@@ -1,0 +1,66 @@
+{
+    "categories": [
+        {
+            "name": "MODEL CREATION",
+            "tasks": [
+                "Create a basic wall 4m high",
+                "Create a generic floor",
+                "Create a simple roof",
+                "Create a compound ceiling",
+                "Create a structural column",
+                "Create a concrete beam",
+                "Create a pad footing",
+                "Create a structural slab",
+                "Create a simple stair run",
+                "Create a railing on path",
+                "Create a architectural room",
+                "Place a single flush door",
+                "Place a fixed window",
+                "Place a desk furniture",
+                "Place a generic electrical fixture"
+            ]
+        },
+        {
+            "name": "MODEL MODIFICATION",
+            "tasks": [
+                "Select all walls and Move them 1m right",
+                "Copy selected column 2m apart",
+                "Rotate the selected element 45 degrees",
+                "Mirror selected element",
+                "Align walls to grid",
+                "Change wall type to Generic 300mm",
+                "Set wall top constraint to Level 2"
+            ]
+        },
+        {
+            "name": "SELECTION & FILTERING",
+            "tasks": [
+                "Select all Walls in the project",
+                "Select all Doors on Level 1",
+                "Select all elements created in Phase 1",
+                "Select all structural columns",
+                "Select elements visible in current view"
+            ]
+        },
+        {
+            "name": "DOCUMENTATION",
+            "tasks": [
+                "Create a new Floor Plan for Level 1",
+                "Create a 3D View named 'AI_3D'",
+                "Create a new Sheet A101",
+                "Place Level 1 View on Sheet A101",
+                "Rename active view to 'AI_Working_View'"
+            ]
+        },
+        {
+            "name": "ANNOTATION",
+            "tasks": [
+                "Tag all doors in executing view",
+                "Tag all windows in active view",
+                "Tag all rooms in current plan",
+                "Create a text note saying 'Verified by AI'",
+                "Dimension all grids in view"
+            ]
+        }
+    ]
+}

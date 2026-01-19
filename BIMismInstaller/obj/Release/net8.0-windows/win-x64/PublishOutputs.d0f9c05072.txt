@@ -1,2 +1,0 @@
-C:\Users\User\.gemini\antigravity\playground\cobalt-oort\BIMismInstaller\bin\Release\net8.0-windows\win-x64\publish\BIMism_AI_Agent_Installer.pdb
-C:\Users\User\.gemini\antigravity\playground\cobalt-oort\BIMismInstaller\bin\Release\net8.0-windows\win-x64\publish\BIMism_AI_Agent_Installer.exe

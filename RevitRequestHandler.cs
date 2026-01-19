@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using Newtonsoft.Json;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
@@ -30,9 +32,13 @@ namespace RevitAIAgent
         public double DoubleParam1 { get; set; }
         public double DoubleParam2 { get; set; }
         public string StringParam { get; set; }
+        public string CurrentCommandId { get; set; } // Added for error reporting
 
         public void Execute(UIApplication uiapp)
         {
+            GetProjectContext(uiapp); // Update context dump
+
+            if (Request == RequestId.None) return;
             try
             {
                 // SAFEGUARD: If no document is open, we can't do anything
@@ -99,23 +105,34 @@ namespace RevitAIAgent
             catch { /* Best effort */ }
         }
 
-        private void GetProjectContext(UIApplication uiapp)
+        public static void GetProjectContext(UIApplication uiapp)
         {
             if (uiapp.ActiveUIDocument == null) return;
             Document doc = uiapp.ActiveUIDocument.Document;
-            
-            var levels = new FilteredElementCollector(doc).OfClass(typeof(Level)).Cast<Level>().Select(l => l.Name).ToList();
-            var wallTypes = new FilteredElementCollector(doc).OfClass(typeof(WallType)).Cast<WallType>().Select(t => t.Name).Take(10).ToList();
-            var views = new FilteredElementCollector(doc).OfClass(typeof(ViewPlan)).Cast<ViewPlan>().Where(v => !v.IsTemplate).Select(v => v.Name).ToList();
 
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            sb.AppendLine("PROJECT CONTEXT:");
-            sb.AppendLine($"- ACTIVE VIEW: {doc.ActiveView.Name}");
-            sb.AppendLine($"- LEVELS: {string.Join(", ", levels)}");
-            sb.AppendLine($"- WALL TYPES: {string.Join(", ", wallTypes)}");
-            sb.AppendLine($"- VIEWS: {string.Join(", ", views)}");
-            
-            LastContext = sb.ToString();
+            try
+            {
+                var levels = new FilteredElementCollector(doc).OfClass(typeof(Level)).Cast<Level>().Select(l => l.Name).ToList();
+                var wallTypes = new FilteredElementCollector(doc).OfClass(typeof(WallType)).Cast<WallType>().Select(t => t.Name).Take(20).ToList();
+                var floorTypes = new FilteredElementCollector(doc).OfClass(typeof(FloorType)).Cast<FloorType>().Select(t => t.Name).Take(20).ToList();
+                var views = new FilteredElementCollector(doc).OfClass(typeof(ViewPlan)).Cast<ViewPlan>().Where(v => !v.IsTemplate).Select(v => v.Name).ToList();
+
+                var contextData = new
+                {
+                    ActiveView = doc.ActiveView.Name,
+                    Levels = levels,
+                    WallTypes = wallTypes,
+                    FloorTypes = floorTypes,
+                    Views = views,
+                    Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                };
+
+                string json = JsonConvert.SerializeObject(contextData, Formatting.Indented);
+                string path = @"C:\Temp\BIMism_Context.json";
+                if (!Directory.Exists(@"C:\Temp")) Directory.CreateDirectory(@"C:\Temp");
+                File.WriteAllText(path, json);
+            }
+            catch { /* Ignore context errors */ }
         }
 
         public string GetName()
@@ -210,7 +227,14 @@ namespace RevitAIAgent
                 t.Start();
                 try
                 {
-                    ScriptRunner.RunScript(uiapp, code);
+                    string error = ScriptRunner.RunScript(uiapp, code);
+                    if (error != null)
+                    {
+                         // Rollback if script failed
+                         t.RollBack();
+                         UpdateBridgeStatus(false, error);
+                         return false;
+                    }
                 }
                 catch (Exception ex)
                 {

@@ -14,7 +14,7 @@ namespace RevitAIAgent
 {
     public class ScriptRunner
     {
-        public static void RunScript(UIApplication uiapp, string code)
+        public static string RunScript(UIApplication uiapp, string code)
         {
             // 1. Wrap the code in a valid class structure
             string sourceCode = @"
@@ -23,6 +23,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Autodesk.Revit.DB;
+using Autodesk.Revit.DB.Structure; // Fix CS0122 StructuralType
+using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.UI;
 using RevitAIAgent;
 
@@ -83,7 +85,9 @@ namespace RevitAIAgentDynamic
                     {
                         failures.AppendLine($"{diagnostic.Id}: {diagnostic.GetMessage()}");
                     }
-                    TaskDialog.Show("Compilation Error", failures.ToString());
+                    string errorMsg = failures.ToString();
+                    // TaskDialog.Show("Compilation Error", errorMsg); // Removed TaskDialog
+                    return errorMsg;
                 }
                 else
                 {
@@ -99,17 +103,19 @@ namespace RevitAIAgentDynamic
                     try
                     {
                         method.Invoke(obj, new object[] { uiapp });
+                        return null; // Success
                     }
                     catch (TargetInvocationException ex)
                     {
-                        string detailedError = ex.InnerException != null 
-                            ? ex.InnerException.Message + "\n" + ex.InnerException.StackTrace 
-                            : ex.Message;
-                        TaskDialog.Show("Runtime Error", "Script failed during execution:\n\n" + detailedError);
+                        // string detailedError = ex.InnerException != null 
+                        //     ? ex.InnerException.Message + "\n" + ex.InnerException.StackTrace 
+                        //     : ex.Message;
+                        // TaskDialog.Show("Runtime Error", "Script failed during execution:\n\n" + detailedError);
+                        return "Runtime Error: " + (ex.InnerException?.Message ?? ex.Message);
                     }
                     catch (Exception ex)
                     {
-                        TaskDialog.Show("Runtime Error", "Unexpected error:\n" + ex.Message);
+                        return "Unexpected Error: " + ex.Message;
                     }
                 }
             }

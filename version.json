@@ -1,5 +1,5 @@
 {
-  "version": "3.0.2",
+  "version": "3.1.4",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v3.0.2: CONTEXT FIX. ScriptRunner now correctly exposes 'uidoc' and 'uiapp' to the AI, allowing Selection and UI commands to work."
+  "releaseNotes": "v3.1.4: CRITICAL ROOF FIX. Added rigorous safety checks for null types in automation patterns. Fixed Context Link permissions."
 }

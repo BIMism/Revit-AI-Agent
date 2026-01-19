@@ -1,0 +1,22 @@
+
+*** FINAL GIT DEPLOYMENT ***
+
+1. REPO IDENTIFIED:
+   https://github.com/BIMism/Revit-AI-Agent.git
+
+2. CODE STATUS:
+   - Version: 3.2.0
+   - Update URL: [LINKED TO MAIN BRANCH]
+   - Build: SUCCEEDED (Clean Slate)
+
+3. HOW TO PUSH (RUN THESE COMMANDS):
+   git add .
+   git commit -m "Official Release 3.2.0"
+   git push origin main
+
+4. HOW TO TRIGGER UPDATES:
+   The updater looks for: 'version.json' in your repo root.
+   Ensure you commit the 'version.json' file I created.
+   Update the "version": "3.2.0" line in it whenever you release new updates.
+
+*** READY TO SHIP ***

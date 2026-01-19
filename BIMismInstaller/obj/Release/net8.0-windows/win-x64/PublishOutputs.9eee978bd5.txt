@@ -1,2 +1,0 @@
-E:\My\BIM'ism\Revit Pluging\BIMismInstaller\publish\BIMism_AI_Agent_Installer.pdb
-E:\My\BIM'ism\Revit Pluging\BIMismInstaller\publish\BIMism_AI_Agent_Installer.exe
