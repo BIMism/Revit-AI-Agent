@@ -6,7 +6,7 @@
     <Configurations>Debug;Release</Configurations>
     <Platforms>x64</Platforms>
     <AssemblyName>RevitAIAgent</AssemblyName>
-    <Version>3.2.1</Version>
+    <Version>3.2.2</Version>
     <AssemblyTitle>BIMism AI Agent</AssemblyTitle>
     <Product>BIMism AI Agent</Product>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
@@ -88,7 +88,10 @@
 
   <ItemGroup>
     <Compile Remove="BIMismInstaller\**" />
+    <Compile Remove="BIMismUpdater\**" />
     <EmbeddedResource Remove="BIMismInstaller\**" />
+    <EmbeddedResource Remove="BIMismUpdater\**" />
     <None Remove="BIMismInstaller\**" />
+    <None Remove="BIMismUpdater\**" />
   </ItemGroup>
 </Project>

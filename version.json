@@ -1,5 +1,5 @@
 {
-  "version": "3.1.4",
-  "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v3.1.4: CRITICAL ROOF FIX. Added rigorous safety checks for null types in automation patterns. Fixed Context Link permissions."
+  "version": "3.2.2",
+  "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/releases/download/v3.2.2/BIMism_AI_Agent_Setup_v3.2.2.exe",
+  "releaseNotes": "v3.2.2 - Robust Auto-Update Release\n\n✅ Improved: Auto-update system now uses a standalone console app (wait-for-exit logic)\n✅ Fixed: 'Update Now' button state issues\n✅ Fixed: Language preference defaults to English\n✅ Fixed: Resolved assembly attribute conflicts during build"
 }

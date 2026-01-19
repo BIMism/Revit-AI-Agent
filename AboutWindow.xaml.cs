@@ -45,6 +45,7 @@ namespace RevitAIAgent
                     UpdateDetailsText.Visibility = Visibility.Visible;
 
                     UpdateNowBtn.Visibility = Visibility.Visible;
+                    UpdateNowBtn.IsEnabled = true;
                 }
                 else
                 {
@@ -76,29 +77,52 @@ namespace RevitAIAgent
             try
             {
                 UpdateNowBtn.IsEnabled = false;
-                UpdateStatusText.Text = "Downloading update...";
+                UpdateStatusText.Text = "Launching updater...";
 
-                bool success = await AutoUpdater.DownloadAndInstallAsync(_latestVersion.DownloadUrl);
+                // Get app directory
+                string appDir = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string updaterPath = System.IO.Path.Combine(appDir, "BIMismUpdater.exe");
+                string targetDir = appDir; // We install into the same folder
 
-                if (success)
+                if (!System.IO.File.Exists(updaterPath))
                 {
-                    MessageBox.Show(
-                        "Update installed successfully!\n\nPlease restart Revit to use the new version.",
-                        "Update Complete",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information);
-                    this.Close();
+                    // If not in the same folder, check the BIMism subfolder (standard install)
+                    updaterPath = System.IO.Path.Combine(appDir, "BIMism", "BIMismUpdater.exe");
+                    if (!System.IO.File.Exists(updaterPath))
+                    {
+                        throw new System.IO.FileNotFoundException("Could not find BIMismUpdater.exe. Please install the latest version manually.");
+                    }
                 }
-                else
+
+                // Launch the standalone updater
+                ProcessStartInfo startInfo = new ProcessStartInfo
                 {
-                    UpdateStatusText.Text = "❌ Update failed. Please try again.";
-                    UpdateNowBtn.IsEnabled = true;
-                }
+                    FileName = updaterPath,
+                    Arguments = $"\"{_latestVersion.DownloadUrl}\" \"{targetDir}\"",
+                    UseShellExecute = true,
+                    Verb = "runas" // Request Admin privileges
+                };
+
+                Process.Start(startInfo);
+
+                MessageBox.Show(
+                    "The Auto-Updater has been launched.\n\n" +
+                    "1. Please CLOSE Revit now.\n" +
+                    "2. The updater will then download and install the new version.\n" +
+                    "3. You can restart Revit once the updater finishes.",
+                    "Update Starting",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+
+                this.Close();
+                // We don't close the main app here, just the About window. 
+                // The updater will wait for Revit to close.
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Update failed: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Update failed to launch: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 UpdateNowBtn.IsEnabled = true;
+                UpdateStatusText.Text = "❌ Update failed to launch.";
             }
         }
 

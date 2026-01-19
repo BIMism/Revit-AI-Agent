@@ -1,0 +1,15 @@
+E:\My\BIM'ism\Revit Pluging\BIMismUpdater\bin\Release\net8.0\BIMismUpdater.exe
+E:\My\BIM'ism\Revit Pluging\BIMismUpdater\bin\Release\net8.0\BIMismUpdater.deps.json
+E:\My\BIM'ism\Revit Pluging\BIMismUpdater\bin\Release\net8.0\BIMismUpdater.runtimeconfig.json
+E:\My\BIM'ism\Revit Pluging\BIMismUpdater\bin\Release\net8.0\BIMismUpdater.dll
+E:\My\BIM'ism\Revit Pluging\BIMismUpdater\bin\Release\net8.0\BIMismUpdater.pdb
+E:\My\BIM'ism\Revit Pluging\BIMismUpdater\obj\Release\net8.0\BIMismUpdater.GeneratedMSBuildEditorConfig.editorconfig
+E:\My\BIM'ism\Revit Pluging\BIMismUpdater\obj\Release\net8.0\BIMismUpdater.AssemblyInfoInputs.cache
+E:\My\BIM'ism\Revit Pluging\BIMismUpdater\obj\Release\net8.0\BIMismUpdater.AssemblyInfo.cs
+E:\My\BIM'ism\Revit Pluging\BIMismUpdater\obj\Release\net8.0\BIMismUpdater.csproj.CoreCompileInputs.cache
+E:\My\BIM'ism\Revit Pluging\BIMismUpdater\obj\Release\net8.0\BIMismUpdater.sourcelink.json
+E:\My\BIM'ism\Revit Pluging\BIMismUpdater\obj\Release\net8.0\BIMismUpdater.dll
+E:\My\BIM'ism\Revit Pluging\BIMismUpdater\obj\Release\net8.0\refint\BIMismUpdater.dll
+E:\My\BIM'ism\Revit Pluging\BIMismUpdater\obj\Release\net8.0\BIMismUpdater.pdb
+E:\My\BIM'ism\Revit Pluging\BIMismUpdater\obj\Release\net8.0\BIMismUpdater.genruntimeconfig.cache
+E:\My\BIM'ism\Revit Pluging\BIMismUpdater\obj\Release\net8.0\ref\BIMismUpdater.dll

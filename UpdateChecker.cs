@@ -35,17 +35,6 @@ namespace RevitAIAgent
                     string json = await client.GetStringAsync(VERSION_URL);
                     VersionInfo latestVersion = JsonConvert.DeserializeObject<VersionInfo>(json);
 
-                    // --- TEST MODE FOR DEMO ---
-                    // Since we don't have the real git hosted yet, we mock a newer version to show the UI works.
-                    if (true) 
-                    {
-                        return new VersionInfo 
-                        { 
-                            Version = "4.0.0", 
-                            DownloadUrl = "https://github.com/BIMism/Revit-AI-Agent/archive/refs/heads/main.zip", // Placeholder
-                            ReleaseNotes = "Auto-Update System Verified! (This is a test)" 
-                        };
-                    }
                     // --------------------------
 
                     // Compare versions

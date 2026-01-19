@@ -12,11 +12,11 @@ using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("RevitAIAgent")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("3.2.1.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("3.2.1+a7e4490cf43af96b0347413853880bd1deb82abb")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("3.2.2.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("3.2.2+443cb01178128ff7eddeda310e02a0428d379ef3")]
 [assembly: System.Reflection.AssemblyProductAttribute("BIMism AI Agent")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BIMism AI Agent")]
-[assembly: System.Reflection.AssemblyVersionAttribute("3.2.1.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("3.2.2.0")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]
 
