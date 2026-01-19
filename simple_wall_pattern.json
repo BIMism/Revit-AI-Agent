@@ -1,0 +1,10 @@
+[
+    {
+        "Keywords": [
+            "create",
+            "wall"
+        ],
+        "Description": "Creates a basic wall 4m high from (0,0) to (10,0).",
+        "Code": "var levels = new FilteredElementCollector(doc).OfClass(typeof(Level)).Cast<Level>().OrderBy(l => l.Elevation).ToList();\nLevel level1 = levels.FirstOrDefault();\nvar wallTypes = new FilteredElementCollector(doc).OfClass(typeof(WallType)).Cast<WallType>().Where(w => w.Kind == WallKind.Basic).ToList();\nWallType wt = wallTypes.FirstOrDefault();\nif (level1 != null && wt != null)\n{\n    Line line = Line.CreateBound(new XYZ(0, 0, 0), new XYZ(10, 0, 0));\n    Wall.Create(doc, line, wt.Id, level1.Id, 13.1234, 0, false, false);\n}"
+    }
+]
