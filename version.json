@@ -1,5 +1,5 @@
 {
-  "version": "3.2.3",
-  "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/BIMism_AI_Agent_Setup_v3.2.3.exe",
-  "releaseNotes": "v3.2.3 - Verification Update\n\n✅ Verified: Multi-stage auto-update flow\n✅ System Status: All systems operational 🚀"
+  "version": "3.2.4",
+  "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
+  "releaseNotes": "v3.2.4 - Auto-Update Fix\n\n✅ Fixed: Pointed update server to ZIP archive instead of EXE installer\n✅ Fixed: Corrected ZIP folder structure for plugin and updater\n✅ Enhanced: Robust standalone updater deployment"
 }

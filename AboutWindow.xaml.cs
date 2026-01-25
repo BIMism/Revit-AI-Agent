@@ -82,7 +82,9 @@ namespace RevitAIAgent
                 // Get app directory
                 string appDir = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 string updaterPath = System.IO.Path.Combine(appDir, "BIMismUpdater.exe");
-                string targetDir = appDir; // We install into the same folder
+                // The target directory for extraction should be the parent folder (Revit Addins root)
+                // so that the .addin file lands in the root and DLLs land in the /BIMism subfolder.
+                string targetDir = System.IO.Path.GetDirectoryName(appDir); 
 
                 if (!System.IO.File.Exists(updaterPath))
                 {
