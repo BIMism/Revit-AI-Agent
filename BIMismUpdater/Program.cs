@@ -41,20 +41,41 @@ namespace BIMismUpdater
                 }
                 Console.WriteLine("Download complete.");
 
-                // 3. Extract and Overwrite
+                // 3. Extract to Temp
+                string tempExtract = Path.Combine(Path.GetTempPath(), "BIMismTempExtract");
+                if (Directory.Exists(tempExtract)) Directory.Delete(tempExtract, true);
+                ZipFile.ExtractToDirectory(zipPath, tempExtract);
+
+                // 4. Distribute files smart (Addin to root, others to /BIMism)
                 Console.WriteLine($"Installing to: {targetDir}");
-                if (Directory.Exists(targetDir))
+                string rootDir = targetDir; // e.g. .../Addins/2025
+                string binariesDir = Path.Combine(rootDir, "BIMism");
+
+                if (!Directory.Exists(binariesDir)) Directory.CreateDirectory(binariesDir);
+
+                foreach (string file in Directory.GetFiles(tempExtract, "*.*", SearchOption.AllDirectories))
                 {
-                    // Backup optional, for now just overwrite
-                    ZipFile.ExtractToDirectory(zipPath, targetDir, true);
-                    Console.WriteLine("Files updated successfully.");
-                }
-                else
-                {
-                    Console.WriteLine($"Target directory not found: {targetDir}");
-                    ZipFile.ExtractToDirectory(zipPath, targetDir); 
+                    string fileName = Path.GetFileName(file);
+                    string relPath = Path.GetRelativePath(tempExtract, file);
+                    string destPath;
+
+                    if (fileName.EndsWith(".addin", StringComparison.OrdinalIgnoreCase))
+                    {
+                        destPath = Path.Combine(rootDir, fileName);
+                    }
+                    else
+                    {
+                        destPath = Path.Combine(binariesDir, relPath);
+                    }
+
+                    string destDir = Path.GetDirectoryName(destPath);
+                    if (!Directory.Exists(destDir)) Directory.CreateDirectory(destDir);
+
+                    Console.WriteLine($"Updating: {fileName}");
+                    File.Copy(file, destPath, true);
                 }
 
+                if (Directory.Exists(tempExtract)) Directory.Delete(tempExtract, true);
                 Console.WriteLine("✅ UPDATE COMPLETE.");
                 Console.WriteLine("You can now open Revit.");
             }
