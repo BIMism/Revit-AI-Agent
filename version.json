@@ -1,5 +1,5 @@
 {
-  "version": "3.2.4",
+  "version": "3.2.5",
   "downloadUrl": "https://github.com/BIMism/Revit-AI-Agent/raw/main/RevitAIAgent.zip",
-  "releaseNotes": "v3.2.4 - Auto-Update Fix\n\n✅ Fixed: Pointed update server to ZIP archive instead of EXE installer\n✅ Fixed: Corrected ZIP folder structure for plugin and updater\n✅ Enhanced: Robust standalone updater deployment"
+  "releaseNotes": "v3.2.5 - Final Auto-Update Repair\n\n✅ Fixed: The 'Double Folder' bug is resolved\n✅ Unified: Startup update check now uses the robust standalone updater\n✅ Layout: Fixed About window buttons being cut off\n✅ Enhanced: One-click repair for all future updates"
 }

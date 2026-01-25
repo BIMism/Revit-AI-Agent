@@ -169,23 +169,32 @@ namespace RevitAIAgent
 
                     if (td.Show() == TaskDialogResult.Yes)
                     {
-                        // Show downloading message
-                        TaskDialog downloading = new TaskDialog("BIMism AI Agent");
-                        downloading.Title = "Downloading Update";
-                        downloading.MainInstruction = "Downloading update...";
-                        downloading.MainContent = "Please wait while the update is downloaded and installed.";
-                        
-                        bool success = await AutoUpdater.DownloadAndInstallAsync(updateInfo.DownloadUrl);
-                        
-                        if (success)
+                        // Launch the robust external updater
+                        string appDir = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                        string updaterPath = System.IO.Path.Combine(appDir, "BIMismUpdater.exe");
+                        string targetDir = System.IO.Path.GetDirectoryName(appDir);
+
+                        if (!System.IO.File.Exists(updaterPath))
+                            updaterPath = System.IO.Path.Combine(appDir, "BIMism", "BIMismUpdater.exe");
+
+                        if (System.IO.File.Exists(updaterPath))
                         {
-                            TaskDialog successTd = new TaskDialog("Success");
-                            successTd.TitleAutoPrefix = false;
-                            successTd.Title = "BIMism AI Agent";
-                            successTd.MainInstruction = "Update installed successfully!";
-                            successTd.MainContent = "Please restart Revit to use the new version.";
-                            successTd.CommonButtons = TaskDialogCommonButtons.Ok;
-                            successTd.Show();
+                            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                            {
+                                FileName = updaterPath,
+                                Arguments = $"\"{updateInfo.DownloadUrl}\" \"{targetDir}\"",
+                                UseShellExecute = true,
+                                Verb = "runas"
+                            });
+
+                            TaskDialog.Show("Update Starting", 
+                                "The Auto-Updater has been launched.\n\n" +
+                                "1. Please CLOSE Revit now.\n" +
+                                "2. The updater will then install the new version.");
+                        }
+                        else
+                        {
+                            TaskDialog.Show("Error", "Could not find BIMismUpdater.exe. Please update manually.");
                         }
                     }
                 }
